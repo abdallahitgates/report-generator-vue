@@ -29,6 +29,18 @@ const PATHS = {
   history: 'M3 12a9 9 0 1 0 3-6.7L3 8m0-5v5h5m4-1v5l3 2',
   inbox: 'M3 13h5l2 3h4l2-3h5M5 5h14l2 8v6H3v-6z',
   trash: 'M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3',
+  chevron: 'M9 6l6 6-6 6',
+  play: 'M7 5v14l11-7z',
+  stop: 'M6 6h12v12H6z',
+  undo: 'M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3',
+  redo: 'M15 14l5-5-5-5M20 9H10a6 6 0 0 0 0 12h3',
+  filter: 'M4 5h16l-6 8v5l-4 2v-7z',
+  save: 'M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6',
+  copy: 'M9 9h11v11H9zM5 15H4V4h11v1',
+  fx: 'M14 4h-2a3 3 0 0 0-3 3v13M6 10h7M15 12l5 6M20 12l-5 6',
+  folder: 'M3 6h6l2 2h10v11H3z',
+  users: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21v-1a6 6 0 0 1 12 0v1M16 3.5a4 4 0 0 1 0 7.5M22 21v-1a6 6 0 0 0-4-5.6',
+  globe: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z',
 };
 
 defineProps({

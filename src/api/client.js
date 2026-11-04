@@ -85,9 +85,20 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     cancel: (queryId) => request('post', `query/${encodeURIComponent(queryId)}/cancel`),
   };
 
+  const reports = {
+    list: (params = {}) => request('get', 'reports', undefined, { params }),
+    get: (uuid) => request('get', `reports/${uuid}`).then((r) => r.data),
+    create: (report) => request('post', 'reports', report).then((r) => r.data),
+    update: (uuid, patch) => request('patch', `reports/${uuid}`, patch).then((r) => r.data),
+    duplicate: (uuid) => request('post', `reports/${uuid}/duplicate`).then((r) => r.data),
+    remove: (uuid) => request('delete', `reports/${uuid}`),
+    share: (uuid, shares, visibility) => request('put', `reports/${uuid}/shares`, { shares, ...(visibility ? { visibility } : {}) }).then((r) => r.data),
+  };
+
   return {
     basePath: base,
     query,
+    reports,
     /** Version, the current user's abilities, registered sources and limits. */
     meta: () => request('get', 'meta'),
     model,
