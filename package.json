@@ -1,0 +1,33 @@
+{
+  "name": "@abdalla/report-generator-vue",
+  "version": "0.1.0-dev",
+  "description": "Vue 3 UI for abdalla/laravel-report-generator: model studio, report builder and viewer.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "private": true,
+  "files": ["dist", "src"],
+  "main": "./dist/report-generator.js",
+  "module": "./dist/report-generator.js",
+  "exports": {
+    ".": {
+      "import": "./dist/report-generator.js"
+    },
+    "./source": "./src/index.js"
+  },
+  "sideEffects": ["*.css"],
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "5.2.4",
+    "@vue/test-utils": "2.4.6",
+    "jsdom": "^25.0.1",
+    "vite": "^5.4.21",
+    "vitest": "^3.2.7",
+    "vue": "3.5.43"
+  }
+}
