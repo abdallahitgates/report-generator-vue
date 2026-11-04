@@ -5,16 +5,22 @@
   "type": "module",
   "license": "UNLICENSED",
   "private": true,
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "main": "./dist/report-generator.js",
   "module": "./dist/report-generator.js",
   "exports": {
     ".": {
       "import": "./dist/report-generator.js"
     },
+    "./style.css": "./dist/style.css",
     "./source": "./src/index.js"
   },
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "*.css"
+  ],
   "scripts": {
     "build": "vite build",
     "test": "vitest run"

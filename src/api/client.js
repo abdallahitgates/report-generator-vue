@@ -5,12 +5,20 @@
  * error handling stay exactly as the host already configures them.
  */
 export class ReportGeneratorApiError extends Error {
-  constructor(message, { status = null, cause = null } = {}) {
+  constructor(message, { status = null, errors = {}, cause = null } = {}) {
     super(message);
     this.name = 'ReportGeneratorApiError';
     this.status = status;
+    /** Laravel validation errors: { field: [messages] } */
+    this.errors = errors;
     this.cause = cause;
   }
+}
+
+function errorMessage(error) {
+  const data = error?.response?.data;
+  const firstValidation = data?.errors && Object.values(data.errors).flat()[0];
+  return firstValidation || data?.message || error?.message || 'Request failed';
 }
 
 export function createApiClient({ http, basePath = '/api/report-generator' } = {}) {
@@ -28,16 +36,35 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
         : await http[method](url(path), payload, config);
       return response.data;
     } catch (error) {
-      const status = error?.response?.status ?? null;
-      const message = error?.response?.data?.message || error?.message || 'Request failed';
-      throw new ReportGeneratorApiError(message, { status, cause: error });
+      throw new ReportGeneratorApiError(errorMessage(error), {
+        status: error?.response?.status ?? null,
+        errors: error?.response?.data?.errors ?? {},
+        cause: error,
+      });
     }
   }
+
+  const model = {
+    status: () => request('get', 'model/status'),
+    scan: () => request('post', 'model/scan'),
+    datasets: () => request('get', 'model/datasets').then((r) => r.data),
+    dataset: (id) => request('get', `model/datasets/${id}`).then((r) => r.data),
+    updateDataset: (id, patch) => request('patch', `model/datasets/${id}`, patch).then((r) => r.data),
+    updateField: (id, patch) => request('patch', `model/fields/${id}`, patch).then((r) => r.data),
+    relationships: (status) => request('get', 'model/relationships', undefined, status ? { params: { status } } : undefined).then((r) => r.data),
+    createRelationship: (data) => request('post', 'model/relationships', data).then((r) => r.data),
+    updateRelationship: (id, patch) => request('patch', `model/relationships/${id}`, patch).then((r) => r.data),
+    bulkRelationships: (ids, status) => request('post', 'model/relationships/bulk', { ids, status }),
+    deleteRelationship: (id) => request('delete', `model/relationships/${id}`),
+    versions: () => request('get', 'model/versions').then((r) => r.data),
+    publish: (notes) => request('post', 'model/publish', { notes }),
+  };
 
   return {
     basePath: base,
     /** Version, the current user's abilities, registered sources and limits. */
     meta: () => request('get', 'meta'),
+    model,
     request,
   };
 }
