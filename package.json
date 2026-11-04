@@ -23,7 +23,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepare": "vite build"
   },
   "peerDependencies": {
     "vue": "^3.4.0"
