@@ -5,12 +5,16 @@
  * error handling stay exactly as the host already configures them.
  */
 export class ReportGeneratorApiError extends Error {
-  constructor(message, { status = null, errors = {}, cause = null } = {}) {
+  constructor(message, { status = null, errors = {}, code = null, path = null, details = null, cause = null } = {}) {
     super(message);
     this.name = 'ReportGeneratorApiError';
     this.status = status;
     /** Laravel validation errors: { field: [messages] } */
     this.errors = errors;
+    /** Report engine errors: stable code (AMBIGUOUS_PATH, FAN_TRAP, ...), where in the definition, and extra data. */
+    this.code = code;
+    this.path = path;
+    this.details = details;
     this.cause = cause;
   }
 }
@@ -39,6 +43,9 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
       throw new ReportGeneratorApiError(errorMessage(error), {
         status: error?.response?.status ?? null,
         errors: error?.response?.data?.errors ?? {},
+        code: error?.response?.data?.code ?? null,
+        path: error?.response?.data?.path ?? null,
+        details: error?.response?.data?.details ?? null,
         cause: error,
       });
     }
@@ -60,8 +67,27 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     publish: (notes) => request('post', 'model/publish', { notes }),
   };
 
+  const query = {
+    /** Without a root: datasets to start from. With a root: everything reachable from it. */
+    catalog: (root) => request('get', 'catalog', undefined, root ? { params: { root } } : undefined),
+    validate: (definition, parameters = {}) => request('post', 'query/validate', { definition, parameters }),
+    /**
+     * One page of results. groups = { columns: [aliases], keys: [opened group values] }
+     * for AG Grid's server-side row model; queryId lets cancel() stop it.
+     */
+    rows: (definition, { parameters = {}, offset = 0, size, groups, queryId, signal } = {}) => request(
+      'post',
+      'query/rows',
+      { definition, parameters, page: { offset, ...(size ? { size } : {}) }, ...(groups ? { groups } : {}), ...(queryId ? { query_id: queryId } : {}) },
+      signal ? { signal } : undefined,
+    ),
+    values: (field, search = '', limit = 50) => request('post', 'query/values', { field, search, limit }).then((r) => r.data),
+    cancel: (queryId) => request('post', `query/${encodeURIComponent(queryId)}/cancel`),
+  };
+
   return {
     basePath: base,
+    query,
     /** Version, the current user's abilities, registered sources and limits. */
     meta: () => request('get', 'meta'),
     model,

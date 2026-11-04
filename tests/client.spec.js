@@ -69,3 +69,32 @@ describe('plugin', () => {
     expect(() => mount(Probe)).toThrow(/app.use\(createReportGenerator/);
   });
 });
+
+describe('query API', () => {
+  it('posts a page request with drill-down state and a query id', async () => {
+    const http = fakeHttp({ post: vi.fn(async () => ({ data: { rows: [] } })) });
+    const api = createApiClient({ http });
+    const definition = { root: 'visits', fields: [] };
+
+    await api.query.rows(definition, { offset: 200, size: 100, groups: { columns: ['line'], keys: [] }, queryId: 'q1' });
+
+    expect(http.post).toHaveBeenCalledWith('/api/report-generator/query/rows', {
+      definition,
+      parameters: {},
+      page: { offset: 200, size: 100 },
+      groups: { columns: ['line'], keys: [] },
+      query_id: 'q1',
+    }, undefined);
+  });
+
+  it('exposes engine error codes, paths and details', async () => {
+    const http = fakeHttp({
+      post: vi.fn(async () => {
+        throw { response: { status: 422, data: { message: 'Lines can be reached in more than one way.', code: 'AMBIGUOUS_PATH', path: 'fields.0.ref', details: { options: [1, 2] } } } };
+      }),
+    });
+
+    const error = await createApiClient({ http }).query.validate({}).catch((e) => e);
+    expect(error).toMatchObject({ status: 422, code: 'AMBIGUOUS_PATH', path: 'fields.0.ref', details: { options: [1, 2] } });
+  });
+});
