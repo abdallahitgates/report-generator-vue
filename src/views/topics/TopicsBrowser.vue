@@ -77,6 +77,13 @@ function chooseGroup(name) {
 
 watch(() => state.topic, (key) => key && emit('select', key));
 
+function conditionsOf(topic) {
+  return Object.entries(topic.conditions ?? {}).map(([column, value]) => ({
+    column,
+    text: value === null ? 'is empty' : Array.isArray(value) ? `in ${value.join(', ')}` : `= ${value}`,
+  }));
+}
+
 function filterColumn(topic, key) {
   return topic.columns?.[key] ?? null;
 }
@@ -172,6 +179,14 @@ onMounted(load);
                   <span class="rg-faint rg-mono">{{ current.class }}</span>
                 </div>
                 <p v-if="current.description" class="rg-muted rg-topic__desc">{{ current.description }}</p>
+                <p v-if="conditionsOf(current).length" class="rg-topic__conditions">
+                  <RgIcon name="filter" small />
+                  Only rows where
+                  <template v-for="(c, i) in conditionsOf(current)" :key="c.column">
+                    <span v-if="i" class="rg-faint">and</span>
+                    <code class="rg-mono">{{ c.column }} {{ c.text }}</code>
+                  </template>
+                </p>
               </div>
               <div class="rg-topic__badges">
                 <span v-if="current.permission" class="rg-badge rg-badge--warning"><RgIcon name="lock" small />{{ current.permission }}</span>

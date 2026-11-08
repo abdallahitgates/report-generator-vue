@@ -498,6 +498,8 @@
 
 .rg-topic__title { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -0.01em; }
 .rg-topic__desc { margin: 4px 0 0; max-width: 720px; }
+.rg-topic__conditions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 6px 0 0; color: var(--rg-muted); font-size: 12px; }
+.rg-topic__conditions code { padding: 1px 6px; border-radius: 4px; background: var(--rg-warning-soft); color: var(--rg-warning); }
 .rg-topic__badges { display: flex; flex-wrap: wrap; gap: 6px; }
 .rg-topic__filters { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; margin: 0; padding: 12px 14px; list-style: none; }
 .rg-topic__filters li {

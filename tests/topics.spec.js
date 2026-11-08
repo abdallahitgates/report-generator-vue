@@ -27,7 +27,7 @@ const topics = () => ({
       name: 'Users',
       topics: [{
         key: 'users', label: 'Users', group: 'Users', description: null, table: 'users', class: 'App\\Reporting\\Topics\\UsersTopic',
-        permission: 'reports.users', public: false, fields_count: 1,
+        permission: 'reports.users', public: false, fields_count: 1, conditions: { status: ['active', 'new'], deleted: null },
         filters: { period: false, line: false, division: false, employee: true },
         columns: { period: null, line: null, division: null, employee: 'id' },
         fields: [field('__rows', 'Number of users', { type: 'integer', role: 'measure', aggregations: ['count'] }), field('name', 'Name')],
@@ -77,6 +77,8 @@ describe('Topics browser', () => {
     expect(wrapper.find('.rg-topic__title').text()).toBe('Users');
     expect(wrapper.findAll('[role="tab"]')[1].attributes('aria-selected')).toBe('true');
     expect(wrapper.text()).toContain('reports.users');
+    expect(wrapper.find('.rg-topic__conditions').text()).toContain('status in active, new');
+    expect(wrapper.find('.rg-topic__conditions').text()).toContain('deleted is empty');
     expect(wrapper.emitted('select').map((e) => e[0])).toEqual(['actual_visits', 'users']);
   });
 
