@@ -7,9 +7,13 @@ import RgIcon from '../../components/ui/RgIcon.vue';
 import RgToaster from '../../components/ui/RgToaster.vue';
 import RgDialog from '../../components/ui/RgDialog.vue';
 
-/** Saved reports: mine, shared with me, everything I can open. Emits open(uuid) and create(). */
+/**
+ * Saved reports (mine, shared with me, everything I can open) and
+ * dashboards. Emits open(uuid), create(), dashboard(reportUuid) to start a
+ * dashboard from a report, and open-dashboard(uuid).
+ */
 const props = defineProps({ theme: { type: String, default: 'light' } });
-const emit = defineEmits(['open', 'create']);
+const emit = defineEmits(['open', 'create', 'dashboard', 'open-dashboard']);
 const { api } = useReportGenerator();
 const toasts = createToasts();
 
@@ -21,11 +25,27 @@ const folders = ref([]);
 const loading = ref(true);
 const confirmDelete = ref(null);
 
-const SCOPES = [['all', 'All'], ['mine', 'Mine'], ['shared', 'Shared with me']];
+const SCOPES = [['all', 'All'], ['mine', 'Mine'], ['shared', 'Shared with me'], ['dashboards', 'Dashboards']];
+const dashboards = ref([]);
+const isDashboards = computed(() => scope.value === 'dashboards');
+const shownDashboards = computed(() => {
+  const term = search.value.trim().toLowerCase();
+  return dashboards.value.filter((d) => !term || d.name.toLowerCase().includes(term));
+});
 
 let timer = null;
 async function load() {
   loading.value = true;
+  if (scope.value === 'dashboards') {
+    try {
+      dashboards.value = await api.dashboards.list();
+    } catch (error) {
+      toasts.error(error);
+    } finally {
+      loading.value = false;
+    }
+    return;
+  }
   try {
     const result = await api.reports.list({ scope: scope.value, search: search.value || undefined, folder: folder.value || undefined });
     reports.value = result.data;
@@ -56,6 +76,16 @@ async function duplicate(report) {
 
 async function remove(report) {
   confirmDelete.value = null;
+  if (report.widgets_count !== undefined) {
+    try {
+      await api.dashboards.remove(report.uuid);
+      dashboards.value = dashboards.value.filter((d) => d.uuid !== report.uuid);
+      toasts.success(`Deleted "${report.name}".`);
+    } catch (error) {
+      toasts.error(error);
+    }
+    return;
+  }
   try {
     await api.reports.remove(report.uuid);
     reports.value = reports.value.filter((r) => r.uuid !== report.uuid);
@@ -65,7 +95,7 @@ async function remove(report) {
   }
 }
 
-const empty = computed(() => !loading.value && !reports.value.length);
+const empty = computed(() => !loading.value && (isDashboards.value ? !shownDashboards.value.length : !reports.value.length));
 </script>
 
 <template>
@@ -97,7 +127,7 @@ const empty = computed(() => !loading.value && !reports.value.length);
         <RgIcon name="search" />
         <input id="rg-library-search" v-model="search" class="rg-input" type="search" placeholder="Search reports" autocomplete="off" />
       </label>
-      <div v-if="folders.length" class="rg-tabs" aria-label="Folders">
+      <div v-if="folders.length && !isDashboards" class="rg-tabs" aria-label="Folders">
         <button type="button" class="rg-tab" :aria-selected="!folder ? 'true' : 'false'" @click="folder = null">All folders</button>
         <button v-for="f in folders" :key="f" type="button" class="rg-tab" :aria-selected="folder === f ? 'true' : 'false'" @click="folder = f">
           <RgIcon name="folder" small /> {{ f }}
@@ -107,6 +137,33 @@ const empty = computed(() => !loading.value && !reports.value.length);
 
     <div class="rg-library__list">
       <div v-if="loading" class="rg-skeleton-list"><div v-for="n in 5" :key="n" class="rg-skeleton" style="height: 44px" /></div>
+
+      <div v-else-if="empty && isDashboards" class="rg-empty">
+        <div class="rg-empty__icon"><RgIcon name="view" /></div>
+        <h2>{{ search ? 'No dashboard matches' : 'No dashboards yet' }}</h2>
+        <p>Open the Reports tab and press <b>Dashboard</b> on a report: its numbers become headline tiles and charts you can arrange.</p>
+      </div>
+
+      <template v-else-if="isDashboards">
+        <article v-for="d in shownDashboards" :key="d.uuid" class="rg-report-row">
+          <div class="rg-report-row__title">
+            <button type="button" @click="emit('open-dashboard', d.uuid)"><RgIcon name="view" small /> {{ d.name }}</button>
+            <div class="rg-report-row__meta">
+              <span>{{ d.widgets_count }} widgets</span>
+              <span>Updated {{ timeAgo(d.updated_at) }}</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center">
+            <span v-if="d.published" class="rg-badge rg-badge--success"><RgIcon name="globe" small /> Published</span>
+            <span v-else-if="d.visibility === 'public'" class="rg-badge rg-badge--info"><RgIcon name="globe" small /> Everyone</span>
+          </div>
+          <div class="rg-report-row__actions">
+            <button v-if="d.is_owner" type="button" class="rg-btn rg-btn--sm rg-btn--ghost rg-btn--danger" :aria-label="`Delete ${d.name}`" @click="confirmDelete = d">
+              <RgIcon name="trash" small />
+            </button>
+          </div>
+        </article>
+      </template>
 
       <div v-else-if="empty" class="rg-empty">
         <div class="rg-empty__icon"><RgIcon name="table" /></div>
@@ -132,6 +189,7 @@ const empty = computed(() => !loading.value && !reports.value.length);
           <span v-if="!report.is_owner" class="rg-badge">{{ report.can_edit ? 'Can edit' : 'View only' }}</span>
         </div>
         <div class="rg-report-row__actions">
+          <button type="button" class="rg-btn rg-btn--sm rg-btn--ghost" title="Make a dashboard from this report" @click="emit('dashboard', report.uuid)"><RgIcon name="view" small /> Dashboard</button>
           <button type="button" class="rg-btn rg-btn--sm rg-btn--ghost" @click="duplicate(report)"><RgIcon name="copy" small /> Duplicate</button>
           <button v-if="report.is_owner" type="button" class="rg-btn rg-btn--sm rg-btn--ghost rg-btn--danger" :aria-label="`Delete ${report.name}`" @click="confirmDelete = report">
             <RgIcon name="trash" small />

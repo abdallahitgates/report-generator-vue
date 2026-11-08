@@ -8,3 +8,5 @@ export { default as ReportLibrary } from './views/library/ReportLibrary.vue';
 export { default as ReportViewer } from './views/viewer/ReportViewer.vue';
 export { default as PublishDialog } from './views/builder/PublishDialog.vue';
 export { default as CombinedBuilder } from './views/combined/CombinedBuilder.vue';
+export { default as DashboardView } from './views/dashboards/DashboardView.vue';
+export { default as DashboardEditor } from './views/dashboards/DashboardEditor.vue';

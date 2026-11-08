@@ -16,8 +16,10 @@ import ResultGrid from '../builder/ResultGrid.vue';
 const props = defineProps({
   reportId: { type: String, required: true },
   theme: { type: String, default: 'light' },
+  /** Offer "Dashboard" (for people who can build dashboards). */
+  dashboards: { type: Boolean, default: false },
 });
-const emit = defineEmits(['edit', 'loaded']);
+const emit = defineEmits(['edit', 'loaded', 'dashboard']);
 
 const PAGE_SIZE = 200;
 const PERIODS = [
@@ -188,6 +190,7 @@ const ERROR_TITLES = {
         </div>
         <div class="rg-topbar__actions">
           <button v-if="report?.can_edit" type="button" class="rg-btn" @click="emit('edit', report.uuid)"><RgIcon name="fx" small /> Edit</button>
+          <button v-if="report && dashboards" type="button" class="rg-btn" title="Make a dashboard from this report" @click="emit('dashboard', report.uuid)"><RgIcon name="view" small /> Dashboard</button>
           <button type="button" class="rg-btn rg-btn--primary" :disabled="!report || state.running" @click="run"><RgIcon name="play" small /> Refresh</button>
         </div>
       </header>

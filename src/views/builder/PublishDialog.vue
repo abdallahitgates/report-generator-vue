@@ -12,9 +12,12 @@ import RgIcon from '../../components/ui/RgIcon.vue';
 const props = defineProps({
   uuid: { type: String, required: true },
   name: { type: String, default: '' },
+  /** report | dashboard */
+  kind: { type: String, default: 'report' },
 });
 const emit = defineEmits(['close', 'published', 'unpublished']);
 const { api } = useReportGenerator();
+const target = computed(() => (props.kind === 'dashboard' ? api.dashboards : api.reports));
 const theme = inject('rg-theme', 'light');
 
 const state = reactive({ loading: true, saving: false, error: null, errors: {}, published: false });
@@ -29,7 +32,7 @@ const shownRoles = computed(() => {
 
 onMounted(async () => {
   try {
-    const [settings, list] = await Promise.all([api.reports.publishing(props.uuid), api.roles()]);
+    const [settings, list] = await Promise.all([target.value.publishing(props.uuid), api.roles()]);
     roles.value = list;
     state.published = settings.published;
     Object.assign(form, {
@@ -54,7 +57,7 @@ async function submit() {
   state.errors = {};
   state.error = null;
   try {
-    const settings = await api.reports.publish(props.uuid, {
+    const settings = await target.value.publish(props.uuid, {
       permission: form.permission.trim(), roles: form.roles, inMenu: form.inMenu, menuGroup: form.menuGroup.trim() || null,
     });
     emit('published', settings);
@@ -70,7 +73,7 @@ async function submit() {
 async function unpublish() {
   state.saving = true;
   try {
-    const settings = await api.reports.unpublish(props.uuid);
+    const settings = await target.value.unpublish(props.uuid);
     emit('unpublished', settings);
     emit('close');
   } catch (error) {
@@ -89,7 +92,7 @@ const roleError = computed(() => Object.entries(state.errors).find(([k]) => k.st
     <div v-if="state.loading" class="rg-skeleton-list"><div v-for="n in 4" :key="n" class="rg-skeleton" /></div>
     <form v-else id="rg-publish-form" class="rg-publish" @submit.prevent="submit">
       <p class="rg-muted rg-publish__intro">
-        Everyone with the permission below can open and run this report, each seeing only their own data.
+        Everyone with the permission below can open {{ kind === 'dashboard' ? 'this dashboard' : 'and run this report' }}, each seeing only their own data.
         Building reports is not needed.
       </p>
 

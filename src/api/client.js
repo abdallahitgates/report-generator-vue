@@ -154,9 +154,30 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     }).then((r) => r.data),
   };
 
+  /** Dashboards: widgets over saved reports. */
+  const dashboards = {
+    list: () => request('get', 'dashboards').then((r) => r.data),
+    get: (uuid) => request('get', `dashboards/${uuid}`).then((r) => r.data),
+    create: (dashboard) => request('post', 'dashboards', dashboard).then((r) => r.data),
+    update: (uuid, patch) => request('patch', `dashboards/${uuid}`, patch).then((r) => r.data),
+    remove: (uuid) => request('delete', `dashboards/${uuid}`),
+    /** A first layout for a report: { name, context, widgets }. */
+    generate: (report) => request('post', 'dashboards-generate', { report }).then((r) => r.data),
+    /** One saved widget's data with the viewer's report filters. */
+    widget: (uuid, id, { context } = {}) => request('post', `dashboards/${uuid}/widgets/${encodeURIComponent(id)}`, context ? { context } : {}),
+    /** A widget being edited. */
+    preview: (widget, { context } = {}) => request('post', 'dashboards-preview', { widget, ...(context ? { context } : {}) }),
+    publishing: (uuid) => request('get', `dashboards/${uuid}/publish`).then((r) => r.data),
+    publish: (uuid, { permission, roles = [], inMenu = false, menuGroup = null }) => request('put', `dashboards/${uuid}/publish`, {
+      permission, roles, in_menu: inMenu, menu_group: menuGroup,
+    }).then((r) => r.data),
+    unpublish: (uuid) => request('delete', `dashboards/${uuid}/publish`).then((r) => r.data),
+  };
+
   return {
     basePath: base,
     combine,
+    dashboards,
     query,
     reports,
     /** Version, the current user's abilities, registered sources and limits. */
