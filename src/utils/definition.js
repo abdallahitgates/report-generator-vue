@@ -226,6 +226,8 @@ export function fromDefinition(definition, datasets, report = {}) {
     folder: report.folder ?? '',
     visibility: report.visibility ?? 'private',
     canEdit: report.can_edit ?? true,
+    canPublish: report.can_publish ?? false,
+    published: report.published ?? false,
   });
 
   const byKey = Object.fromEntries(datasets.map((d) => [d.key, d]));

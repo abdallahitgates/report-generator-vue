@@ -58,6 +58,20 @@ decides the URLs.
 <ReportBuilder :report-id="route.params.uuid ?? null" @saved="report => router.replace(`/reports/${report.uuid}`)" />
 ```
 
+Published reports open in `ReportViewer` for the people they are published
+to: the report's name, a period picker and its parameters, and the same
+results grid (sorting, groups, paging), without the builder. In the builder,
+users with the publish ability get a **Publish** button: a permission named
+after the report, the roles that get it, and a sidebar entry.
+
+```vue
+<!-- /reports/view/:uuid -->
+<ReportViewer :report-id="route.params.uuid" @edit="uuid => router.push(`/reports/${uuid}`)" />
+```
+
+`api.menu()` returns the published reports the current user may open
+(`[{ uuid, name, description, group }]`) for the host's sidebar.
+
 The builder: pick the topic a report is about (topics are grouped in tabs), then drag fields onto Rows
 (group by), Values (totals, formulas) and Filters, or use the buttons next
 to each field. It asks which join path to use when a topic is reachable

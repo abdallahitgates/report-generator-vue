@@ -469,6 +469,7 @@ export function createReportBuilder(api, toasts) {
       Object.assign(d, {
         uuid: saved.uuid, name: saved.name, description: saved.description ?? '', folder: saved.folder ?? '',
         visibility: saved.visibility, canEdit: saved.can_edit,
+        canPublish: saved.can_publish ?? false, published: saved.published ?? false,
       });
       state.savedSnapshot = snapshot();
       toasts.success(`Saved "${saved.name}".`);

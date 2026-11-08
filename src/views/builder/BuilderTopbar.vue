@@ -3,7 +3,7 @@ import { computed, inject } from 'vue';
 import { REPORT_BUILDER_KEY } from '../../composables/useReportBuilder.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
 
-const emit = defineEmits(['save', 'save-copy', 'close']);
+const emit = defineEmits(['save', 'save-copy', 'close', 'publish']);
 const builder = inject(REPORT_BUILDER_KEY);
 const draft = computed(() => builder.state.draft);
 const rootLabel = computed(() => builder.datasetsByKey.value[draft.value.root]?.label ?? draft.value.root);
@@ -21,6 +21,7 @@ const rootLabel = computed(() => builder.datasetsByKey.value[draft.value.root]?.
         </span>
         <span v-if="builder.dirty.value"><i class="rg-dot" aria-hidden="true" /> Unsaved changes</span>
         <span v-if="draft.uuid && !draft.canEdit" class="rg-badge">View only: save a copy to keep changes</span>
+        <span v-if="draft.published" class="rg-badge rg-badge--success"><RgIcon name="globe" small /> Published</span>
       </div>
     </div>
 
@@ -39,6 +40,9 @@ const rootLabel = computed(() => builder.datasetsByKey.value[draft.value.root]?.
         <RgIcon name="play" small /> Run
       </button>
       <span class="rg-toolbar-sep" />
+      <button v-if="draft.uuid && draft.canPublish" type="button" class="rg-btn" title="Give roles a permission to open this report" @click="emit('publish')">
+        <RgIcon name="globe" small /> {{ draft.published ? 'Publishing' : 'Publish' }}
+      </button>
       <button v-if="draft.uuid" type="button" class="rg-btn" :disabled="!draft.root" @click="emit('save-copy')">
         <RgIcon name="copy" small /> Save a copy
       </button>

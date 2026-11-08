@@ -77,6 +77,30 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     duplicate: (uuid) => request('post', `reports/${uuid}/duplicate`).then((r) => r.data),
     remove: (uuid) => request('delete', `reports/${uuid}`),
     share: (uuid, shares, visibility) => request('put', `reports/${uuid}/shares`, { shares, ...(visibility ? { visibility } : {}) }).then((r) => r.data),
+
+    /** Publishing: settings (with a suggested permission), publish, unpublish. Needs the publish ability. */
+    publishing: (uuid) => request('get', `reports/${uuid}/publish`).then((r) => r.data),
+    publish: (uuid, { permission, roles = [], inMenu = false, menuGroup = null }) => request('put', `reports/${uuid}/publish`, {
+      permission, roles, in_menu: inMenu, menu_group: menuGroup,
+    }).then((r) => r.data),
+    unpublish: (uuid) => request('delete', `reports/${uuid}/publish`).then((r) => r.data),
+
+    /** Opening a saved report as it was saved (anyone who may open it). */
+    view: (uuid) => request('get', `reports/${uuid}/view`).then((r) => r.data),
+    run: (uuid, { parameters = {}, context, sort, offset = 0, size, groups, queryId, signal } = {}) => request(
+      'post',
+      `reports/${uuid}/rows`,
+      {
+        parameters,
+        ...(context ? { context } : {}),
+        ...(sort ? { sort } : {}),
+        page: { offset, ...(size ? { size } : {}) },
+        ...(groups ? { groups } : {}),
+        ...(queryId ? { query_id: queryId } : {}),
+      },
+      signal ? { signal } : undefined,
+    ),
+    values: (uuid, field, search = '', limit = 50) => request('post', `reports/${uuid}/values`, { field, search, limit }).then((r) => r.data),
   };
 
   return {
@@ -85,6 +109,10 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     reports,
     /** Version, the current user's abilities, registered sources and limits. */
     meta: () => request('get', 'meta'),
+    /** Published reports in the menu the current user may open: [{ uuid, name, description, group }]. */
+    menu: () => request('get', 'menu').then((r) => r.data),
+    /** Roles a report can be published to: [{ id, name }]. */
+    roles: () => request('get', 'permissions/roles').then((r) => r.data),
     /** Every topic by tab, with filter columns, fields and relations (admins). */
     topics: () => request('get', 'topics'),
     request,

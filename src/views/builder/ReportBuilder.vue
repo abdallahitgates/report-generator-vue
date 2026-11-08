@@ -13,6 +13,7 @@ import FilterGroupView from './FilterGroupView.vue';
 import ResultsPanel from './ResultsPanel.vue';
 import FormulaDialog from './FormulaDialog.vue';
 import SaveDialog from './SaveDialog.vue';
+import PublishDialog from './PublishDialog.vue';
 import PathDialog from './PathDialog.vue';
 
 const props = defineProps({
@@ -30,6 +31,7 @@ provide('rg-theme', props.theme);
 
 const formula = ref(null); // { item } while the formula dialog is open
 const saving = ref(null); // { copy } while the save dialog is open
+const publishing = ref(false);
 const folders = ref([]);
 const filtersDrop = ref(false);
 
@@ -79,7 +81,7 @@ function onSaved(report) {
 
 <template>
   <div class="rg-root rg-builder" :data-rg-theme="theme">
-    <BuilderTopbar @save="saving = { copy: false }" @save-copy="saving = { copy: true }" />
+    <BuilderTopbar @save="saving = { copy: false }" @save-copy="saving = { copy: true }" @publish="publishing = true" />
 
     <div v-if="builder.state.loading" class="rg-builder__body">
       <aside class="rg-explorer"><div class="rg-skeleton-list"><div v-for="n in 10" :key="n" class="rg-skeleton" /></div></aside>
@@ -139,6 +141,14 @@ function onSaved(report) {
     </div>
 
     <FormulaDialog v-if="formula" :item="formula.item" @close="formula = null" />
+    <PublishDialog
+      v-if="publishing"
+      :uuid="builder.state.draft.uuid"
+      :name="builder.state.draft.name"
+      @close="publishing = false"
+      @published="builder.state.draft.published = true"
+      @unpublished="builder.state.draft.published = false"
+    />
     <SaveDialog v-if="saving" :copy="saving.copy" :folders="folders" @close="saving = null" @saved="onSaved" />
     <PathDialog />
     <RgToaster :toasts="toasts" :data-rg-theme="theme" />
