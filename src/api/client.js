@@ -51,6 +51,39 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     }
   }
 
+  /**
+   * POSTs and saves the streamed file the server sends back (exports).
+   * Returns the file name. Errors arrive as a Blob and are read as JSON.
+   */
+  async function download(path, payload, fallbackName = 'report') {
+    let response;
+    try {
+      response = await http.post(url(path), payload, { responseType: 'blob' });
+    } catch (error) {
+      let data = error?.response?.data;
+      if (data && typeof data.text === 'function') {
+        try { data = JSON.parse(await data.text()); } catch { data = null; }
+      }
+      throw new ReportGeneratorApiError(data?.message || error?.message || 'Export failed', {
+        status: error?.response?.status ?? null, code: data?.code ?? null, errors: data?.errors ?? {}, cause: error,
+      });
+    }
+    const disposition = response.headers?.['content-disposition'] ?? '';
+    const match = /filename\*=UTF-8''([^;]+)/i.exec(disposition) ?? /filename="?([^";]+)"?/i.exec(disposition);
+    const name = match ? decodeURIComponent(match[1]) : fallbackName;
+    if (typeof window !== 'undefined' && window.URL?.createObjectURL) {
+      const href = window.URL.createObjectURL(response.data);
+      const link = document.createElement('a');
+      link.href = href;
+      link.download = name;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => window.URL.revokeObjectURL(href), 1000);
+    }
+    return name;
+  }
+
   const query = {
     /** Without a root: topics to start from, by tab. With a root: its relation tree and a flat list for the builder. */
     catalog: (root) => request('get', 'catalog', undefined, root ? { params: { root } } : undefined),
@@ -66,6 +99,10 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
       signal ? { signal } : undefined,
     ),
     values: (field, search = '', limit = 50) => request('post', 'query/values', { field, search, limit }).then((r) => r.data),
+    /** Row count and grand totals of the whole report: { rows, totals, duration_ms, cached }. */
+    summary: (definition, parameters = {}) => request('post', 'query/summary', { definition, parameters }),
+    /** Streams the whole report as a file (format: csv | xlsx) and saves it. */
+    export: (definition, format, { parameters = {}, name } = {}) => download('query/export', { definition, parameters, format, name }, name),
     cancel: (queryId) => request('post', `query/${encodeURIComponent(queryId)}/cancel`),
   };
 
@@ -101,6 +138,12 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
       signal ? { signal } : undefined,
     ),
     values: (uuid, field, search = '', limit = 50) => request('post', `reports/${uuid}/values`, { field, search, limit }).then((r) => r.data),
+    summary: (uuid, { parameters = {}, context, sort } = {}) => request('post', `reports/${uuid}/summary`, {
+      parameters, ...(context ? { context } : {}), ...(sort ? { sort } : {}),
+    }),
+    export: (uuid, format, { parameters = {}, context, sort } = {}) => download(`reports/${uuid}/export`, {
+      format, parameters, ...(context ? { context } : {}), ...(sort ? { sort } : {}),
+    }),
   };
 
   return {
@@ -111,6 +154,10 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     meta: () => request('get', 'meta'),
     /** Published reports in the menu the current user may open: [{ uuid, name, description, group }]. */
     menu: () => request('get', 'menu').then((r) => r.data),
+    /** Choices for a report filter (kind: lines | divisions | employees): [{ id, label }]. */
+    contextOptions: (kind, { search = '', lines = [], period } = {}) => request('get', `context/${kind}`, undefined, {
+      params: { ...(search ? { search } : {}), ...(lines.length ? { lines } : {}), ...(period ? { period } : {}) },
+    }).then((r) => r.data),
     /** Roles a report can be published to: [{ id, name }]. */
     roles: () => request('get', 'permissions/roles').then((r) => r.data),
     /** Every topic by tab, with filter columns, fields and relations (admins). */

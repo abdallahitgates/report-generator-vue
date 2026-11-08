@@ -4,12 +4,14 @@ import { useReportGenerator } from '../../context.js';
 import { REPORT_BUILDER_KEY } from '../../composables/useReportBuilder.js';
 import { formatCount } from '../../utils/format.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
+import RgMultiSelect from '../../components/ui/RgMultiSelect.vue';
 import ResultGrid from '../builder/ResultGrid.vue';
 
 /**
  * Opens a saved report for reading: the people a report is published to
- * use this, without the builder. They pick the period and the report's
- * parameters, sort and open groups; every row follows their own access.
+ * use this, without the builder. They pick the period, lines, divisions,
+ * employees and the report's parameters, sort, page, select and total
+ * cells and export; every row follows their own access.
  */
 const props = defineProps({
   reportId: { type: String, required: true },
@@ -29,7 +31,9 @@ provide('rg-theme', props.theme);
 
 const report = ref(null);
 const loadError = ref(null);
-const filters = reactive({ period: '', from: '', to: '', parameters: {} });
+const filters = reactive({ period: '', from: '', to: '', lines: [], divisions: [], employees: [], parameters: {} });
+/** Which structure pickers the server offers (it returns nothing for an unconfigured one). */
+const pickers = reactive({ lines: false, divisions: false, employees: false });
 
 const state = reactive({
   draft: { rows: [], values: [], sort: [] },
@@ -48,27 +52,42 @@ function periodValue() {
   return filters.period || null;
 }
 
-async function fetchRows({ keys = [], offset = 0, top = false } = {}) {
+/** The report filters the viewer picked, as the run endpoints take them. */
+function context() {
+  const out = {};
+  const period = periodValue();
+  if (period) out.period = period;
+  for (const kind of ['lines', 'divisions', 'employees']) {
+    if (filters[kind].length) out[kind] = filters[kind];
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
+const choices = () => ({ parameters: filters.parameters, context: context(), sort: state.draft.sort });
+
+function optionsFor(kind) {
+  return (search) => api.contextOptions(kind, { search, lines: kind === 'lines' ? [] : filters.lines, period: periodValue() ?? undefined });
+}
+
+async function fetchRows({ keys = [], offset = 0, top = false, size = PAGE_SIZE, fresh = false } = {}) {
   const groups = grouped.value ? { columns: state.draft.rows.map((r) => r.as), keys } : undefined;
-  if (top && offset === 0) {
+  const starts = top && (offset === 0 || fresh);
+  if (starts) {
     controller?.abort?.();
     controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
     state.running = true;
     state.error = null;
   }
   try {
-    const period = periodValue();
     const result = await api.reports.run(props.reportId, {
-      parameters: filters.parameters,
-      context: period ? { period } : undefined,
-      sort: state.draft.sort,
+      ...choices(),
       offset,
-      size: PAGE_SIZE,
+      size: size ?? PAGE_SIZE,
       groups,
       signal: controller?.signal,
     });
     if (top) {
-      if (offset === 0) state.meta = { ...result.meta, rows: result.rows.length, has_more: !!result.page?.has_more };
+      if (starts) state.meta = { ...result.meta, rows: result.rows.length, has_more: !!result.page?.has_more };
       // Column labels come from the server.
       const labels = Object.fromEntries((result.columns ?? []).map((c) => [c.alias, c.label]));
       state.draft.rows.forEach((r) => { r.label = labels[r.as] ?? r.label; });
@@ -78,7 +97,7 @@ async function fetchRows({ keys = [], offset = 0, top = false } = {}) {
     if (top) state.error = error;
     throw error;
   } finally {
-    if (top && offset === 0) state.running = false;
+    if (starts) state.running = false;
   }
 }
 
@@ -92,7 +111,16 @@ function toggleSort(alias) {
   run();
 }
 
-provide(REPORT_BUILDER_KEY, { state, grouped, runnable, fetchRows, toggleSort });
+provide(REPORT_BUILDER_KEY, {
+  state,
+  grouped,
+  runnable,
+  fetchRows,
+  toggleSort,
+  fetchSummary: () => api.reports.summary(props.reportId, choices()),
+  exportReport: (format) => api.reports.export(props.reportId, format, choices()),
+  gridKey: computed(() => `view:${props.reportId}`),
+});
 
 async function load() {
   loadError.value = null;
@@ -110,9 +138,17 @@ async function load() {
     else filters.period = typeof saved === 'string' && !saved.startsWith('{{') ? saved : '';
     filters.parameters = Object.fromEntries((data.parameters ?? []).map((p) => [p.key, p.default ?? '']));
 
+    for (const kind of ['lines', 'divisions', 'employees']) {
+      filters[kind] = Array.isArray(data.context?.[kind]) ? [...data.context[kind]] : [];
+    }
+
     report.value = data;
     emit('loaded', data);
     run();
+    // Show only the pickers the server can fill.
+    for (const kind of ['lines', 'divisions', 'employees']) {
+      api.contextOptions(kind, { lines: [] }).then((list) => (pickers[kind] = list.length > 0)).catch(() => (pickers[kind] = false));
+    }
   } catch (error) {
     loadError.value = error;
   }
@@ -172,6 +208,18 @@ const ERROR_TITLES = {
             <input v-model="filters.to" class="rg-input" type="date" aria-label="To" required />
           </div>
         </Transition>
+        <div v-if="pickers.lines" class="rg-viewer__filter">
+          <span><RgIcon name="folder" small /> Lines</span>
+          <RgMultiSelect v-model="filters.lines" label="Lines" all-label="All my lines" :load="optionsFor('lines')" @change="run" />
+        </div>
+        <div v-if="pickers.divisions" class="rg-viewer__filter">
+          <span><RgIcon name="users" small /> Divisions</span>
+          <RgMultiSelect v-model="filters.divisions" label="Divisions" all-label="All my divisions" :load="optionsFor('divisions')" :depends-on="filters.lines" @change="run" />
+        </div>
+        <div v-if="pickers.employees" class="rg-viewer__filter">
+          <span><RgIcon name="users" small /> Employees</span>
+          <RgMultiSelect v-model="filters.employees" label="Employees" all-label="All my employees" :load="optionsFor('employees')" :depends-on="filters.lines" @change="run" />
+        </div>
         <label v-for="parameter in report.parameters" :key="parameter.key" class="rg-viewer__filter" :for="`rg-viewer-p-${parameter.key}`">
           <span>{{ parameter.label ?? parameter.key }}<b v-if="parameter.required" class="rg-viewer__required">*</b></span>
           <select v-if="parameter.type === 'date_range'" :id="`rg-viewer-p-${parameter.key}`" v-model="filters.parameters[parameter.key]" class="rg-input">

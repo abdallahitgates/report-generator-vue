@@ -80,6 +80,16 @@ loads 200 rows at a time as you scroll, opens groups one level at a time,
 and saves to the library. Shortcuts: Ctrl+Enter run, Ctrl+S save, Ctrl+Z /
 Ctrl+Shift+Z undo / redo.
 
+The results grid works like a spreadsheet, on the server, so it stays fast
+on millions of rows: select cells (click and drag, Shift+click,
+Shift+arrows) to see Sum, Average, Min, Max and Count, copy them with
+Ctrl+C straight into Excel; hide, drag to reorder and resize columns,
+freeze the first column, compact or comfortable rows; grand totals and the
+row count of the whole report; infinite scroll or numbered pages (50 to
+1,000 rows); export every row as CSV or Excel (streamed by the server).
+Layout choices are remembered per report in the browser. The viewer adds
+line, division and employee pickers when the server is configured for them.
+
 The results grid is built in, with no AG Grid licence needed; the API uses
 the same request shape as AG Grid's server-side row model, so a host can
 plug AG Grid in instead.

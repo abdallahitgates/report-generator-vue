@@ -381,10 +381,12 @@ export function createReportBuilder(api, toasts) {
    * One page for the grid. The top-level request of a run owns the status
    * (running, error, timing); deeper levels only return their rows.
    */
-  async function fetchRows({ keys = [], offset = 0, top = false } = {}) {
+  async function fetchRows({ keys = [], offset = 0, top = false, size = PAGE_SIZE, fresh = false } = {}) {
     const groups = grouped.value ? { columns: state.draft.rows.map((r) => r.as), keys } : undefined;
+    // A new top-level request (first page, or a page picked in page mode) owns the status.
+    const starts = top && (offset === 0 || fresh);
 
-    if (top && offset === 0) {
+    if (starts) {
       cancelRunning();
       controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
       currentQueryId = newQueryId();
@@ -396,9 +398,9 @@ export function createReportBuilder(api, toasts) {
     try {
       const result = await api.query.rows(definition.value, {
         offset,
-        size: PAGE_SIZE,
+        size: size ?? PAGE_SIZE,
         groups,
-        queryId: top && offset === 0 ? currentQueryId : undefined,
+        queryId: starts ? currentQueryId : undefined,
         signal: controller?.signal,
       });
       if (top) state.meta = { ...result.meta, columns: result.columns };
@@ -413,7 +415,7 @@ export function createReportBuilder(api, toasts) {
       }
       throw error;
     } finally {
-      if (top && offset === 0) {
+      if (starts) {
         state.running = false;
         currentQueryId = null;
       }
@@ -507,6 +509,17 @@ export function createReportBuilder(api, toasts) {
     toggleSort,
     run,
     fetchRows,
+    fetchSummary: () => api.query.summary(definition.value),
+    exportReport: async (format) => {
+      try {
+        const name = await api.query.export(definition.value, format, { name: state.draft.name || 'report' });
+        toasts.success(`Exported "${name}".`);
+      } catch (error) {
+        toasts.error(error);
+        throw error;
+      }
+    },
+    gridKey: computed(() => (state.draft.uuid ? `report:${state.draft.uuid}` : null)),
     cancelRunning,
     applyPath,
     save,
