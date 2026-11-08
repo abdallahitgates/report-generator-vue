@@ -146,8 +146,17 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     }),
   };
 
+  /** Combined reports: existing reports side by side per employee or division. */
+  const combine = {
+    reports: () => request('get', 'combine/reports').then((r) => r.data),
+    fields: (key, { level, period, lines = [] } = {}) => request('get', `combine/reports/${encodeURIComponent(key)}/fields`, undefined, {
+      params: { level, ...(period ? { period } : {}), ...(lines.length ? { lines } : {}) },
+    }).then((r) => r.data),
+  };
+
   return {
     basePath: base,
+    combine,
     query,
     reports,
     /** Version, the current user's abilities, registered sources and limits. */

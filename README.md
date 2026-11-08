@@ -58,6 +58,14 @@ decides the URLs.
 <ReportBuilder :report-id="route.params.uuid ?? null" @saved="report => router.replace(`/reports/${report.uuid}`)" />
 ```
 
+**Combined reports**: the builder's first screen offers "Combine existing
+reports" when the server has combinable reports. Pick one row per employee
+or per division, the period and lines, then tick columns from the existing
+reports on the left (their columns are read from the reports themselves);
+rename and drag columns, add formulas across them, and save and publish like
+any report. Opening a saved combined report in `ReportBuilder` opens this
+builder; `ReportViewer` runs it like any other.
+
 Published reports open in `ReportViewer` for the people they are published
 to: the report's name, a period picker and its parameters, and the same
 results grid (sorting, groups, paging), without the builder. In the builder,

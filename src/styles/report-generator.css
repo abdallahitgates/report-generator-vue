@@ -662,3 +662,54 @@
 .rg-pop .rg-multi__list label { flex-direction: row; align-items: center; gap: 8px; color: var(--rg-text); font-size: 12.5px; cursor: pointer; }
 .rg-viewer .rg-results { display: flex; flex-direction: column; min-height: 0; }
 .rg-viewer .rg-results > .rg-gridbox { flex: 1; min-height: 0; }
+
+/* ---------- combined reports ---------- */
+.rg-combined { display: grid; grid-template-rows: auto 1fr; height: 100%; min-height: 560px; border: 1px solid var(--rg-border); border-radius: var(--rg-radius-lg); overflow: hidden; background: var(--rg-bg); }
+.rg-root-card--combine {
+  width: 100%; max-width: 680px; border-style: dashed; border-color: var(--rg-info);
+  background: linear-gradient(135deg, var(--rg-info-soft), var(--rg-surface) 70%);
+}
+.rg-root-card--combine b { display: inline-flex; align-items: center; gap: 6px; color: var(--rg-info); }
+.rg-catalog { display: flex; flex-direction: column; min-height: 0; }
+.rg-catalog__list { flex: 1; overflow-y: auto; padding: 6px 8px 16px; }
+.rg-catalog__group h3 { margin: 12px 6px 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--rg-faint); }
+.rg-catalog__report { border-radius: var(--rg-radius); transition: background 0.15s, box-shadow 0.15s; }
+.rg-catalog__report.is-open { background: var(--rg-sunken); }
+.rg-catalog__report.is-used .rg-catalog__head b { color: var(--rg-info); }
+.rg-catalog__report.is-off { opacity: 0.55; }
+.rg-catalog__head {
+  display: flex; align-items: flex-start; gap: 6px; width: 100%; padding: 7px 8px; border: 0; background: none; text-align: start; cursor: pointer; border-radius: var(--rg-radius);
+}
+.rg-catalog__head:hover:not(:disabled) { background: var(--rg-hover); }
+.rg-catalog__head:disabled { cursor: not-allowed; }
+.rg-catalog__head > span:not(.rg-badge) { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.rg-catalog__head small { font-size: 11px; line-height: 1.3; }
+.rg-catalog__chev { margin-top: 3px; color: var(--rg-faint); transition: transform 0.15s; flex: none; }
+.rg-catalog__report.is-open .rg-catalog__chev { transform: rotate(90deg); }
+.rg-catalog__fields { list-style: none; margin: 0; padding: 0 8px 8px 26px; display: flex; flex-direction: column; gap: 1px; }
+.rg-catalog__fields li { font-size: 12.5px; }
+.rg-catalog__fields label { display: flex; align-items: center; gap: 7px; padding: 3px 6px; border-radius: 5px; cursor: pointer; }
+.rg-catalog__fields label:hover { background: var(--rg-surface); }
+.rg-catalog__fields .rg-icon { color: var(--rg-faint); }
+.rg-catalog__error { color: var(--rg-danger); }
+.rg-combined__settings { display: flex; align-items: center; gap: 10px 16px; flex-wrap: wrap; padding: 10px 16px; background: var(--rg-surface); border-bottom: 1px solid var(--rg-border); }
+.rg-combined__settings .rg-segmented { --c: var(--rg-info); --s: var(--rg-info-soft); }
+.rg-combined__columns { display: flex; align-items: flex-start; gap: 10px; flex-wrap: wrap; padding: 10px 16px; background: var(--rg-surface); border-bottom: 1px solid var(--rg-border); }
+.rg-combined__base { display: flex; gap: 4px; padding-top: 4px; }
+.rg-combined__chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; flex: 1; min-width: 0; }
+.rg-combined__chip {
+  display: flex; align-items: center; gap: 4px; padding: 4px 4px 4px 6px; border-radius: var(--rg-radius); cursor: grab;
+  border: 1px solid var(--rg-border); background: var(--rg-surface); box-shadow: 0 1px 1px rgba(23, 32, 43, 0.04);
+  border-inline-start: 3px solid var(--rg-measure); animation: rg-rise 0.22s ease both;
+}
+.rg-combined__chip.is-base { border-inline-start-color: var(--rg-dimension); }
+.rg-combined__chip.is-formula { border-inline-start-color: var(--rg-time); }
+.rg-combined__chip.is-dragging { opacity: 0.4; }
+.rg-combined__grip { color: var(--rg-faint); font-size: 10px; letter-spacing: -2px; }
+.rg-combined__text { display: flex; flex-direction: column; min-width: 0; max-width: 240px; }
+.rg-combined__text .rg-linkish { text-align: start; font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-decoration: none; }
+.rg-combined__text .rg-linkish:hover { text-decoration: underline; }
+.rg-combined__text small { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rg-combined__rename { height: 24px; font-size: 12.5px; }
+.rg-combined .rg-builder__main { display: flex; flex-direction: column; min-height: 0; }
+.rg-combined .rg-results { flex: 1; min-height: 0; }

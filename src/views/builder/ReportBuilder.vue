@@ -14,6 +14,7 @@ import ResultsPanel from './ResultsPanel.vue';
 import FormulaDialog from './FormulaDialog.vue';
 import SaveDialog from './SaveDialog.vue';
 import PublishDialog from './PublishDialog.vue';
+import CombinedBuilder from '../combined/CombinedBuilder.vue';
 import PathDialog from './PathDialog.vue';
 
 const props = defineProps({
@@ -32,13 +33,42 @@ provide('rg-theme', props.theme);
 const formula = ref(null); // { item } while the formula dialog is open
 const saving = ref(null); // { copy } while the save dialog is open
 const publishing = ref(false);
+// Combined reports (columns of existing reports) have their own builder.
+const mode = ref(null); // null while loading, 'topic' or 'combined'
+const combinedReport = ref(null);
+const canCombine = ref(false);
+provide('rg-start-combined', canCombine);
+provide('rg-choose-combined', () => {
+  combinedReport.value = null;
+  mode.value = 'combined';
+});
 const folders = ref([]);
 const filtersDrop = ref(false);
 
-watch(() => props.reportId, (id) => builder.init(id), { immediate: false });
+async function open(id) {
+  mode.value = null;
+  combinedReport.value = null;
+  if (id) {
+    try {
+      const report = await api.reports.get(id);
+      if (report.definition?.type === 'combined') {
+        combinedReport.value = report;
+        mode.value = 'combined';
+        return;
+      }
+    } catch {
+      // builder.init shows the error
+    }
+  }
+  mode.value = 'topic';
+  await builder.init(id);
+}
+
+watch(() => props.reportId, (id) => open(id), { immediate: false });
 
 onMounted(async () => {
-  await builder.init(props.reportId);
+  api.combine.reports().then((list) => (canCombine.value = list.length > 0)).catch(() => {});
+  await open(props.reportId);
   document.addEventListener('keydown', onKey);
   api.reports.list({ scope: 'mine' }).then((r) => (folders.value = r.folders ?? [])).catch(() => {});
 });
@@ -80,7 +110,16 @@ function onSaved(report) {
 </script>
 
 <template>
-  <div class="rg-root rg-builder" :data-rg-theme="theme">
+  <CombinedBuilder
+    v-if="mode === 'combined'"
+    :key="combinedReport?.uuid ?? 'new'"
+    :report="combinedReport"
+    :theme="theme"
+    @saved="onSaved"
+    @published="(s) => emit('published', s)"
+    @back="mode = 'topic'; builder.init(null)"
+  />
+  <div v-else class="rg-root rg-builder" :data-rg-theme="theme">
     <BuilderTopbar @save="saving = { copy: false }" @save-copy="saving = { copy: true }" @publish="publishing = true" />
 
     <div v-if="builder.state.loading" class="rg-builder__body">

@@ -4,6 +4,8 @@ import { REPORT_BUILDER_KEY } from '../../composables/useReportBuilder.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
 
 const builder = inject(REPORT_BUILDER_KEY);
+const canCombine = inject('rg-start-combined', null);
+const chooseCombined = inject('rg-choose-combined', null);
 const search = ref('');
 const tab = ref(null);
 
@@ -62,6 +64,10 @@ function filtersOf(topic) {
         <input id="rg-root-search" v-model="search" class="rg-input" type="search" placeholder="Search topics" autocomplete="off" />
       </label>
     </div>
+    <button v-if="canCombine && chooseCombined && !search" type="button" class="rg-root-card rg-root-card--combine" @click="chooseCombined()">
+      <b><RgIcon name="table" small /> Combine existing reports</b>
+      <span>Put columns of reports you already use side by side, one row per employee or per division, and add formulas across them.</span>
+    </button>
     <TransitionGroup tag="div" name="rg-list-fade" class="rg-roots__grid">
       <button v-for="topic in topics" :key="topic.key" type="button" class="rg-root-card" @click="builder.chooseRoot(topic.key)">
         <b>{{ topic.label }}</b>
