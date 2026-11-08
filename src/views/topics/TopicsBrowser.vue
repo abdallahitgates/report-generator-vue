@@ -191,6 +191,7 @@ onMounted(load);
               <div class="rg-topic__badges">
                 <span v-if="current.permission" class="rg-badge rg-badge--warning"><RgIcon name="lock" small />{{ current.permission }}</span>
                 <span v-if="current.public" class="rg-badge rg-badge--info"><RgIcon name="globe" small />Public lookup</span>
+                <span v-if="current.lookup" class="rg-badge" title="Readable through relations from topics a user may read; never a report's main topic"><RgIcon name="link" small />Joined only</span>
               </div>
             </div>
 
