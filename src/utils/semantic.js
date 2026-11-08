@@ -1,4 +1,4 @@
-/** Shared vocabulary for roles, types and relationship origins. */
+/** Shared vocabulary for field roles, types and totals. */
 
 export const ROLES = [
   { value: 'dimension', label: 'Dimension', short: 'Dim', hint: 'Group and filter by it' },
@@ -26,24 +26,3 @@ export const AGGREGATIONS_FOR_TYPE = {
 export function aggregationsFor(type) {
   return AGGREGATIONS_FOR_TYPE[type] ?? ['count', 'count_distinct'];
 }
-
-export const ORIGINS = {
-  foreign_key: { label: 'Foreign key', tone: 'neutral' },
-  eloquent: { label: 'Model', tone: 'info' },
-  convention: { label: 'Name match', tone: 'warning' },
-  manual: { label: 'Added by hand', tone: 'neutral' },
-};
-
-export const HIDDEN_REASONS = {
-  key: 'Key column: hidden from users, still used for joins.',
-  sensitive: 'Looks sensitive (password, token, secret).',
-  unsupported: 'This database type cannot be used in reports.',
-  json: 'JSON column: hidden until JSON fields are supported.',
-  soft_delete: 'Soft-delete marker: deleted rows are filtered out automatically.',
-};
-
-export const CARDINALITIES = [
-  { value: 'many_to_one', label: 'Many to one' },
-  { value: 'one_to_one', label: 'One to one' },
-  { value: 'one_to_many', label: 'One to many' },
-];

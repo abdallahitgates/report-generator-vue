@@ -51,24 +51,8 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     }
   }
 
-  const model = {
-    status: () => request('get', 'model/status'),
-    scan: () => request('post', 'model/scan'),
-    datasets: () => request('get', 'model/datasets').then((r) => r.data),
-    dataset: (id) => request('get', `model/datasets/${id}`).then((r) => r.data),
-    updateDataset: (id, patch) => request('patch', `model/datasets/${id}`, patch).then((r) => r.data),
-    updateField: (id, patch) => request('patch', `model/fields/${id}`, patch).then((r) => r.data),
-    relationships: (status) => request('get', 'model/relationships', undefined, status ? { params: { status } } : undefined).then((r) => r.data),
-    createRelationship: (data) => request('post', 'model/relationships', data).then((r) => r.data),
-    updateRelationship: (id, patch) => request('patch', `model/relationships/${id}`, patch).then((r) => r.data),
-    bulkRelationships: (ids, status) => request('post', 'model/relationships/bulk', { ids, status }),
-    deleteRelationship: (id) => request('delete', `model/relationships/${id}`),
-    versions: () => request('get', 'model/versions').then((r) => r.data),
-    publish: (notes) => request('post', 'model/publish', { notes }),
-  };
-
   const query = {
-    /** Without a root: datasets to start from. With a root: everything reachable from it. */
+    /** Without a root: topics to start from, by tab. With a root: its relation tree and a flat list for the builder. */
     catalog: (root) => request('get', 'catalog', undefined, root ? { params: { root } } : undefined),
     validate: (definition, parameters = {}) => request('post', 'query/validate', { definition, parameters }),
     /**
@@ -101,7 +85,8 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
     reports,
     /** Version, the current user's abilities, registered sources and limits. */
     meta: () => request('get', 'meta'),
-    model,
+    /** Every topic by tab, with filter columns, fields and relations (admins). */
+    topics: () => request('get', 'topics'),
     request,
   };
 }

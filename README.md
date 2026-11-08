@@ -1,22 +1,22 @@
 # @abdalla/report-generator-vue
 
 Vue 3 UI for [`abdalla/laravel-report-generator`](https://github.com/abdallahitgates/laravel-report-generator):
-model studio, report builder, viewer and runs. The host app supplies Vue and
+topics browser, report builder, viewer and runs. The host app supplies Vue and
 its own axios instance, so authentication and interceptors work as they
 already do.
 
-> Version **0.1.0** (milestone M3). Model Studio (review the scanned schema and publish the
-> semantic model), the report library and the report builder.
+> Version **0.2.0** (v2 phase P1a). The topics browser (the topics your app
+> declares in code, by tab), the report library and the report builder. Model
+> Studio is gone with the database scan.
 
 ## Install
 
 From a Git tag (npm builds the package while installing it):
 
 ```bash
-npm install "git+ssh://git@github.com/abdallahitgates/report-generator-vue.git#v0.1.0"
+npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.2.0"
 ```
 
-Use the SSH form while the repository is private: it uses your SSH key.
 
 ## Use
 
@@ -33,14 +33,19 @@ Mount a screen on any route (give it a height; it scrolls inside itself):
 ```vue
 <template>
   <div style="height: calc(100vh - 150px)">
-    <ModelStudio theme="light" />
+    <TopicsBrowser theme="light" @select="key => router.replace({ query: { topic: key } })" />
   </div>
 </template>
 
 <script setup>
-import { ModelStudio } from '@abdalla/report-generator-vue';
+import { TopicsBrowser } from '@abdalla/report-generator-vue';
 </script>
 ```
+
+`TopicsBrowser` shows one tab per topic group; for each topic, the report
+filters it supports (Period, Line, Division, Employee and their columns), its
+fields and its relations (click one to open that topic). `initial-topic`
+opens a topic first. It needs the `report-generator.model.manage` ability.
 
 The report screens are router-agnostic: they emit events and the host
 decides the URLs.
@@ -53,9 +58,9 @@ decides the URLs.
 <ReportBuilder :report-id="route.params.uuid ?? null" @saved="report => router.replace(`/reports/${report.uuid}`)" />
 ```
 
-The builder: pick the dataset a report is about, then drag fields onto Rows
+The builder: pick the topic a report is about (topics are grouped in tabs), then drag fields onto Rows
 (group by), Values (totals, formulas) and Filters, or use the buttons next
-to each field. It asks which join path to use when a dataset is reachable
+to each field. It asks which join path to use when a topic is reachable
 in more than one way, runs as you edit (cancelling the previous query),
 loads 200 rows at a time as you scroll, opens groups one level at a time,
 and saves to the library. Shortcuts: Ctrl+Enter run, Ctrl+S save, Ctrl+Z /
@@ -92,8 +97,8 @@ npm run build
 Bump `version` in `package.json`, commit, then:
 
 ```bash
-git tag v0.2.0
+git tag v0.3.0
 git push origin main --tags
 ```
 
-Projects move to it by changing `#v0.1.0` to `#v0.2.0` in their `package.json` and running `npm install`.
+Projects move to it by changing `#v0.2.0` to `#v0.3.0` in their `package.json` and running `npm install`.

@@ -23,7 +23,7 @@ const ERROR_TITLES = {
   TIMEOUT: 'The report took too long',
   TOO_HEAVY: 'The report would read too much data',
   DATASET_FORBIDDEN: 'No access',
-  MODEL_NOT_PUBLISHED: 'No data model yet',
+  NO_TOPICS: 'No topics yet',
   TOO_MANY_QUERIES: 'Too many reports running',
   SERVER_BUSY: 'The report server is busy',
 };
