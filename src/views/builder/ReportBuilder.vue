@@ -21,7 +21,7 @@ const props = defineProps({
   reportId: { type: String, default: null },
   theme: { type: String, default: 'light' },
 });
-const emit = defineEmits(['saved']);
+const emit = defineEmits(['saved', 'published']);
 
 const { api } = useReportGenerator();
 const toasts = createToasts();
@@ -146,8 +146,8 @@ function onSaved(report) {
       :uuid="builder.state.draft.uuid"
       :name="builder.state.draft.name"
       @close="publishing = false"
-      @published="builder.state.draft.published = true"
-      @unpublished="builder.state.draft.published = false"
+      @published="(s) => { builder.state.draft.published = true; emit('published', s); }"
+      @unpublished="(s) => { builder.state.draft.published = false; emit('published', s); }"
     />
     <SaveDialog v-if="saving" :copy="saving.copy" :folders="folders" @close="saving = null" @saved="onSaved" />
     <PathDialog />
