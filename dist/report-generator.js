@@ -1,4 +1,4 @@
-import { inject as ye, openBlock as s, createElementBlock as n, normalizeClass as ne, createElementVNode as e, provide as Re, reactive as $e, ref as K, computed as G, watch as he, onMounted as Se, createVNode as E, createTextVNode as N, toDisplayString as y, withDirectives as se, vModelText as ce, Fragment as U, renderList as H, createCommentVNode as x, normalizeStyle as Me, TransitionGroup as lt, withCtx as de, createBlock as ae, Transition as it, vModelCheckbox as ot, unref as R, Teleport as Zt, mergeProps as Qt, onBeforeUnmount as Ne, withModifiers as ge, renderSlot as rt, withKeys as Ie, resolveComponent as hs, vModelSelect as Pe, nextTick as qt, vModelRadio as It, vShow as Ut, vModelDynamic as ys } from "vue";
+import { inject as ye, openBlock as s, createElementBlock as n, normalizeClass as ne, createElementVNode as e, provide as Re, reactive as $e, ref as K, computed as G, watch as he, onMounted as Se, createVNode as E, createTextVNode as N, toDisplayString as y, withDirectives as se, vModelText as ce, Fragment as U, renderList as H, createCommentVNode as w, normalizeStyle as Me, TransitionGroup as lt, withCtx as de, createBlock as ae, Transition as it, vModelCheckbox as ot, unref as R, Teleport as Zt, mergeProps as Qt, onBeforeUnmount as Ne, withModifiers as ge, renderSlot as rt, withKeys as Ie, resolveComponent as hs, vModelSelect as Pe, nextTick as qt, vModelRadio as It, vShow as Ut, vModelDynamic as ys } from "vue";
 class jt extends Error {
   constructor(u, { status: l = null, errors: g = {}, code: d = null, path: b = null, details: f = null, cause: o = null } = {}) {
     super(u), this.name = "ReportGeneratorApiError", this.status = l, this.errors = g, this.code = d, this.path = b, this.details = f, this.cause = o;
@@ -14,7 +14,7 @@ function _s({ http: t, basePath: u = "/api/report-generator" } = {}) {
     throw new TypeError("report-generator: pass an axios-compatible `http` instance (get/post/patch/delete).");
   const l = u.replace(/\/+$/, ""), g = (i) => `${l}/${i.replace(/^\/+/, "")}`;
   async function d(i, r, a, c) {
-    var k, C, h, p, v, w, O, _, S;
+    var k, C, h, p, v, x, O, _, S;
     try {
       return (i === "get" || i === "delete" ? await t[i](g(r), c) : await t[i](g(r), a, c)).data;
     } catch ($) {
@@ -22,14 +22,14 @@ function _s({ http: t, basePath: u = "/api/report-generator" } = {}) {
         status: ((k = $ == null ? void 0 : $.response) == null ? void 0 : k.status) ?? null,
         errors: ((h = (C = $ == null ? void 0 : $.response) == null ? void 0 : C.data) == null ? void 0 : h.errors) ?? {},
         code: ((v = (p = $ == null ? void 0 : $.response) == null ? void 0 : p.data) == null ? void 0 : v.code) ?? null,
-        path: ((O = (w = $ == null ? void 0 : $.response) == null ? void 0 : w.data) == null ? void 0 : O.path) ?? null,
+        path: ((O = (x = $ == null ? void 0 : $.response) == null ? void 0 : x.data) == null ? void 0 : O.path) ?? null,
         details: ((S = (_ = $ == null ? void 0 : $.response) == null ? void 0 : _.data) == null ? void 0 : S.details) ?? null,
         cause: $
       });
     }
   }
   async function b(i, r, a = "report") {
-    var p, v, w, O;
+    var p, v, x, O;
     let c;
     try {
       c = await t.post(g(i), r, { responseType: "blob" });
@@ -48,7 +48,7 @@ function _s({ http: t, basePath: u = "/api/report-generator" } = {}) {
         cause: _
       });
     }
-    const k = ((w = c.headers) == null ? void 0 : w["content-disposition"]) ?? "", C = /filename\*=UTF-8''([^;]+)/i.exec(k) ?? /filename="?([^";]+)"?/i.exec(k), h = C ? decodeURIComponent(C[1]) : a;
+    const k = ((x = c.headers) == null ? void 0 : x["content-disposition"]) ?? "", C = /filename\*=UTF-8''([^;]+)/i.exec(k) ?? /filename="?([^";]+)"?/i.exec(k), h = C ? decodeURIComponent(C[1]) : a;
     if (typeof window < "u" && ((O = window.URL) != null && O.createObjectURL)) {
       const _ = window.URL.createObjectURL(c.data), S = document.createElement("a");
       S.href = _, S.download = h, document.body.appendChild(S), S.click(), S.remove(), setTimeout(() => window.URL.revokeObjectURL(_), 1e3);
@@ -168,7 +168,7 @@ function _s({ http: t, basePath: u = "/api/report-generator" } = {}) {
   };
 }
 const Xt = Symbol("report-generator");
-function fp(t = {}) {
+function hp(t = {}) {
   const u = _s(t);
   return {
     api: u,
@@ -304,20 +304,30 @@ const ks = [
 }, cl = {
   key: 2,
   class: "rg-badge",
+  title: "Not offered as a report's main topic; reached through relations"
+}, gl = {
+  key: 3,
+  class: "rg-badge",
   title: "Readable through relations from topics a user may read; never a report's main topic"
-}, gl = { class: "rg-card" }, ml = { class: "rg-topic__filters" }, pl = {
+}, ml = { class: "rg-card" }, pl = { class: "rg-topic__filters" }, vl = {
   key: 0,
   class: "rg-mono rg-faint"
-}, vl = { class: "rg-card" }, fl = { class: "rg-card__head" }, bl = { class: "rg-num rg-faint" }, hl = {
+}, fl = { class: "rg-card" }, bl = { class: "rg-card__head" }, hl = { class: "rg-num rg-faint" }, yl = {
   key: 0,
   class: "rg-field-inline"
-}, yl = { class: "rg-table-wrap" }, $l = { class: "rg-table rg-topic__fields" }, _l = { class: "rg-cell-field" }, kl = { class: "rg-cell-field__sub" }, wl = { class: "rg-mono" }, xl = { key: 0 }, Cl = { class: "rg-type" }, Sl = ["title"], Ml = { class: "rg-muted" }, Tl = { class: "rg-card" }, El = { class: "rg-card__head" }, Ol = { class: "rg-num rg-faint" }, Rl = {
+}, $l = { class: "rg-table-wrap" }, _l = { class: "rg-table rg-topic__fields" }, kl = { class: "rg-cell-field" }, wl = { class: "rg-cell-field__sub" }, xl = { class: "rg-mono" }, Cl = { key: 0 }, Sl = { class: "rg-type" }, Ml = ["title"], Tl = { class: "rg-muted" }, El = { class: "rg-card" }, Ol = { class: "rg-card__head" }, Rl = { class: "rg-num rg-faint" }, Dl = {
   key: 0,
   class: "rg-muted rg-topic__none"
-}, Dl = {
+}, Al = {
   key: 1,
   class: "rg-topic__relations"
-}, Al = ["onClick"], Ll = ["data-kind"], Nl = { class: "rg-topic__relation-text" }, Vl = { class: "rg-faint" }, Pl = { class: "rg-mono" }, bp = {
+}, Ll = ["onClick"], Nl = ["data-kind"], Vl = { class: "rg-topic__relation-text" }, Pl = {
+  key: 0,
+  class: "rg-faint"
+}, Fl = {
+  key: 1,
+  class: "rg-faint"
+}, ql = { class: "rg-mono" }, yp = {
   __name: "TopicsBrowser",
   props: {
     theme: { type: String, default: "light" },
@@ -367,7 +377,7 @@ const ks = [
       S && ((X = a.value) == null ? void 0 : X.group) !== _ && (b.topic = S.key);
     }
     he(() => b.topic, (_) => _ && g("select", _));
-    function w(_) {
+    function x(_) {
       return Object.entries(_.conditions ?? {}).map(([S, $]) => ({
         column: S,
         text: $ === null ? "is empty" : Array.isArray($) ? `in ${$.join(", ")}` : `= ${$}`
@@ -431,7 +441,7 @@ const ks = [
           N(y($.name), 1),
           e("span", Rs, y($.topics.length), 1)
         ], 8, Os))), 128))
-      ])) : x("", !0),
+      ])) : w("", !0),
       b.loading ? (s(), n("div", Ds, [
         e("aside", As, [
           e("div", Ls, [
@@ -481,25 +491,25 @@ const ks = [
                       name: "lock",
                       small: "",
                       title: `Needs ${$.permission}`
-                    }, null, 8, ["title"])) : x("", !0),
+                    }, null, 8, ["title"])) : w("", !0),
                     $.public ? (s(), ae(F, {
                       key: 1,
                       name: "globe",
                       small: "",
                       title: "Anyone may read it in full"
-                    })) : x("", !0)
+                    })) : w("", !0)
                   ]),
                   e("span", Ks, [
                     e("span", Hs, y($.table), 1),
                     e("span", null, "· " + y($.fields_count) + " fields", 1),
-                    f.value ? (s(), n("span", Ws, "· " + y($.group), 1)) : x("", !0)
+                    f.value ? (s(), n("span", Ws, "· " + y($.group), 1)) : w("", !0)
                   ])
                 ], 8, zs)
               ]))), 128))
             ]),
             _: 1
           }, 8, ["aria-label"]),
-          c.value.length ? x("", !0) : (s(), n("p", Ys, "Nothing matches “" + y(f.value) + "”.", 1))
+          c.value.length ? w("", !0) : (s(), n("p", Ys, "Nothing matches “" + y(f.value) + "”.", 1))
         ]),
         e("main", Js, [
           E(it, {
@@ -531,20 +541,20 @@ const ks = [
                       ]),
                       e("span", ll, y(a.value.class), 1)
                     ]),
-                    a.value.description ? (s(), n("p", nl, y(a.value.description), 1)) : x("", !0),
-                    w(a.value).length ? (s(), n("p", al, [
+                    a.value.description ? (s(), n("p", nl, y(a.value.description), 1)) : w("", !0),
+                    x(a.value).length ? (s(), n("p", al, [
                       E(F, {
                         name: "filter",
                         small: ""
                       }),
                       S[10] || (S[10] = N(" Only rows where ", -1)),
-                      (s(!0), n(U, null, H(w(a.value), ($, X) => (s(), n(U, {
+                      (s(!0), n(U, null, H(x(a.value), ($, X) => (s(), n(U, {
                         key: $.column
                       }, [
-                        X ? (s(), n("span", ol, "and")) : x("", !0),
+                        X ? (s(), n("span", ol, "and")) : w("", !0),
                         e("code", rl, y($.column) + " " + y($.text), 1)
                       ], 64))), 128))
-                    ])) : x("", !0)
+                    ])) : w("", !0)
                   ]),
                   e("div", il, [
                     a.value.permission ? (s(), n("span", ul, [
@@ -553,29 +563,36 @@ const ks = [
                         small: ""
                       }),
                       N(y(a.value.permission), 1)
-                    ])) : x("", !0),
+                    ])) : w("", !0),
                     a.value.public ? (s(), n("span", dl, [
                       E(F, {
                         name: "globe",
                         small: ""
                       }),
                       S[11] || (S[11] = N("Public lookup", -1))
-                    ])) : x("", !0),
-                    a.value.lookup ? (s(), n("span", cl, [
+                    ])) : w("", !0),
+                    a.value.startable === !1 ? (s(), n("span", cl, [
                       E(F, {
                         name: "link",
                         small: ""
                       }),
-                      S[12] || (S[12] = N("Joined only", -1))
-                    ])) : x("", !0)
+                      S[12] || (S[12] = N("Link table", -1))
+                    ])) : w("", !0),
+                    a.value.lookup ? (s(), n("span", gl, [
+                      E(F, {
+                        name: "link",
+                        small: ""
+                      }),
+                      S[13] || (S[13] = N("Joined only", -1))
+                    ])) : w("", !0)
                   ])
                 ]),
-                e("div", gl, [
-                  S[13] || (S[13] = e("div", { class: "rg-card__head" }, [
+                e("div", ml, [
+                  S[14] || (S[14] = e("div", { class: "rg-card__head" }, [
                     e("h2", null, "Report filters"),
                     e("span", { class: "rg-muted" }, "Every report on this topic can be limited by these")
                   ], -1)),
-                  e("ul", ml, [
+                  e("ul", pl, [
                     (s(), n(U, null, H(m, ($) => e("li", {
                       key: $.key,
                       class: ne({ "is-off": !a.value.filters[$.key] })
@@ -585,17 +602,17 @@ const ks = [
                         small: ""
                       }, null, 8, ["name"]),
                       e("b", null, y($.label), 1),
-                      O(a.value, $.key) ? (s(), n("span", pl, y(O(a.value, $.key)), 1)) : x("", !0)
+                      O(a.value, $.key) ? (s(), n("span", vl, y(O(a.value, $.key)), 1)) : w("", !0)
                     ], 2)), 64))
                   ])
                 ]),
-                e("div", vl, [
-                  e("div", fl, [
+                e("div", fl, [
+                  e("div", bl, [
                     e("h2", null, [
-                      S[14] || (S[14] = N("Fields ", -1)),
-                      e("span", bl, y(k.value.length), 1)
+                      S[15] || (S[15] = N("Fields ", -1)),
+                      e("span", hl, y(k.value.length), 1)
                     ]),
-                    C.value ? (s(), n("label", hl, [
+                    C.value ? (s(), n("label", yl, [
                       se(e("input", {
                         "onUpdate:modelValue": S[1] || (S[1] = ($) => o.value = $),
                         type: "checkbox",
@@ -604,11 +621,11 @@ const ks = [
                         [ot, o.value]
                       ]),
                       N(" Show " + y(C.value) + " id " + y(C.value === 1 ? "column" : "columns"), 1)
-                    ])) : x("", !0)
+                    ])) : w("", !0)
                   ]),
-                  e("div", yl, [
-                    e("table", $l, [
-                      S[15] || (S[15] = e("thead", null, [
+                  e("div", $l, [
+                    e("table", _l, [
+                      S[16] || (S[16] = e("thead", null, [
                         e("tr", null, [
                           e("th", null, "Field"),
                           e("th", null, "Type"),
@@ -626,16 +643,16 @@ const ks = [
                             class: ne(["rg-topic__field", { "rg-row--hidden": $.hidden }])
                           }, [
                             e("td", null, [
-                              e("div", _l, [
+                              e("div", kl, [
                                 e("b", null, y($.label), 1),
-                                e("span", kl, [
-                                  e("span", wl, y($.key), 1),
-                                  $.description ? (s(), n("span", xl, "· " + y($.description), 1)) : x("", !0)
+                                e("span", wl, [
+                                  e("span", xl, y($.key), 1),
+                                  $.description ? (s(), n("span", Cl, "· " + y($.description), 1)) : w("", !0)
                                 ])
                               ])
                             ]),
                             e("td", null, [
-                              e("span", Cl, [
+                              e("span", Sl, [
                                 E(F, {
                                   name: R(St)[$.type] ?? "text",
                                   small: ""
@@ -651,9 +668,9 @@ const ks = [
                                 key: 0,
                                 class: "rg-faint rg-topic__options",
                                 title: Object.values($.options).join(", ")
-                              }, y(Object.keys($.options).length) + " values ", 9, Sl)) : x("", !0)
+                              }, y(Object.keys($.options).length) + " values ", 9, Ml)) : w("", !0)
                             ]),
-                            e("td", Ml, y(($.aggregations ?? []).map((X) => R(pt)[X] ?? X).join(", ") || "—"), 1)
+                            e("td", Tl, y(($.aggregations ?? []).map((X) => R(pt)[X] ?? X).join(", ") || "—"), 1)
                           ], 2))), 128))
                         ]),
                         _: 1
@@ -661,15 +678,15 @@ const ks = [
                     ])
                   ])
                 ]),
-                e("div", Tl, [
-                  e("div", El, [
+                e("div", El, [
+                  e("div", Ol, [
                     e("h2", null, [
-                      S[16] || (S[16] = N("Relations ", -1)),
-                      e("span", Ol, y(a.value.relations.length), 1)
+                      S[17] || (S[17] = N("Relations ", -1)),
+                      e("span", Rl, y(a.value.relations.length), 1)
                     ]),
-                    S[17] || (S[17] = e("span", { class: "rg-muted" }, "Fields of these topics can be added to its reports", -1))
+                    S[18] || (S[18] = e("span", { class: "rg-muted" }, "Fields of these topics can be added to its reports", -1))
                   ]),
-                  a.value.relations.length ? (s(), n("ul", Dl, [
+                  a.value.relations.length ? (s(), n("ul", Al, [
                     (s(!0), n(U, null, H(a.value.relations, ($) => (s(), n("li", {
                       key: $.name
                     }, [
@@ -681,23 +698,23 @@ const ks = [
                         e("span", {
                           class: "rg-topic__relation-kind",
                           "data-kind": $.type
-                        }, y($.type === "hasMany" ? "many" : "one"), 9, Ll),
-                        e("span", Nl, [
+                        }, y($.type === "hasMany" ? "many" : "one"), 9, Nl),
+                        e("span", Vl, [
                           e("b", null, y($.label), 1),
-                          e("span", Vl, [
+                          $.through ? (s(), n("span", Pl, y($.topic_label) + " · via " + y($.through), 1)) : (s(), n("span", Fl, [
                             N(y($.topic_label) + " · ", 1),
-                            e("span", Pl, y($.foreign_key), 1)
-                          ])
+                            e("span", ql, y($.foreign_key), 1)
+                          ]))
                         ]),
                         E(F, {
                           name: "arrow",
                           small: ""
                         })
-                      ], 8, Al)
+                      ], 8, Ll)
                     ]))), 128))
-                  ])) : (s(), n("p", Rl, "This topic does not link to other topics."))
+                  ])) : (s(), n("p", Dl, "This topic does not link to other topics."))
                 ])
-              ])) : x("", !0)
+              ])) : w("", !0)
             ]),
             _: 1
           })
@@ -715,8 +732,8 @@ const ks = [
     ], 8, xs));
   }
 };
-let Fl = 1;
-const Ue = () => `f${Fl++}`, Mt = "__rows", ql = {
+let Il = 1;
+const Ue = () => `f${Il++}`, Mt = "__rows", Ul = {
   "=": "is",
   "!=": "is not",
   ">": "greater than",
@@ -732,9 +749,9 @@ const Ue = () => `f${Fl++}`, Mt = "__rows", ql = {
   ends_with: "ends with",
   is_null: "is empty",
   not_null: "is not empty"
-}, Il = ["=", "!=", "in", "not_in", "contains", "not_contains", "starts_with", "ends_with", "is_null", "not_null"], Ul = ["=", "!=", ">", ">=", "<", "<=", "between", "in", "is_null", "not_null"], jl = ["between", "=", ">", ">=", "<", "<=", "is_null", "not_null"], zl = ["=", "is_null", "not_null"], Bl = [">", ">=", "<", "<=", "=", "!=", "between"];
+}, jl = ["=", "!=", "in", "not_in", "contains", "not_contains", "starts_with", "ends_with", "is_null", "not_null"], zl = ["=", "!=", ">", ">=", "<", "<=", "between", "in", "is_null", "not_null"], Bl = ["between", "=", ">", ">=", "<", "<=", "is_null", "not_null"], Gl = ["=", "is_null", "not_null"], Kl = [">", ">=", "<", "<=", "=", "!=", "between"];
 function es(t, u = !1) {
-  return u ? Bl : t === "integer" || t === "decimal" ? Ul : t === "date" || t === "datetime" ? jl : t === "boolean" ? zl : Il;
+  return u ? Kl : t === "integer" || t === "decimal" ? zl : t === "date" || t === "datetime" ? Bl : t === "boolean" ? Gl : jl;
 }
 const zt = [
   ["today", "Today"],
@@ -803,10 +820,10 @@ function _t(t, u, l, { path: g = null, asValue: d = null } = {}) {
   };
   return f ? (o.agg = o.aggregations.includes("sum") ? "sum" : o.aggregations[0], o.label = at(o)) : (l.role === "time" && (o.grain = "month"), o.label = b), o.as = Tt(t, o.label), o;
 }
-function Gl(t, u, l) {
+function Hl(t, u, l) {
   return { uid: Ue(), kind: "formula", label: u, formula: l, as: Tt(t, u), format: null };
 }
-function Kl(t) {
+function Wl(t) {
   if (t.kind === "formula")
     return { formula: t.formula, as: t.as, label: t.label, ...t.format ? { format: t.format } : {} };
   const u = { ref: `${t.dataset}.${t.field}`, as: t.as, label: t.label };
@@ -818,13 +835,13 @@ function ss(t) {
   const u = { field: t.target, op: t.op };
   return ["is_null", "not_null"].includes(t.op) || (u.value = t.value), t.path && (u.path = t.path), u;
 }
-function Hl(t) {
+function Yl(t) {
   if (t.items || ["is_null", "not_null"].includes(t.op)) return !0;
   const u = t.value;
   return u == null || u === "" ? !1 : Array.isArray(u) ? t.op === "between" ? u.length === 2 && u.every((l) => l !== "" && l !== null) : u.length > 0 : !0;
 }
 function ls(t) {
-  return { boolean: t.boolean, items: t.items.filter(Hl).map((u) => u.items ? ls(u) : u) };
+  return { boolean: t.boolean, items: t.items.filter(Yl).map((u) => u.items ? ls(u) : u) };
 }
 function ns(t) {
   const u = [...t.rows, ...t.values], l = {};
@@ -832,7 +849,7 @@ function ns(t) {
   const g = {
     version: 1,
     root: t.root,
-    fields: u.map(Kl),
+    fields: u.map(Wl),
     sort: t.sort.filter((b) => u.some((f) => f.as === b.field)),
     subtotals: t.subtotals,
     ui: { grouped: t.grouped, rows: t.rows.map((b) => b.as) }
@@ -849,7 +866,7 @@ function ns(t) {
   }
   return { definition: g, locations: l };
 }
-function Wl(t, u, l = {}) {
+function Jl(t, u, l = {}) {
   var o, m, M;
   const g = xt();
   g.root = t.root, g.subtotals = !!t.subtotals, g.grouped = ((o = t.ui) == null ? void 0 : o.grouped) ?? !0, g.parameters = t.parameters ?? [], g.sort = t.sort ?? [], Object.assign(g, {
@@ -898,15 +915,15 @@ function Wl(t, u, l = {}) {
   }
   return g;
 }
-function Yl(t) {
+function Zl(t) {
   return !!t.root && t.rows.length + t.values.length > 0;
 }
-const Jl = 60, Gt = 200;
-function Zl() {
+const Ql = 60, Gt = 200;
+function Xl() {
   var t, u;
   return ((u = (t = globalThis.crypto) == null ? void 0 : t.randomUUID) == null ? void 0 : u.call(t)) ?? `q-${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
-function Ql(t, u) {
+function en(t, u) {
   const l = $e({
     draft: xt(),
     roots: null,
@@ -925,7 +942,7 @@ function Ql(t, u) {
     // { dataset, field, target, options } while the user picks a join path
     undoDepth: 0,
     redoDepth: 0
-  }), g = { past: [], future: [], applying: !1 }, d = G(() => ns(l.draft)), b = G(() => d.value.definition), f = G(() => Yl(l.draft)), o = G(() => {
+  }), g = { past: [], future: [], applying: !1 }, d = G(() => ns(l.draft)), b = G(() => d.value.definition), f = G(() => Zl(l.draft)), o = G(() => {
     var j;
     return Object.fromEntries((((j = l.catalog) == null ? void 0 : j.datasets) ?? []).map((Y) => [Y.key, Y]));
   }), m = G(() => l.draft.grouped && l.draft.rows.length >= 2), M = () => JSON.stringify(l.draft), i = G(() => l.savedSnapshot !== null && M() !== l.savedSnapshot);
@@ -936,7 +953,7 @@ function Ql(t, u) {
       return;
     }
     clearTimeout(r), r = setTimeout(() => {
-      a !== null && a !== j && (g.past.push(a), g.past.length > Jl && g.past.shift(), g.future = [], k()), a = j;
+      a !== null && a !== j && (g.past.push(a), g.past.length > Ql && g.past.shift(), g.future = [], k()), a = j;
     }, 250);
   });
   function c(j) {
@@ -952,13 +969,13 @@ function Ql(t, u) {
     g.future.length && (clearTimeout(r), g.past.push(M()), c(g.future.pop()), k());
   }
   const p = () => l.undoDepth > 0, v = () => l.redoDepth > 0;
-  async function w(j = null) {
+  async function x(j = null) {
     var Y;
     l.loading = !0;
     try {
       if (j) {
         const Q = await t.reports.get(j);
-        await O(Q.definition.root), l.draft = Wl(Q.definition, ((Y = l.catalog) == null ? void 0 : Y.datasets) ?? [], Q), fe();
+        await O(Q.definition.root), l.draft = Jl(Q.definition, ((Y = l.catalog) == null ? void 0 : Y.datasets) ?? [], Q), fe();
       } else
         l.draft = xt(), l.roots = (await t.query.catalog()).datasets;
       l.savedSnapshot = M(), a = l.savedSnapshot, g.past = [], g.future = [], k(), f.value && Qe();
@@ -1043,7 +1060,7 @@ function Ql(t, u) {
     Object.assign(J, Y), "agg" in Y && le && (J.label = at(J)), "label" in Y && !((ue = Y.label) != null && ue.trim()) && (J.label = J.kind === "measure" ? at(J) : J.baseLabel);
   }
   function q(j, Y) {
-    const Q = Gl(l.draft, j, Y);
+    const Q = Hl(l.draft, j, Y);
     return l.draft.values.push(Q), Q;
   }
   function L(j, Y, Q) {
@@ -1131,7 +1148,7 @@ function Ql(t, u) {
   async function Xe({ keys: j = [], offset: Y = 0, top: Q = !1, size: J = Gt, fresh: le = !1 } = {}) {
     var me, Fe;
     const ue = m.value ? { columns: l.draft.rows.map((ve) => ve.as), keys: j } : void 0, be = Q && (Y === 0 || le);
-    be && (Ze(), Te = typeof AbortController < "u" ? new AbortController() : null, xe = Zl(), l.running = !0, l.error = null, l.errorUid = null);
+    be && (Ze(), Te = typeof AbortController < "u" ? new AbortController() : null, xe = Xl(), l.running = !0, l.error = null, l.errorUid = null);
     try {
       const ve = await t.query.rows(b.value, {
         offset: Y,
@@ -1202,7 +1219,7 @@ function Ql(t, u) {
     grouped: m,
     dirty: i,
     datasetsByKey: o,
-    init: w,
+    init: x,
     chooseRoot: _,
     changeRoot: S,
     addField: X,
@@ -1241,11 +1258,11 @@ function Ql(t, u) {
   };
 }
 const Ee = Symbol("rg-report-builder");
-let Xl = 1;
+let tn = 1;
 function ft() {
   const t = $e([]);
   function u(g, d, b = g === "error" ? 7e3 : 3500) {
-    const f = Xl++;
+    const f = tn++;
     t.push({ id: f, kind: g, message: d }), setTimeout(() => l(f), b);
   }
   function l(g) {
@@ -1259,7 +1276,7 @@ function ft() {
     error: (g) => u("error", typeof g == "string" ? g : (g == null ? void 0 : g.message) || "Something went wrong.")
   };
 }
-const en = ["onClick"], bt = {
+const sn = ["onClick"], bt = {
   __name: "RgToaster",
   props: { toasts: { type: Object, required: !0 } },
   setup(t) {
@@ -1286,25 +1303,25 @@ const en = ["onClick"], bt = {
               name: "x",
               small: ""
             })
-          ], 8, en)
+          ], 8, sn)
         ], 2))), 128))
       ], 16)
     ]));
   }
-}, tn = { class: "rg-topbar" }, sn = { class: "rg-topbar__title" }, ln = { class: "rg-topbar__meta" }, nn = {
+}, ln = { class: "rg-topbar" }, nn = { class: "rg-topbar__title" }, an = { class: "rg-topbar__meta" }, on = {
   key: 0,
   class: "rg-root-chip"
-}, an = { key: 1 }, on = {
+}, rn = { key: 1 }, un = {
   key: 2,
   class: "rg-badge"
-}, rn = {
+}, dn = {
   key: 3,
   class: "rg-badge rg-badge--success"
-}, un = { class: "rg-topbar__actions" }, dn = ["disabled"], cn = ["disabled"], gn = {
+}, cn = { class: "rg-topbar__actions" }, gn = ["disabled"], mn = ["disabled"], pn = {
   class: "rg-field-inline",
   for: "rg-autorun",
   title: "Run the report as you change it"
-}, mn = ["disabled"], pn = ["disabled"], vn = ["disabled"], fn = {
+}, vn = ["disabled"], fn = ["disabled"], bn = ["disabled"], hn = {
   __name: "BuilderTopbar",
   emits: ["save", "save-copy", "close", "publish", "pin"],
   setup(t, { emit: u }) {
@@ -1312,8 +1329,8 @@ const en = ["onClick"], bt = {
       var f;
       return ((f = g.datasetsByKey.value[d.value.root]) == null ? void 0 : f.label) ?? d.value.root;
     });
-    return (f, o) => (s(), n("header", tn, [
-      e("div", sn, [
+    return (f, o) => (s(), n("header", ln, [
+      e("div", nn, [
         o[13] || (o[13] = e("label", {
           class: "rg-sr-only",
           for: "rg-report-name"
@@ -1326,33 +1343,33 @@ const en = ["onClick"], bt = {
         }, null, 512), [
           [ce, d.value.name]
         ]),
-        e("div", ln, [
-          d.value.root ? (s(), n("span", nn, [
+        e("div", an, [
+          d.value.root ? (s(), n("span", on, [
             o[10] || (o[10] = N(" Report on ", -1)),
             e("b", null, y(b.value), 1),
             e("button", {
               type: "button",
               onClick: o[1] || (o[1] = (m) => R(g).changeRoot())
             }, "change")
-          ])) : x("", !0),
-          R(g).dirty.value ? (s(), n("span", an, [...o[11] || (o[11] = [
+          ])) : w("", !0),
+          R(g).dirty.value ? (s(), n("span", rn, [...o[11] || (o[11] = [
             e("i", {
               class: "rg-dot",
               "aria-hidden": "true"
             }, null, -1),
             N(" Unsaved changes", -1)
-          ])])) : x("", !0),
-          d.value.uuid && !d.value.canEdit ? (s(), n("span", on, "View only: save a copy to keep changes")) : x("", !0),
-          d.value.published ? (s(), n("span", rn, [
+          ])])) : w("", !0),
+          d.value.uuid && !d.value.canEdit ? (s(), n("span", un, "View only: save a copy to keep changes")) : w("", !0),
+          d.value.published ? (s(), n("span", dn, [
             E(F, {
               name: "globe",
               small: ""
             }),
             o[12] || (o[12] = N(" Published", -1))
-          ])) : x("", !0)
+          ])) : w("", !0)
         ])
       ]),
-      e("div", un, [
+      e("div", cn, [
         e("button", {
           type: "button",
           class: "rg-btn rg-btn--ghost rg-btn--icon",
@@ -1362,7 +1379,7 @@ const en = ["onClick"], bt = {
           onClick: o[2] || (o[2] = (m) => R(g).undo())
         }, [
           E(F, { name: "undo" })
-        ], 8, dn),
+        ], 8, gn),
         e("button", {
           type: "button",
           class: "rg-btn rg-btn--ghost rg-btn--icon",
@@ -1372,9 +1389,9 @@ const en = ["onClick"], bt = {
           onClick: o[3] || (o[3] = (m) => R(g).redo())
         }, [
           E(F, { name: "redo" })
-        ], 8, cn),
+        ], 8, mn),
         o[19] || (o[19] = e("span", { class: "rg-toolbar-sep" }, null, -1)),
-        e("label", gn, [
+        e("label", pn, [
           se(e("input", {
             id: "rg-autorun",
             "onUpdate:modelValue": o[4] || (o[4] = (m) => R(g).state.autoRun = m),
@@ -1397,7 +1414,7 @@ const en = ["onClick"], bt = {
             small: ""
           }),
           o[15] || (o[15] = N(" Run ", -1))
-        ], 8, mn),
+        ], 8, vn),
         o[20] || (o[20] = e("span", { class: "rg-toolbar-sep" }, null, -1)),
         d.value.uuid ? (s(), n("button", {
           key: 0,
@@ -1411,7 +1428,7 @@ const en = ["onClick"], bt = {
             small: ""
           }),
           o[16] || (o[16] = N(" Pin ", -1))
-        ])) : x("", !0),
+        ])) : w("", !0),
         d.value.uuid && d.value.canPublish ? (s(), n("button", {
           key: 1,
           type: "button",
@@ -1424,7 +1441,7 @@ const en = ["onClick"], bt = {
             small: ""
           }),
           N(" " + y(d.value.published ? "Publishing" : "Publish"), 1)
-        ])) : x("", !0),
+        ])) : w("", !0),
         d.value.uuid ? (s(), n("button", {
           key: 2,
           type: "button",
@@ -1437,7 +1454,7 @@ const en = ["onClick"], bt = {
             small: ""
           }),
           o[17] || (o[17] = N(" Save a copy ", -1))
-        ], 8, pn)) : x("", !0),
+        ], 8, fn)) : w("", !0),
         e("button", {
           type: "button",
           class: "rg-btn rg-btn--primary",
@@ -1450,19 +1467,19 @@ const en = ["onClick"], bt = {
             small: ""
           }),
           o[18] || (o[18] = N(" Save ", -1))
-        ], 8, vn)
+        ], 8, bn)
       ])
     ]));
   }
-}, bn = { class: "rg-roots" }, hn = { class: "rg-roots__bar" }, yn = {
+}, yn = { class: "rg-roots" }, $n = { class: "rg-roots__bar" }, _n = {
   key: 0,
   class: "rg-topics__tabs rg-roots__tabs",
   role: "tablist",
   "aria-label": "Topic groups"
-}, $n = ["aria-selected", "onClick"], _n = { class: "rg-num" }, kn = { class: "rg-search rg-roots__search" }, wn = ["onClick"], xn = { key: 0 }, Cn = { class: "rg-num rg-faint" }, Sn = {
+}, kn = ["aria-selected", "onClick"], wn = { class: "rg-num" }, xn = { class: "rg-search rg-roots__search" }, Cn = ["onClick"], Sn = { key: 0 }, Mn = { class: "rg-num rg-faint" }, Tn = {
   key: 1,
   class: "rg-muted"
-}, Mn = {
+}, En = {
   __name: "RootPicker",
   setup(t) {
     const u = ye(Ee), l = ye("rg-start-combined", null), g = ye("rg-choose-combined", null), d = K(""), b = K(null), f = { period: "Period", line: "Line", division: "Division", employee: "Employee" }, o = G(() => {
@@ -1483,7 +1500,7 @@ const en = ["onClick"], bt = {
     function i(r) {
       return Object.entries(r.filters ?? {}).filter(([, a]) => a).map(([a]) => f[a] ?? a);
     }
-    return (r, a) => (s(), n("div", bn, [
+    return (r, a) => (s(), n("div", yn, [
       a[5] || (a[5] = e("div", null, [
         e("h2", null, "What is this report about?"),
         e("p", {
@@ -1491,8 +1508,8 @@ const en = ["onClick"], bt = {
           style: { margin: "4px 0 0" }
         }, " Pick the main topic: each row of a detailed report is one of these. Fields from related topics can be added next. ")
       ], -1)),
-      e("div", hn, [
-        o.value.length > 1 && !d.value ? (s(), n("nav", yn, [
+      e("div", $n, [
+        o.value.length > 1 && !d.value ? (s(), n("nav", _n, [
           (s(!0), n(U, null, H(o.value, (c) => (s(), n("button", {
             key: c.name,
             type: "button",
@@ -1502,10 +1519,10 @@ const en = ["onClick"], bt = {
             onClick: (k) => b.value = c.name
           }, [
             N(y(c.name), 1),
-            e("span", _n, y(c.topics.length), 1)
-          ], 8, $n))), 128))
-        ])) : x("", !0),
-        e("label", kn, [
+            e("span", wn, y(c.topics.length), 1)
+          ], 8, kn))), 128))
+        ])) : w("", !0),
+        e("label", xn, [
           a[2] || (a[2] = e("span", { class: "rg-sr-only" }, "Search topics", -1)),
           E(F, { name: "search" }),
           se(e("input", {
@@ -1534,7 +1551,7 @@ const en = ["onClick"], bt = {
           a[3] || (a[3] = N(" Combine existing reports", -1))
         ]),
         a[4] || (a[4] = e("span", null, "Put columns of reports you already use side by side, one row per employee or per division, and add formulas across them.", -1))
-      ])) : x("", !0),
+      ])) : w("", !0),
       E(lt, {
         tag: "div",
         name: "rg-list-fade",
@@ -1548,25 +1565,25 @@ const en = ["onClick"], bt = {
             onClick: (k) => R(u).chooseRoot(c.key)
           }, [
             e("b", null, y(c.label), 1),
-            c.description ? (s(), n("span", xn, y(c.description), 1)) : x("", !0),
-            e("span", Cn, [
+            c.description ? (s(), n("span", Sn, y(c.description), 1)) : w("", !0),
+            e("span", Mn, [
               N(y(c.fields_count) + " fields", 1),
               i(c).length ? (s(), n(U, { key: 0 }, [
                 N(" · by " + y(i(c).join(", ")), 1)
-              ], 64)) : x("", !0)
+              ], 64)) : w("", !0)
             ])
-          ], 8, wn))), 128))
+          ], 8, Cn))), 128))
         ]),
         _: 1
       }),
-      R(u).state.roots && !M.value.length ? (s(), n("p", Sn, y(d.value ? "No topic matches your search." : "There are no topics you can report on yet. Ask an admin for access."), 1)) : x("", !0)
+      R(u).state.roots && !M.value.length ? (s(), n("p", Tn, y(d.value ? "No topic matches your search." : "There are no topics you can report on yet. Ask an admin for access."), 1)) : w("", !0)
     ]));
   }
-}, Tn = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }), En = new Intl.NumberFormat("en"), On = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+}, On = new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }), Rn = new Intl.NumberFormat("en"), Dn = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 function je(t) {
-  return t == null ? "—" : t < 1e4 ? En.format(t) : Tn.format(t);
+  return t == null ? "—" : t < 1e4 ? Rn.format(t) : On.format(t);
 }
-const Rn = [
+const An = [
   ["year", 31536e3],
   ["month", 2592e3],
   ["week", 604800],
@@ -1577,30 +1594,30 @@ const Rn = [
 function Kt(t, u = Date.now()) {
   if (!t) return "";
   const l = Math.round((new Date(t).getTime() - u) / 1e3);
-  for (const [g, d] of Rn)
-    if (Math.abs(l) >= d) return On.format(Math.round(l / d), g);
+  for (const [g, d] of An)
+    if (Math.abs(l) >= d) return Dn.format(Math.round(l / d), g);
   return "just now";
 }
-const Dn = {
+const Ln = {
   class: "rg-explorer",
   "aria-label": "Fields"
-}, An = { class: "rg-explorer__head" }, Ln = { class: "rg-search" }, Nn = { class: "rg-explorer__list" }, Vn = ["aria-expanded", "onClick"], Pn = { class: "rg-ds__meta" }, Fn = {
+}, Nn = { class: "rg-explorer__head" }, Vn = { class: "rg-search" }, Pn = { class: "rg-explorer__list" }, Fn = ["aria-expanded", "onClick"], qn = { class: "rg-ds__meta" }, In = {
   key: 0,
   class: "rg-badge rg-badge--info"
-}, qn = ["title"], In = {
+}, Un = ["title"], jn = {
   key: 2,
   class: "rg-badge rg-badge--warning",
   title: "Reachable in more than one way: you will be asked which"
-}, Un = {
+}, zn = {
   class: "rg-faint rg-num",
   style: { "font-size": "11px" }
-}, jn = {
+}, Bn = {
   key: 0,
   class: "rg-ds__fields"
-}, zn = ["title", "onDragstart", "onDblclick"], Bn = { class: "rg-fld__label" }, Gn = { class: "rg-fld__actions" }, Kn = ["aria-label", "onClick"], Hn = ["aria-label", "onClick"], Wn = {
+}, Gn = ["title", "onDragstart", "onDblclick"], Kn = { class: "rg-fld__label" }, Hn = { class: "rg-fld__actions" }, Wn = ["aria-label", "onClick"], Yn = ["aria-label", "onClick"], Jn = {
   key: 0,
   class: "rg-list__empty"
-}, Yn = {
+}, Zn = {
   __name: "FieldExplorer",
   setup(t) {
     const u = ye(Ee), l = K(""), g = K({}), d = G(() => {
@@ -1627,9 +1644,9 @@ const Dn = {
       var r;
       return (r = i.paths) == null ? void 0 : r.some((a) => a.multiplies_rows);
     }
-    return (i, r) => (s(), n("aside", Dn, [
-      e("div", An, [
-        e("label", Ln, [
+    return (i, r) => (s(), n("aside", Ln, [
+      e("div", Nn, [
+        e("label", Vn, [
           r[1] || (r[1] = e("span", { class: "rg-sr-only" }, "Search fields", -1)),
           E(F, { name: "search" }),
           se(e("input", {
@@ -1645,7 +1662,7 @@ const Dn = {
         ]),
         r[2] || (r[2] = e("span", { class: "rg-explorer__hint" }, "Drag fields onto Rows, Values or Filters, or use the buttons.", -1))
       ]),
-      e("div", Nn, [
+      e("div", Pn, [
         (s(!0), n(U, null, H(d.value, (a) => {
           var c, k;
           return s(), n("section", {
@@ -1664,17 +1681,17 @@ const Dn = {
                 class: "rg-chev"
               }),
               e("span", null, y(a.dataset.label), 1),
-              e("span", Pn, [
-                a.isRoot ? (s(), n("span", Fn, "report")) : M(a.dataset) ? (s(), n("span", {
+              e("span", qn, [
+                a.isRoot ? (s(), n("span", In, "report")) : M(a.dataset) ? (s(), n("span", {
                   key: 1,
                   class: "rg-badge",
                   title: `Several ${a.dataset.label} per ${(c = R(u).datasetsByKey.value[R(u).state.draft.root]) == null ? void 0 : c.label}`
-                }, "many", 8, qn)) : x("", !0),
-                ((k = a.dataset.paths) == null ? void 0 : k.length) > 1 ? (s(), n("span", In, y(a.dataset.paths.length) + " ways", 1)) : x("", !0),
-                e("span", Un, y(R(je)(a.dataset.row_estimate)), 1)
+                }, "many", 8, Un)) : w("", !0),
+                ((k = a.dataset.paths) == null ? void 0 : k.length) > 1 ? (s(), n("span", jn, y(a.dataset.paths.length) + " ways", 1)) : w("", !0),
+                e("span", zn, y(R(je)(a.dataset.row_estimate)), 1)
               ])
-            ], 8, Vn),
-            b(a) ? (s(), n("ul", jn, [
+            ], 8, Fn),
+            b(a) ? (s(), n("ul", Bn, [
               (s(!0), n(U, null, H(a.fields, (C) => (s(), n("li", {
                 key: C.key,
                 class: "rg-fld",
@@ -1692,8 +1709,8 @@ const Dn = {
                     class: "rg-fld__icon"
                   }, null, 8, ["name"])
                 ], 2),
-                e("span", Bn, y(C.label), 1),
-                e("span", Gn, [
+                e("span", Kn, y(C.label), 1),
+                e("span", Hn, [
                   e("button", {
                     type: "button",
                     class: "rg-btn rg-btn--ghost rg-btn--sm rg-btn--icon",
@@ -1705,7 +1722,7 @@ const Dn = {
                       name: "plus",
                       small: ""
                     })
-                  ], 8, Kn),
+                  ], 8, Wn),
                   C.key !== "__rows" ? (s(), n("button", {
                     key: 0,
                     type: "button",
@@ -1718,13 +1735,13 @@ const Dn = {
                       name: "filter",
                       small: ""
                     })
-                  ], 8, Hn)) : x("", !0)
+                  ], 8, Yn)) : w("", !0)
                 ])
-              ], 40, zn))), 128))
-            ])) : x("", !0)
+              ], 40, Gn))), 128))
+            ])) : w("", !0)
           ]);
         }), 128)),
-        d.value.length ? x("", !0) : (s(), n("p", Wn, "No field matches “" + y(l.value) + "”.", 1))
+        d.value.length ? w("", !0) : (s(), n("p", Jn, "No field matches “" + y(l.value) + "”.", 1))
       ])
     ]));
   }
@@ -1756,14 +1773,14 @@ const Dn = {
       rt(f.$slots, "default")
     ], 512));
   }
-}, Jn = { class: "rg-chip-wrap" }, Zn = ["aria-label", "title"], Qn = { class: "rg-chip__label" }, Xn = {
+}, Qn = { class: "rg-chip-wrap" }, Xn = ["aria-label", "title"], ea = { class: "rg-chip__label" }, ta = {
   key: 1,
   class: "rg-chip__tag"
-}, ea = ["aria-label"], ta = ["for"], sa = ["id", "value"], la = ["for"], na = ["id", "value"], aa = ["value"], oa = ["for"], ra = ["id", "value"], ia = ["value"], ua = ["for"], da = ["id", "value"], ca = {
+}, sa = ["aria-label"], la = ["for"], na = ["id", "value"], aa = ["for"], oa = ["id", "value"], ra = ["value"], ia = ["for"], ua = ["id", "value"], da = ["value"], ca = ["for"], ga = ["id", "value"], ma = {
   key: 3,
   class: "rg-faint",
   style: { margin: "0", "font-size": "11.5px" }
-}, ga = { class: "rg-pop__foot" }, ma = { class: "rg-pop__row" }, pa = {
+}, pa = { class: "rg-pop__foot" }, va = { class: "rg-pop__row" }, fa = {
   __name: "FieldChip",
   props: {
     item: { type: Object, required: !0 },
@@ -1794,10 +1811,10 @@ const Dn = {
       d.moveItem(l.item.uid, h), b.value = !1;
     }
     function C(h) {
-      const v = d.state.draft[l.shelf].findIndex((w) => w.uid === l.item.uid);
+      const v = d.state.draft[l.shelf].findIndex((x) => x.uid === l.item.uid);
       d.moveItem(l.item.uid, l.shelf, Math.max(0, v + h));
     }
-    return (h, p) => (s(), n("div", Jn, [
+    return (h, p) => (s(), n("div", Qn, [
       e("span", {
         class: ne(["rg-chip", [M.value, { "rg-chip--error": r.value, "rg-chip--dragging": f.value }]]),
         draggable: "true",
@@ -1819,9 +1836,9 @@ const Dn = {
           key: 0,
           name: "alert",
           small: ""
-        })) : x("", !0),
-        e("span", Qn, y(t.item.label), 1),
-        i.value ? (s(), n("span", Xn, y(i.value), 1)) : x("", !0),
+        })) : w("", !0),
+        e("span", ea, y(t.item.label), 1),
+        i.value ? (s(), n("span", ta, y(i.value), 1)) : w("", !0),
         e("button", {
           type: "button",
           class: "rg-chip__x",
@@ -1832,8 +1849,8 @@ const Dn = {
             name: "x",
             small: ""
           })
-        ], 8, ea)
-      ], 42, Zn),
+        ], 8, sa)
+      ], 42, Xn),
       b.value ? (s(), ae(Et, {
         key: 0,
         onClose: p[16] || (p[16] = (v) => b.value = !1)
@@ -1849,8 +1866,8 @@ const Dn = {
               value: t.item.label,
               maxlength: "120",
               onChange: p[7] || (p[7] = (v) => c({ label: v.target.value }))
-            }, null, 40, sa)
-          ], 8, ta),
+            }, null, 40, na)
+          ], 8, la),
           t.item.kind === "measure" && t.item.field !== "__rows" ? (s(), n("label", {
             key: 0,
             for: `rg-chip-agg-${t.item.uid}`
@@ -1865,9 +1882,9 @@ const Dn = {
               (s(!0), n(U, null, H(t.item.aggregations, (v) => (s(), n("option", {
                 key: v,
                 value: v
-              }, y(R(pt)[v]), 9, aa))), 128))
-            ], 40, na)
-          ], 8, la)) : x("", !0),
+              }, y(R(pt)[v]), 9, ra))), 128))
+            ], 40, oa)
+          ], 8, aa)) : w("", !0),
           t.item.kind === "dimension" && m.value ? (s(), n("label", {
             key: 1,
             for: `rg-chip-grain-${t.item.uid}`
@@ -1879,12 +1896,12 @@ const Dn = {
               value: t.item.grain ?? "",
               onChange: p[9] || (p[9] = (v) => c({ grain: v.target.value || null }))
             }, [
-              (s(), n(U, null, H(o, ([v, w]) => e("option", {
-                key: w,
+              (s(), n(U, null, H(o, ([v, x]) => e("option", {
+                key: x,
                 value: v ?? ""
-              }, y(w), 9, ia)), 64))
-            ], 40, ra)
-          ], 8, oa)) : x("", !0),
+              }, y(x), 9, da)), 64))
+            ], 40, ua)
+          ], 8, ia)) : w("", !0),
           t.item.kind !== "dimension" ? (s(), n("label", {
             key: 2,
             for: `rg-chip-format-${t.item.uid}`
@@ -1897,11 +1914,11 @@ const Dn = {
               placeholder: "#,##0.00 or 0.0%",
               maxlength: "64",
               onChange: p[10] || (p[10] = (v) => c({ format: v.target.value || null }))
-            }, null, 40, da)
-          ], 8, ua)) : x("", !0),
-          t.item.path ? (s(), n("p", ca, "Uses a chosen join path.")) : x("", !0),
-          e("div", ga, [
-            e("div", ma, [
+            }, null, 40, ga)
+          ], 8, ca)) : w("", !0),
+          t.item.path ? (s(), n("p", ma, "Uses a chosen join path.")) : w("", !0),
+          e("div", pa, [
+            e("div", va, [
               t.item.kind === "formula" ? (s(), n("button", {
                 key: 0,
                 type: "button",
@@ -1915,7 +1932,7 @@ const Dn = {
                   small: ""
                 }),
                 p[21] || (p[21] = N(" Edit formula ", -1))
-              ])) : x("", !0),
+              ])) : w("", !0),
               t.item.kind !== "dimension" ? (s(), n("button", {
                 key: 1,
                 type: "button",
@@ -1929,19 +1946,19 @@ const Dn = {
                   small: ""
                 }),
                 p[22] || (p[22] = N(" Filter on this ", -1))
-              ])) : x("", !0),
+              ])) : w("", !0),
               t.shelf === "values" && t.item.kind === "measure" && t.item.field !== "__rows" ? (s(), n("button", {
                 key: 2,
                 type: "button",
                 class: "rg-btn rg-btn--sm",
                 onClick: p[13] || (p[13] = (v) => k("rows"))
-              }, "Move to Rows")) : x("", !0),
+              }, "Move to Rows")) : w("", !0),
               t.shelf === "rows" ? (s(), n("button", {
                 key: 3,
                 type: "button",
                 class: "rg-btn rg-btn--sm",
                 onClick: p[14] || (p[14] = (v) => k("values"))
-              }, "Move to Values")) : x("", !0)
+              }, "Move to Values")) : w("", !0)
             ]),
             e("button", {
               type: "button",
@@ -1951,16 +1968,16 @@ const Dn = {
           ])
         ]),
         _: 1
-      })) : x("", !0)
+      })) : w("", !0)
     ]));
   }
-}, va = { class: "rg-shelf" }, fa = { class: "rg-shelf__title" }, ba = ["aria-label"], ha = {
+}, ba = { class: "rg-shelf" }, ha = { class: "rg-shelf__title" }, ya = ["aria-label"], $a = {
   key: 0,
   class: "rg-drop-marker"
-}, ya = {
+}, _a = {
   key: 0,
   class: "rg-drop-marker"
-}, $a = {
+}, ka = {
   key: 1,
   class: "rg-shelf__empty"
 }, Ht = {
@@ -1984,8 +2001,8 @@ const Dn = {
       var C;
       const c = [...((C = o.value) == null ? void 0 : C.querySelectorAll(".rg-chip-wrap")) ?? []], k = getComputedStyle(o.value).direction === "rtl";
       for (let h = 0; h < c.length; h++) {
-        const p = c[h].getBoundingClientRect(), v = p.left + p.width / 2, w = k ? a.clientX > v : a.clientX < v;
-        if (a.clientY < p.bottom && w) return h;
+        const p = c[h].getBoundingClientRect(), v = p.left + p.width / 2, x = k ? a.clientX > v : a.clientX < v;
+        if (a.clientY < p.bottom && x) return h;
       }
       return c.length;
     }
@@ -1996,8 +2013,8 @@ const Dn = {
       const c = m(a), k = f.value;
       b.value = !1, f.value = null, c && (c.kind === "field" && d.addField(c.dataset, c.field, l.shelf, k), c.kind === "item" && d.moveItem(c.uid, l.shelf, k));
     }
-    return (a, c) => (s(), n("div", va, [
-      e("span", fa, y(t.title), 1),
+    return (a, c) => (s(), n("div", ba, [
+      e("span", ha, y(t.title), 1),
       e("div", {
         ref_key: "zone",
         ref: o,
@@ -2012,24 +2029,24 @@ const Dn = {
         (s(!0), n(U, null, H(R(d).state.draft[t.shelf], (k, C) => (s(), n(U, {
           key: k.uid
         }, [
-          b.value && f.value === C ? (s(), n("span", ha)) : x("", !0),
-          E(pa, {
+          b.value && f.value === C ? (s(), n("span", $a)) : w("", !0),
+          E(fa, {
             item: k,
             shelf: t.shelf,
             onEditFormula: c[0] || (c[0] = (h) => g("edit-formula", h))
           }, null, 8, ["item", "shelf"])
         ], 64))), 128)),
-        b.value && f.value === R(d).state.draft[t.shelf].length ? (s(), n("span", ya)) : x("", !0),
-        !R(d).state.draft[t.shelf].length && !b.value ? (s(), n("span", $a, y(t.empty), 1)) : x("", !0),
+        b.value && f.value === R(d).state.draft[t.shelf].length ? (s(), n("span", _a)) : w("", !0),
+        !R(d).state.draft[t.shelf].length && !b.value ? (s(), n("span", ka, y(t.empty), 1)) : w("", !0),
         rt(a.$slots, "default")
-      ], 42, ba)
+      ], 42, ya)
     ]));
   }
-}, _a = ["aria-label", "onClick"], ka = ["id", "inputmode", "placeholder"], wa = {
+}, wa = ["aria-label", "onClick"], xa = ["id", "inputmode", "placeholder"], Ca = {
   key: 0,
   class: "rg-suggest",
   role: "listbox"
-}, xa = ["onMousedown"], Ca = {
+}, Sa = ["onMousedown"], Ma = {
   __name: "ValueListInput",
   props: {
     modelValue: { type: Array, default: () => [] },
@@ -2082,7 +2099,7 @@ const Dn = {
           type: "button",
           "aria-label": `Remove ${h}`,
           onClick: ge((p) => r(h), ["stop"])
-        }, "×", 8, _a)
+        }, "×", 8, wa)
       ]))), 128)),
       se(e("input", {
         id: t.inputId,
@@ -2093,10 +2110,10 @@ const Dn = {
         onKeydown: c,
         onFocus: C[1] || (C[1] = (h) => t.field && (b.value = b.value)),
         onBlur: a
-      }, null, 40, ka), [
+      }, null, 40, xa), [
         [ce, b.value]
       ]),
-      o.value && f.value.length ? (s(), n("ul", wa, [
+      o.value && f.value.length ? (s(), n("ul", Ca, [
         (s(!0), n(U, null, H(f.value, (h) => (s(), n("li", {
           key: String(h)
         }, [
@@ -2104,12 +2121,12 @@ const Dn = {
             type: "button",
             role: "option",
             onMousedown: ge((p) => i(h), ["prevent"])
-          }, y(h), 41, xa)
+          }, y(h), 41, Sa)
         ]))), 128))
-      ])) : x("", !0)
+      ])) : w("", !0)
     ]));
   }
-}, Sa = ["id", "value"], Ma = ["id", "value"], Ta = ["value"], Ea = ["id", "value"], Oa = ["id", "value"], Ra = ["id", "type", "value"], Da = ["id", "type", "value"], Aa = ["id", "type", "value"], La = {
+}, Ta = ["id", "value"], Ea = ["id", "value"], Oa = ["value"], Ra = ["id", "value"], Da = ["id", "value"], Aa = ["id", "type", "value"], La = ["id", "type", "value"], Na = ["id", "type", "value"], Va = {
   __name: "FilterValue",
   props: { node: { type: Object, required: !0 } },
   emits: ["update"],
@@ -2141,7 +2158,7 @@ const Dn = {
         }, "Choose", -1),
         e("option", { value: "true" }, "Yes", -1),
         e("option", { value: "false" }, "No", -1)
-      ])], 40, Sa)) : t.node.op === "between" && d.value ? (s(), n(U, { key: 2 }, [
+      ])], 40, Ta)) : t.node.op === "between" && d.value ? (s(), n(U, { key: 2 }, [
         e("select", {
           id: m("preset"),
           class: "rg-select",
@@ -2149,13 +2166,13 @@ const Dn = {
           "aria-label": "Date range",
           onChange: c[1] || (c[1] = (v) => M(v.target.value === "custom" ? ["", ""] : v.target.value))
         }, [
-          (s(!0), n(U, null, H(R(zt), ([v, w]) => (s(), n("option", {
+          (s(!0), n(U, null, H(R(zt), ([v, x]) => (s(), n("option", {
             key: v,
             value: v
-          }, y(w), 9, Ta))), 128)),
+          }, y(x), 9, Oa))), 128)),
           c[8] || (c[8] = e("option", { value: "custom" }, "Custom range…", -1))
-        ], 40, Ma),
-        o.value ? x("", !0) : (s(), n(U, { key: 0 }, [
+        ], 40, Ea),
+        o.value ? w("", !0) : (s(), n(U, { key: 0 }, [
           e("input", {
             id: m("from"),
             class: "rg-input",
@@ -2163,7 +2180,7 @@ const Dn = {
             "aria-label": "From",
             value: ((k = t.node.value) == null ? void 0 : k[0]) ?? "",
             onChange: c[2] || (c[2] = (v) => i(0, v.target.value))
-          }, null, 40, Ea),
+          }, null, 40, Ra),
           c[9] || (c[9] = e("span", { class: "rg-faint" }, "to", -1)),
           e("input", {
             id: m("to"),
@@ -2172,7 +2189,7 @@ const Dn = {
             "aria-label": "To",
             value: ((C = t.node.value) == null ? void 0 : C[1]) ?? "",
             onChange: c[3] || (c[3] = (v) => i(1, v.target.value))
-          }, null, 40, Oa)
+          }, null, 40, Da)
         ], 64))
       ], 64)) : t.node.op === "between" ? (s(), n(U, { key: 3 }, [
         e("input", {
@@ -2183,7 +2200,7 @@ const Dn = {
           style: { width: "110px" },
           value: ((h = t.node.value) == null ? void 0 : h[0]) ?? "",
           onChange: c[4] || (c[4] = (v) => i(0, v.target.value))
-        }, null, 40, Ra),
+        }, null, 40, Aa),
         c[10] || (c[10] = e("span", { class: "rg-faint" }, "and", -1)),
         e("input", {
           id: m("to"),
@@ -2193,8 +2210,8 @@ const Dn = {
           style: { width: "110px" },
           value: ((p = t.node.value) == null ? void 0 : p[1]) ?? "",
           onChange: c[5] || (c[5] = (v) => i(1, v.target.value))
-        }, null, 40, Da)
-      ], 64)) : ["in", "not_in"].includes(t.node.op) ? (s(), ae(Ca, {
+        }, null, 40, La)
+      ], 64)) : ["in", "not_in"].includes(t.node.op) ? (s(), ae(Ma, {
         key: 4,
         "input-id": m("list"),
         "model-value": Array.isArray(t.node.value) ? t.node.value : [],
@@ -2210,21 +2227,21 @@ const Dn = {
         style: Me({ width: d.value ? "auto" : "160px" }),
         value: t.node.value ?? "",
         onChange: c[6] || (c[6] = (v) => r(v.target.value))
-      }, null, 44, Aa));
+      }, null, 44, Na));
     };
   }
-}, Na = {
+}, Pa = {
   key: 0,
   class: "rg-filter-row"
-}, Va = {
+}, Fa = {
   class: "rg-bool-toggle",
   role: "group",
   "aria-label": "How filters combine"
-}, Pa = ["aria-pressed"], Fa = ["aria-pressed"], qa = ["title"], Ia = ["id", "value", "onChange"], Ua = ["value"], ja = ["aria-label", "onClick"], za = {
+}, qa = ["aria-pressed"], Ia = ["aria-pressed"], Ua = ["title"], ja = ["id", "value", "onChange"], za = ["value"], Ba = ["aria-label", "onClick"], Ga = {
   key: 1,
   class: "rg-faint",
   style: { margin: "0", "font-size": "12px" }
-}, Ba = /* @__PURE__ */ Object.assign({ name: "FilterGroupView" }, {
+}, Ka = /* @__PURE__ */ Object.assign({ name: "FilterGroupView" }, {
   __name: "FilterGroupView",
   props: {
     group: { type: Object, required: !0 },
@@ -2251,22 +2268,22 @@ const Dn = {
         onDragover: f[3] || (f[3] = (m) => t.nested && [...m.dataTransfer.types].includes("application/x-rg") && m.preventDefault()),
         onDrop: f[4] || (f[4] = ge((m) => t.nested && (m.preventDefault(), d(m)), ["stop"]))
       }, [
-        t.group.items.length > 1 || t.nested ? (s(), n("div", Na, [
+        t.group.items.length > 1 || t.nested ? (s(), n("div", Pa, [
           f[5] || (f[5] = e("span", {
             class: "rg-faint",
             style: { "font-size": "12px" }
           }, "Match", -1)),
-          e("span", Va, [
+          e("span", Fa, [
             e("button", {
               type: "button",
               "aria-pressed": t.group.boolean === "and" ? "true" : "false",
               onClick: f[0] || (f[0] = (m) => g("and"))
-            }, "ALL", 8, Pa),
+            }, "ALL", 8, qa),
             e("button", {
               type: "button",
               "aria-pressed": t.group.boolean === "or" ? "true" : "false",
               onClick: f[1] || (f[1] = (m) => g("or"))
-            }, "ANY", 8, Fa)
+            }, "ANY", 8, Ia)
           ]),
           f[6] || (f[6] = e("span", {
             class: "rg-faint",
@@ -2278,8 +2295,8 @@ const Dn = {
             class: "rg-btn rg-btn--ghost rg-btn--sm",
             style: { "margin-inline-start": "auto" },
             onClick: f[2] || (f[2] = (m) => R(l).removeFilter(t.group.uid))
-          }, "Remove group")) : x("", !0)
-        ])) : x("", !0),
+          }, "Remove group")) : w("", !0)
+        ])) : w("", !0),
         (s(!0), n(U, null, H(t.group.items, (m) => (s(), n(U, {
           key: m.uid
         }, [
@@ -2299,9 +2316,9 @@ const Dn = {
                 key: 0,
                 name: "hash",
                 small: ""
-              })) : x("", !0),
+              })) : w("", !0),
               N(" " + y(m.label), 1)
-            ], 8, qa),
+            ], 8, Ua),
             e("select", {
               id: `rg-filter-${m.uid}-op`,
               class: "rg-select",
@@ -2312,9 +2329,9 @@ const Dn = {
               (s(!0), n(U, null, H(R(es)(m.type, m.isTotal), (M) => (s(), n("option", {
                 key: M,
                 value: M
-              }, y(R(ql)[M]), 9, Ua))), 128))
-            ], 40, Ia),
-            E(La, {
+              }, y(R(Ul)[M]), 9, za))), 128))
+            ], 40, ja),
+            E(Va, {
               node: m,
               onUpdate: (M) => R(l).updateFilter(m, M)
             }, null, 8, ["node", "onUpdate"]),
@@ -2328,14 +2345,14 @@ const Dn = {
                 name: "x",
                 small: ""
               })
-            ], 8, ja)
+            ], 8, Ba)
           ], 2))
         ], 64))), 128)),
-        t.nested && !t.group.items.length ? (s(), n("p", za, " Drop fields here to add conditions to this group. ")) : x("", !0)
+        t.nested && !t.group.items.length ? (s(), n("p", Ga, " Drop fields here to add conditions to this group. ")) : w("", !0)
       ], 34);
     };
   }
-}), kt = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], Ga = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], wt = /* @__PURE__ */ new Map();
+}), kt = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], Ha = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"], wt = /* @__PURE__ */ new Map();
 function Wt(t, u, l) {
   const g = `${t}|${u}|${l}`;
   return wt.has(g) || wt.set(g, new Intl.NumberFormat("en", {
@@ -2345,7 +2362,7 @@ function Wt(t, u, l) {
     style: l ? "percent" : "decimal"
   })), wt.get(g);
 }
-function Ka(t) {
+function Wa(t) {
   if (!t) return null;
   const u = t.includes("%"), l = t.includes(",");
   return { decimals: (t.split(".")[1] ?? "").replace(/[^0#]/g, "").length, grouping: l, percent: u };
@@ -2353,20 +2370,20 @@ function Ka(t) {
 function as(t, u, l = "decimal") {
   const g = typeof t == "number" ? t : Number(t);
   if (!Number.isFinite(g)) return String(t);
-  const d = Ka(u);
+  const d = Wa(u);
   if (d) return Wt(d.decimals, d.grouping, d.percent).format(g);
   const b = l === "integer" || Number.isInteger(g) ? 0 : 2;
   return Wt(b, !0, !1).format(g);
 }
-function Ha(t) {
+function Ya(t) {
   const u = /^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/.exec(String(t));
   return u ? { year: +u[1], month: +u[2], day: +u[3], hour: u[4] !== void 0 ? +u[4] : null, minute: u[5] !== void 0 ? +u[5] : null } : null;
 }
-function Wa(t, u = null, l = "date") {
+function Ja(t, u = null, l = "date") {
   if (u === "month_of_year") return kt[(+t - 1) % 12] ?? String(t);
-  if (u === "day_of_week") return Ga[(+t - 1) % 7] ?? String(t);
+  if (u === "day_of_week") return Ha[(+t - 1) % 7] ?? String(t);
   if (u === "hour_of_day") return `${String(t).padStart(2, "0")}:00`;
-  const g = Ha(t);
+  const g = Ya(t);
   if (!g) return String(t);
   const d = `${g.day} ${kt[g.month - 1]} ${g.year}`;
   switch (u) {
@@ -2387,30 +2404,30 @@ function Wa(t, u = null, l = "date") {
   }
 }
 function ke(t, u) {
-  return t == null || t === "" ? u.kind === "measure" ? "–" : "(empty)" : u.grain || u.type === "date" || u.type === "datetime" ? Wa(t, u.grain, u.type) : u.type === "boolean" ? t === !0 || t === 1 || t === "1" || t === "t" ? "Yes" : "No" : u.type === "integer" || u.type === "decimal" || u.kind === "measure" ? as(t, u.format, u.type) : String(t);
+  return t == null || t === "" ? u.kind === "measure" ? "–" : "(empty)" : u.grain || u.type === "date" || u.type === "datetime" ? Ja(t, u.grain, u.type) : u.type === "boolean" ? t === !0 || t === 1 || t === "1" || t === "t" ? "Yes" : "No" : u.type === "integer" || u.type === "decimal" || u.kind === "measure" ? as(t, u.format, u.type) : String(t);
 }
 function We(t) {
   return !t.grain && (t.kind === "measure" || t.type === "integer" || t.type === "decimal");
 }
-const Ya = {
+const Za = {
   class: "rg-gridbar",
   role: "toolbar",
   "aria-label": "Grid"
-}, Ja = {
+}, Qa = {
   class: "rg-gridbar__group",
   style: { position: "relative" }
-}, Za = ["aria-expanded"], Qa = {
+}, Xa = ["aria-expanded"], eo = {
   key: 0,
   class: "rg-badge rg-badge--info"
-}, Xa = ["onDragstart", "onDrop"], eo = ["checked", "onChange"], to = { class: "rg-colchooser__moves" }, so = ["aria-label", "disabled", "onClick"], lo = ["aria-label", "disabled", "onClick"], no = {
+}, to = ["onDragstart", "onDrop"], so = ["checked", "onChange"], lo = { class: "rg-colchooser__moves" }, no = ["aria-label", "disabled", "onClick"], ao = ["aria-label", "disabled", "onClick"], oo = {
   class: "rg-segmented",
   role: "group",
   "aria-label": "Row height"
-}, ao = ["aria-pressed"], oo = ["aria-pressed"], ro = ["aria-pressed"], io = ["aria-pressed"], uo = { class: "rg-gridbar__group rg-gridbar__end" }, co = ["title"], go = {
+}, ro = ["aria-pressed"], io = ["aria-pressed"], uo = ["aria-pressed"], co = ["aria-pressed"], go = { class: "rg-gridbar__group rg-gridbar__end" }, mo = ["title"], po = {
   class: "rg-segmented",
   role: "group",
   "aria-label": "Browse"
-}, mo = ["aria-pressed"], po = ["aria-pressed", "disabled", "title"], vo = ["disabled"], fo = ["disabled"], bo = {
+}, vo = ["aria-pressed"], fo = ["aria-pressed", "disabled", "title"], bo = ["disabled"], ho = ["disabled"], yo = {
   __name: "GridToolbar",
   props: {
     columns: { type: Array, required: !0 },
@@ -2439,8 +2456,8 @@ const Ya = {
     function i() {
       Object.assign(l.prefs, { hidden: [], order: [], widths: {} });
     }
-    return (r, a) => (s(), n("div", Ya, [
-      e("div", Ja, [
+    return (r, a) => (s(), n("div", Za, [
+      e("div", Qa, [
         e("button", {
           type: "button",
           class: "rg-btn rg-btn--sm",
@@ -2452,8 +2469,8 @@ const Ya = {
             small: ""
           }),
           a[12] || (a[12] = N(" Columns ", -1)),
-          f.value ? (s(), n("span", Qa, y(f.value) + " hidden", 1)) : x("", !0)
-        ], 8, Za),
+          f.value ? (s(), n("span", eo, y(f.value) + " hidden", 1)) : w("", !0)
+        ], 8, Xa),
         d.value ? (s(), ae(Et, {
           key: 0,
           class: "rg-colchooser",
@@ -2494,46 +2511,46 @@ const Ya = {
                       class: "rg-check",
                       checked: !t.prefs.hidden.includes(c.alias),
                       onChange: (C) => o(c.alias)
-                    }, null, 40, eo),
+                    }, null, 40, so),
                     N(" " + y(c.label), 1)
                   ]),
-                  e("span", to, [
+                  e("span", lo, [
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
                       "aria-label": `Move ${c.label} up`,
                       disabled: k === 0,
                       onClick: (C) => m(c.alias, k - 1)
-                    }, "↑", 8, so),
+                    }, "↑", 8, no),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
                       "aria-label": `Move ${c.label} down`,
                       disabled: k === t.columns.length - 1,
                       onClick: (C) => m(c.alias, k + 1)
-                    }, "↓", 8, lo)
+                    }, "↓", 8, ao)
                   ])
-                ], 42, Xa))), 128))
+                ], 42, to))), 128))
               ]),
               _: 1
             }),
             a[15] || (a[15] = e("p", { class: "rg-faint rg-colchooser__hint" }, "Drag to reorder. Drag a header's edge to resize it.", -1))
           ]),
           _: 1
-        })) : x("", !0),
-        e("div", no, [
+        })) : w("", !0),
+        e("div", oo, [
           e("button", {
             type: "button",
             "aria-pressed": t.prefs.density === "comfortable",
             title: "Comfortable rows",
             onClick: a[4] || (a[4] = (c) => t.prefs.density = "comfortable")
-          }, "Comfortable", 8, ao),
+          }, "Comfortable", 8, ro),
           e("button", {
             type: "button",
             "aria-pressed": t.prefs.density === "compact",
             title: "Compact rows",
             onClick: a[5] || (a[5] = (c) => t.prefs.density = "compact")
-          }, "Compact", 8, oo)
+          }, "Compact", 8, io)
         ]),
         e("button", {
           type: "button",
@@ -2541,7 +2558,7 @@ const Ya = {
           "aria-pressed": t.prefs.freeze,
           title: "Keep the first column visible while scrolling sideways",
           onClick: a[6] || (a[6] = (c) => t.prefs.freeze = !t.prefs.freeze)
-        }, " Freeze first column ", 8, ro),
+        }, " Freeze first column ", 8, uo),
         t.canTotal ? (s(), n("button", {
           key: 1,
           type: "button",
@@ -2549,27 +2566,27 @@ const Ya = {
           "aria-pressed": t.prefs.totals,
           title: "Grand totals of the whole report, not just the loaded rows",
           onClick: a[7] || (a[7] = (c) => t.prefs.totals = !t.prefs.totals)
-        }, " Σ Totals ", 8, io)) : x("", !0)
+        }, " Σ Totals ", 8, co)) : w("", !0)
       ]),
-      e("div", uo, [
+      e("div", go, [
         t.summary ? (s(), n("span", {
           key: 0,
           class: "rg-faint rg-num",
           title: `${t.summary.duration_ms} ms`
-        }, y(R(je)(t.summary.rows)) + " rows", 9, co)) : x("", !0),
-        e("div", go, [
+        }, y(R(je)(t.summary.rows)) + " rows", 9, mo)) : w("", !0),
+        e("div", po, [
           e("button", {
             type: "button",
             "aria-pressed": t.prefs.paging === "scroll",
             onClick: a[8] || (a[8] = (c) => t.prefs.paging = "scroll")
-          }, "Scroll", 8, mo),
+          }, "Scroll", 8, vo),
           e("button", {
             type: "button",
             "aria-pressed": t.prefs.paging === "pages",
             disabled: t.grouped,
             title: t.grouped ? "Groups load as you open them; pages are for flat reports" : "Numbered pages",
             onClick: a[9] || (a[9] = (c) => t.prefs.paging = "pages")
-          }, "Pages", 8, po)
+          }, "Pages", 8, fo)
         ]),
         t.canExport ? (s(), n(U, { key: 1 }, [
           e("button", {
@@ -2585,7 +2602,7 @@ const Ya = {
               small: ""
             }, null, 8, ["name", "spin"]),
             a[16] || (a[16] = N(" CSV ", -1))
-          ], 8, vo),
+          ], 8, bo),
           e("button", {
             type: "button",
             class: "rg-btn rg-btn--sm",
@@ -2599,47 +2616,47 @@ const Ya = {
               small: ""
             }, null, 8, ["name", "spin"]),
             a[17] || (a[17] = N(" Excel ", -1))
-          ], 8, fo)
-        ], 64)) : x("", !0)
+          ], 8, ho)
+        ], 64)) : w("", !0)
       ])
     ]));
   }
-}, ho = {
+}, $o = {
   key: 0,
   class: "rg-gridbox__error",
   role: "alert"
-}, yo = ["aria-rowcount", "aria-busy"], $o = ["aria-sort"], _o = ["title", "onClick"], ko = {
+}, _o = ["aria-rowcount", "aria-busy"], ko = ["aria-sort"], wo = ["title", "onClick"], xo = {
   key: 0,
   class: "rg-sort",
   "aria-hidden": "true"
-}, wo = ["aria-label", "onMousedown", "onDblclick"], xo = {
+}, Co = ["aria-label", "onMousedown", "onDblclick"], So = {
   key: 0,
   class: "rg-grid__more"
-}, Co = ["colspan"], So = ["onClick"], Mo = ["onMousedown", "onMouseenter"], To = {
+}, Mo = ["colspan"], To = ["onClick"], Eo = ["onMousedown", "onMouseenter"], Oo = {
   key: 0,
   class: "rg-tree"
-}, Eo = ["aria-expanded", "aria-label", "onClick"], Oo = {
+}, Ro = ["aria-expanded", "aria-label", "onClick"], Do = {
   key: 1,
   style: { width: "20px", display: "inline-block" }
-}, Ro = { key: 1 }, Do = ["colspan"], Ao = { key: 0 }, Lo = { class: "rg-grid__totals" }, No = { key: 0 }, Vo = {
+}, Ao = { key: 1 }, Lo = ["colspan"], No = { key: 0 }, Vo = { class: "rg-grid__totals" }, Po = { key: 0 }, Fo = {
   key: 1,
   class: "rg-muted",
   style: { padding: "10px 16px" }
-}, Po = { class: "rg-gridfoot" }, Fo = {
+}, qo = { class: "rg-gridfoot" }, Io = {
   key: "stats",
   class: "rg-gridfoot__stats",
   "aria-live": "polite"
-}, qo = { key: 0 }, Io = { class: "rg-num" }, Uo = { key: 1 }, jo = { class: "rg-num" }, zo = { key: 2 }, Bo = { class: "rg-num" }, Go = { key: 3 }, Ko = { class: "rg-num" }, Ho = { class: "rg-num" }, Wo = {
+}, Uo = { key: 0 }, jo = { class: "rg-num" }, zo = { key: 1 }, Bo = { class: "rg-num" }, Go = { key: 2 }, Ko = { class: "rg-num" }, Ho = { key: 3 }, Wo = { class: "rg-num" }, Yo = { class: "rg-num" }, Jo = {
   key: "rows",
   class: "rg-gridfoot__stats rg-faint"
-}, Yo = { key: 0 }, Jo = { key: 1 }, Zo = ["title"], Qo = {
+}, Zo = { key: 0 }, Qo = { key: 1 }, Xo = ["title"], er = {
   key: 3,
   class: "rg-gridfoot__hint"
-}, Xo = {
+}, tr = {
   key: 0,
   class: "rg-pager",
   "aria-label": "Pages"
-}, er = { class: "rg-pager__size" }, tr = ["value"], sr = ["disabled"], lr = ["disabled"], nr = { class: "rg-num" }, ar = ["max", "value"], or = ["disabled"], rr = ["disabled"], Ot = {
+}, sr = { class: "rg-pager__size" }, lr = ["value"], nr = ["disabled"], ar = ["disabled"], or = { class: "rg-num" }, rr = ["max", "value"], ir = ["disabled"], ur = ["disabled"], Ot = {
   __name: "ResultGrid",
   setup(t, { expose: u }) {
     const l = ye(Ee), g = $e(/* @__PURE__ */ new Map()), d = $e(/* @__PURE__ */ new Set()), b = K([]), f = K(null), o = K(null);
@@ -2665,7 +2682,7 @@ const Ya = {
         }
     }
     he(r, k, { deep: !0 }), he(a, c, { immediate: !0 });
-    const C = G(() => l.state.draft), h = G(() => l.grouped.value), p = G(() => C.value.rows.map((P) => P.as)), v = G(() => Object.fromEntries([...C.value.rows, ...C.value.values].map((P) => [P.as, P]))), w = (P) => JSON.stringify(P);
+    const C = G(() => l.state.draft), h = G(() => l.grouped.value), p = G(() => C.value.rows.map((P) => P.as)), v = G(() => Object.fromEntries([...C.value.rows, ...C.value.values].map((P) => [P.as, P]))), x = (P) => JSON.stringify(P);
     function O(P) {
       const I = v.value[P.alias];
       return { ...P, grain: (I == null ? void 0 : I.kind) === "dimension" ? I.grain : null };
@@ -2697,16 +2714,16 @@ const Ya = {
     }
     const X = G(() => r.paging === "pages" && !h.value), W = K(1), pe = G(() => {
       const P = [], I = (Z, te) => {
-        const oe = g.get(w(Z));
+        const oe = g.get(x(Z));
         oe && (oe.rows.forEach((_e, De) => {
-          const Ce = h.value ? [...Z, _e[p.value[te]]] : null, ee = h.value ? w(Ce) : `${w(Z)}#${De}`;
+          const Ce = h.value ? [...Z, _e[p.value[te]]] : null, ee = h.value ? x(Ce) : `${x(Z)}#${De}`;
           P.push({ row: _e, level: te, keys: Ce, key: ee }), h.value && d.has(ee) && I(Ce, te + 1);
-        }), oe.hasMore && Z.length > 0 && P.push({ more: !0, keys: Z, level: te, key: `${w(Z)}#more` }));
+        }), oe.hasMore && Z.length > 0 && P.push({ more: !0, keys: Z, level: te, key: `${x(Z)}#more` }));
       };
       return I([], 0), P;
-    }), z = G(() => pe.value.filter((P) => !P.more)), B = G(() => g.get(w([])));
+    }), z = G(() => pe.value.filter((P) => !P.more)), B = G(() => g.get(x([])));
     async function q(P, I = !1) {
-      const Z = w(P);
+      const Z = x(P);
       g.has(Z) || g.set(Z, { rows: [], hasMore: !1, loading: !1 });
       const te = g.get(Z);
       if (te.loading) return;
@@ -2928,7 +2945,7 @@ const Ya = {
       return s(), n("div", {
         class: ne(["rg-gridbox", [`rg-gridbox--${r.density}`, { "rg-gridbox--frozen": r.freeze }]])
       }, [
-        E(bo, {
+        E(yo, {
           columns: _.value,
           prefs: r,
           grouped: h.value,
@@ -2940,13 +2957,13 @@ const Ya = {
           onExport: bs,
           onAutosize: I[0] || (I[0] = (ee) => Vt(ee))
         }, null, 8, ["columns", "prefs", "grouped", "can-export", "can-total", "exporting", "summary", "summary-loading"]),
-        gt.value ? (s(), n("p", ho, [
+        gt.value ? (s(), n("p", $o, [
           E(F, {
             name: "alert",
             small: ""
           }),
           N(" " + y(gt.value), 1)
-        ])) : x("", !0),
+        ])) : w("", !0),
         e("div", {
           ref_key: "wrap",
           ref: f,
@@ -2976,8 +2993,8 @@ const Ya = {
                     onClick: (we) => R(l).toggleSort(ee.sortAlias ?? ee.alias)
                   }, [
                     N(y(ee.label) + " ", 1),
-                    Be(ee) ? (s(), n("span", ko, y(Be(ee) === "asc" ? "↑" : "↓"), 1)) : x("", !0)
-                  ], 8, _o),
+                    Be(ee) ? (s(), n("span", xo, y(Be(ee) === "asc" ? "↑" : "↓"), 1)) : w("", !0)
+                  ], 8, wo),
                   e("span", {
                     class: "rg-resize",
                     role: "separator",
@@ -2986,8 +3003,8 @@ const Ya = {
                     title: "Drag to resize, double-click to fit",
                     onMousedown: (we) => fs(we, ee),
                     onDblclick: (we) => Vt(ee)
-                  }, null, 40, wo)
-                ], 14, $o))), 128))
+                  }, null, 40, Co)
+                ], 14, ko))), 128))
               ])
             ]),
             e("tbody", null, [
@@ -3003,11 +3020,11 @@ const Ya = {
                     style: Me({ width: `${40 + (ee * 23 + we.alias.length * 7) % 50}%` })
                   }, null, 4)
                 ]))), 128))
-              ])), 64)) : x("", !0),
+              ])), 64)) : w("", !0),
               (s(!0), n(U, null, H(pe.value, (ee) => (s(), n(U, {
                 key: ee.key
               }, [
-                ee.more ? (s(), n("tr", xo, [
+                ee.more ? (s(), n("tr", So, [
                   e("td", {
                     colspan: S.value.length
                   }, [
@@ -3015,8 +3032,8 @@ const Ya = {
                       type: "button",
                       class: "rg-btn rg-btn--sm rg-btn--ghost",
                       onClick: (we) => q(ee.keys, !0)
-                    }, "Show more", 8, So)
-                  ], 8, Co)
+                    }, "Show more", 8, To)
+                  ], 8, Mo)
                 ])) : (s(), n("tr", {
                   key: 1,
                   class: ne(["rg-row", { "rg-row--group": Te(ee), "rg-row--subtotal": Number(ee.row.__subtotal) > 0 }])
@@ -3036,7 +3053,7 @@ const Ya = {
                       onMousedown: ($t) => be($t, ee, tt),
                       onMouseenter: ($t) => me(ee, tt)
                     }, [
-                      tt === 0 && h.value ? (s(), n("span", To, [
+                      tt === 0 && h.value ? (s(), n("span", Oo, [
                         Te(ee) ? (s(), n("button", {
                           key: 0,
                           type: "button",
@@ -3050,70 +3067,70 @@ const Ya = {
                             small: "",
                             spin: !!((Ft = g.get(ee.key)) != null && Ft.loading)
                           }, null, 8, ["name", "spin"])
-                        ], 8, Eo)) : (s(), n("span", Oo)),
+                        ], 8, Ro)) : (s(), n("span", Do)),
                         N(" " + y(Xe(ee, we)), 1)
                       ])) : (s(), n(U, { key: 1 }, [
                         N(y(Xe(ee, we)), 1)
                       ], 64))
-                    ], 46, Mo);
+                    ], 46, Eo);
                   }), 128))
                 ], 2))
               ], 64))), 128)),
-              B.value && !B.value.rows.length && !B.value.loading && !R(l).state.error ? (s(), n("tr", Ro, [
+              B.value && !B.value.rows.length && !B.value.loading && !R(l).state.error ? (s(), n("tr", Ao, [
                 e("td", {
                   colspan: S.value.length,
                   class: "rg-muted",
                   style: { "text-align": "center", height: "80px" }
-                }, "No rows match these filters.", 8, Do)
-              ])) : x("", !0)
+                }, "No rows match these filters.", 8, Lo)
+              ])) : w("", !0)
             ]),
-            re.value && ((oe = B.value) != null && oe.rows.length) ? (s(), n("tfoot", Ao, [
-              e("tr", Lo, [
+            re.value && ((oe = B.value) != null && oe.rows.length) ? (s(), n("tfoot", No, [
+              e("tr", Vo, [
                 (s(!0), n(U, null, H(S.value, (ee, we) => (s(), n("td", {
                   key: ee.alias,
                   class: ne({ "rg-num": R(We)(ee) }),
                   style: Me($(ee))
                 }, [
-                  we === 0 && !dt(ee) ? (s(), n("b", No, "Grand total")) : (s(), n(U, { key: 1 }, [
+                  we === 0 && !dt(ee) ? (s(), n("b", Po, "Grand total")) : (s(), n(U, { key: 1 }, [
                     N(y(dt(ee)), 1)
                   ], 64))
                 ], 6))), 128))
               ])
-            ])) : x("", !0)
-          ], 2)) : x("", !0),
+            ])) : w("", !0)
+          ], 2)) : w("", !0),
           e("div", {
             ref_key: "sentinel",
             ref: o,
             class: "rg-sentinel"
           }, null, 512),
-          !X.value && ((_e = B.value) != null && _e.hasMore) && ((De = B.value) != null && De.loading) && B.value.rows.length ? (s(), n("div", Vo, "Loading more…")) : x("", !0)
-        ], 40, yo),
-        e("footer", Po, [
+          !X.value && ((_e = B.value) != null && _e.hasMore) && ((De = B.value) != null && De.loading) && B.value.rows.length ? (s(), n("div", Fo, "Loading more…")) : w("", !0)
+        ], 40, _o),
+        e("footer", qo, [
           E(it, {
             name: "rg-swap",
             mode: "out-in"
           }, {
             default: de(() => [
-              Oe.value ? (s(), n("div", Fo, [
-                Oe.value.numbers ? (s(), n("span", qo, [
-                  I[7] || (I[7] = N("Sum ", -1)),
-                  e("b", Io, y(mt(Oe.value.sum)), 1)
-                ])) : x("", !0),
+              Oe.value ? (s(), n("div", Io, [
                 Oe.value.numbers ? (s(), n("span", Uo, [
-                  I[8] || (I[8] = N("Average ", -1)),
-                  e("b", jo, y(mt(Oe.value.avg)), 1)
-                ])) : x("", !0),
+                  I[7] || (I[7] = N("Sum ", -1)),
+                  e("b", jo, y(mt(Oe.value.sum)), 1)
+                ])) : w("", !0),
                 Oe.value.numbers ? (s(), n("span", zo, [
-                  I[9] || (I[9] = N("Min ", -1)),
-                  e("b", Bo, y(mt(Oe.value.min)), 1)
-                ])) : x("", !0),
+                  I[8] || (I[8] = N("Average ", -1)),
+                  e("b", Bo, y(mt(Oe.value.avg)), 1)
+                ])) : w("", !0),
                 Oe.value.numbers ? (s(), n("span", Go, [
+                  I[9] || (I[9] = N("Min ", -1)),
+                  e("b", Ko, y(mt(Oe.value.min)), 1)
+                ])) : w("", !0),
+                Oe.value.numbers ? (s(), n("span", Ho, [
                   I[10] || (I[10] = N("Max ", -1)),
-                  e("b", Ko, y(mt(Oe.value.max)), 1)
-                ])) : x("", !0),
+                  e("b", Wo, y(mt(Oe.value.max)), 1)
+                ])) : w("", !0),
                 e("span", null, [
                   I[11] || (I[11] = N("Count ", -1)),
-                  e("b", Ho, y(R(je)(Oe.value.count)), 1)
+                  e("b", Yo, y(R(je)(Oe.value.count)), 1)
                 ]),
                 e("button", {
                   type: "button",
@@ -3127,8 +3144,8 @@ const Ya = {
                   }, null, 8, ["name"]),
                   N(" " + y(Ge.value ? "Copied" : "Copy"), 1)
                 ])
-              ])) : (s(), n("div", Wo, [
-                L.value ? (s(), n("span", Yo, y(R(je)(L.value.rows)) + " " + y(L.value.rows === 1 ? "row" : "rows"), 1)) : D.value ? (s(), n("span", Jo, [
+              ])) : (s(), n("div", Jo, [
+                L.value ? (s(), n("span", Zo, y(R(je)(L.value.rows)) + " " + y(L.value.rows === 1 ? "row" : "rows"), 1)) : D.value ? (s(), n("span", Qo, [
                   E(F, {
                     name: "loader",
                     spin: "",
@@ -3138,14 +3155,14 @@ const Ya = {
                 ])) : A.value ? (s(), n("span", {
                   key: 2,
                   title: A.value
-                }, "Total rows unavailable", 8, Zo)) : x("", !0),
-                z.value.length ? (s(), n("span", Qo, "Click and drag to select cells")) : x("", !0)
+                }, "Total rows unavailable", 8, Xo)) : w("", !0),
+                z.value.length ? (s(), n("span", er, "Click and drag to select cells")) : w("", !0)
               ]))
             ]),
             _: 1
           }),
-          X.value ? (s(), n("nav", Xo, [
-            e("label", er, [
+          X.value ? (s(), n("nav", tr, [
+            e("label", sr, [
               I[13] || (I[13] = N(" Rows per page ", -1)),
               se(e("select", {
                 "onUpdate:modelValue": I[1] || (I[1] = (ee) => r.pageSize = ee),
@@ -3154,7 +3171,7 @@ const Ya = {
                 (s(), n(U, null, H([50, 100, 200, 500, 1e3], (ee) => e("option", {
                   key: ee,
                   value: ee
-                }, y(ee), 9, tr)), 64))
+                }, y(ee), 9, lr)), 64))
               ], 512), [
                 [
                   Pe,
@@ -3170,15 +3187,15 @@ const Ya = {
               "aria-label": "First page",
               disabled: W.value === 1,
               onClick: I[2] || (I[2] = (ee) => fe(1))
-            }, "«", 8, sr),
+            }, "«", 8, nr),
             e("button", {
               type: "button",
               class: "rg-btn rg-btn--icon rg-btn--ghost",
               "aria-label": "Previous page",
               disabled: W.value === 1,
               onClick: I[3] || (I[3] = (ee) => fe(W.value - 1))
-            }, "‹", 8, lr),
-            e("span", nr, [
+            }, "‹", 8, ar),
+            e("span", or, [
               I[14] || (I[14] = N("Page ", -1)),
               e("input", {
                 class: "rg-input rg-pager__input",
@@ -3188,10 +3205,10 @@ const Ya = {
                 value: W.value,
                 "aria-label": "Page",
                 onChange: I[4] || (I[4] = (ee) => fe(Number(ee.target.value)))
-              }, null, 40, ar),
+              }, null, 40, rr),
               V.value ? (s(), n(U, { key: 0 }, [
                 N(" of " + y(R(je)(V.value)), 1)
-              ], 64)) : x("", !0)
+              ], 64)) : w("", !0)
             ]),
             e("button", {
               type: "button",
@@ -3199,7 +3216,7 @@ const Ya = {
               "aria-label": "Next page",
               disabled: V.value ? W.value >= V.value : !((Ce = B.value) != null && Ce.hasMore),
               onClick: I[5] || (I[5] = (ee) => fe(W.value + 1))
-            }, "›", 8, or),
+            }, "›", 8, ir),
             V.value ? (s(), n("button", {
               key: 0,
               type: "button",
@@ -3207,48 +3224,48 @@ const Ya = {
               "aria-label": "Last page",
               disabled: W.value >= V.value,
               onClick: I[6] || (I[6] = (ee) => fe(V.value))
-            }, "»", 8, rr)) : x("", !0)
-          ])) : x("", !0)
+            }, "»", 8, ur)) : w("", !0)
+          ])) : w("", !0)
         ])
       ], 2);
     };
   }
-}, ir = {
+}, dr = {
   class: "rg-results",
   "aria-label": "Results"
-}, ur = {
+}, cr = {
   class: "rg-statusbar",
   role: "status",
   "aria-live": "polite"
-}, dr = { class: "rg-num" }, cr = {
+}, gr = { class: "rg-num" }, mr = {
   key: 0,
   class: "rg-badge rg-badge--success"
-}, gr = {
+}, pr = {
   key: 1,
   class: "rg-num",
   title: "How many rows the database expects to read"
-}, mr = {
+}, vr = {
   key: 2,
   class: "rg-badge rg-badge--warning",
   title: "Large enough that exporting it will run in the background"
-}, pr = {
+}, fr = {
   key: 2,
   class: "rg-faint"
-}, vr = ["aria-expanded"], fr = {
+}, br = ["aria-expanded"], hr = {
   key: 0,
   class: "rg-mono",
   style: { margin: "0", padding: "10px 16px", "max-height": "160px", overflow: "auto", background: "var(--rg-sunken)", "white-space": "pre-wrap", "font-size": "11.5px" }
-}, br = {
+}, yr = {
   key: 1,
   class: "rg-errorbox",
   role: "alert"
-}, hr = { class: "rg-errorbox__title" }, yr = {
+}, $r = { class: "rg-errorbox__title" }, _r = {
   key: 0,
   class: "rg-errorbox__options"
-}, $r = ["onClick"], _r = {
+}, kr = ["onClick"], wr = {
   key: 0,
   class: "rg-badge rg-badge--warning"
-}, kr = {
+}, xr = {
   __name: "ResultsPanel",
   setup(t) {
     const u = ye(Ee), l = K(!1), g = G(() => u.state.meta), d = G(() => u.state.error), b = {
@@ -3267,8 +3284,8 @@ const Ya = {
     };
     return (o, m) => {
       var M, i, r;
-      return s(), n("section", ir, [
-        e("div", ur, [
+      return s(), n("section", dr, [
+        e("div", cr, [
           R(u).state.running ? (s(), n(U, { key: 0 }, [
             e("span", null, [
               E(F, {
@@ -3293,11 +3310,11 @@ const Ya = {
             ])
           ], 64)) : g.value && !d.value ? (s(), n(U, { key: 1 }, [
             e("span", null, y(b[g.value.mode] ?? g.value.mode), 1),
-            e("span", dr, y(g.value.duration_ms) + " ms", 1),
-            g.value.cached ? (s(), n("span", cr, "from cache")) : x("", !0),
-            g.value.estimated_rows !== void 0 ? (s(), n("span", gr, " reads ~" + y(R(je)(g.value.estimated_rows)) + " rows ", 1)) : x("", !0),
-            g.value.heavy ? (s(), n("span", mr, "heavy")) : x("", !0)
-          ], 64)) : R(u).runnable.value ? x("", !0) : (s(), n("span", pr, "Add fields to see results.")),
+            e("span", gr, y(g.value.duration_ms) + " ms", 1),
+            g.value.cached ? (s(), n("span", mr, "from cache")) : w("", !0),
+            g.value.estimated_rows !== void 0 ? (s(), n("span", pr, " reads ~" + y(R(je)(g.value.estimated_rows)) + " rows ", 1)) : w("", !0),
+            g.value.heavy ? (s(), n("span", vr, "heavy")) : w("", !0)
+          ], 64)) : R(u).runnable.value ? w("", !0) : (s(), n("span", fr, "Add fields to see results.")),
           m[4] || (m[4] = e("span", { class: "rg-spacer" }, null, -1)),
           (M = g.value) != null && M.sql ? (s(), n("button", {
             key: 3,
@@ -3305,12 +3322,12 @@ const Ya = {
             class: "rg-btn rg-btn--sm rg-btn--ghost",
             "aria-expanded": l.value,
             onClick: m[1] || (m[1] = (a) => l.value = !l.value)
-          }, y(l.value ? "Hide SQL" : "SQL"), 9, vr)) : x("", !0)
+          }, y(l.value ? "Hide SQL" : "SQL"), 9, br)) : w("", !0)
         ]),
         e("div", null, [
-          l.value && ((i = g.value) != null && i.sql) ? (s(), n("pre", fr, y(g.value.sql), 1)) : x("", !0),
-          d.value ? (s(), n("div", br, [
-            e("span", hr, [
+          l.value && ((i = g.value) != null && i.sql) ? (s(), n("pre", hr, y(g.value.sql), 1)) : w("", !0),
+          d.value ? (s(), n("div", yr, [
+            e("span", $r, [
               E(F, {
                 name: "alert",
                 small: ""
@@ -3318,7 +3335,7 @@ const Ya = {
               N(y(f[d.value.code] ?? "This report cannot run yet"), 1)
             ]),
             e("span", null, y(d.value.message), 1),
-            d.value.code === "AMBIGUOUS_PATH" && R(u).state.errorUid ? (s(), n("div", yr, [
+            d.value.code === "AMBIGUOUS_PATH" && R(u).state.errorUid ? (s(), n("div", _r, [
               (s(!0), n(U, null, H(((r = d.value.details) == null ? void 0 : r.options) ?? [], (a) => (s(), n("button", {
                 key: a.path.join("."),
                 type: "button",
@@ -3326,16 +3343,16 @@ const Ya = {
                 onClick: (c) => R(u).applyPath(R(u).state.errorUid, a.path)
               }, [
                 N(y(a.description) + " ", 1),
-                a.multiplies_rows ? (s(), n("span", _r, "several per row")) : x("", !0)
-              ], 8, $r))), 128))
-            ])) : x("", !0)
-          ])) : x("", !0)
+                a.multiplies_rows ? (s(), n("span", wr, "several per row")) : w("", !0)
+              ], 8, kr))), 128))
+            ])) : w("", !0)
+          ])) : w("", !0)
         ]),
         E(Ot)
       ]);
     };
   }
-}, wr = ["aria-label"], xr = { class: "rg-dialog__head" }, Cr = { class: "rg-dialog__body" }, Sr = { class: "rg-dialog__foot" }, ze = {
+}, Cr = ["aria-label"], Sr = { class: "rg-dialog__head" }, Mr = { class: "rg-dialog__body" }, Tr = { class: "rg-dialog__foot" }, ze = {
   __name: "RgDialog",
   props: { title: { type: String, required: !0 } },
   emits: ["close"],
@@ -3359,40 +3376,40 @@ const Ya = {
           "aria-modal": "true",
           "aria-label": t.title
         }, [
-          e("div", xr, [
+          e("div", Sr, [
             e("h2", null, y(t.title), 1)
           ]),
-          e("div", Cr, [
+          e("div", Mr, [
             rt(b.$slots, "default")
           ]),
-          e("div", Sr, [
+          e("div", Tr, [
             rt(b.$slots, "footer")
           ])
-        ], 8, wr)
+        ], 8, Cr)
       ], 16)
     ]));
   }
-}, Mr = {
+}, Er = {
   class: "rg-field-inline",
   style: { "flex-direction": "column", "align-items": "stretch" },
   for: "rg-formula-label"
-}, Tr = {
+}, Or = {
   class: "rg-field-inline",
   style: { "flex-direction": "column", "align-items": "stretch" },
   for: "rg-formula-text"
-}, Er = ["onKeydown"], Or = { class: "rg-token-list" }, Rr = ["title", "onClick"], Dr = {
+}, Rr = ["onKeydown"], Dr = { class: "rg-token-list" }, Ar = ["title", "onClick"], Lr = {
   key: 0,
   class: "rg-faint",
   style: { "font-size": "12px" }
-}, Ar = { class: "rg-token-list" }, Lr = ["onClick"], Nr = ["disabled"], Vr = ["disabled"], Pr = {
+}, Nr = { class: "rg-token-list" }, Vr = ["onClick"], Pr = ["disabled"], Fr = ["disabled"], qr = {
   __name: "FormulaDialog",
   props: { item: { type: Object, default: null } },
   emits: ["close"],
   setup(t, { emit: u }) {
     var p, v;
-    const l = t, g = u, d = ye(Ee), b = ye("rg-theme", "light"), { api: f } = Le(), o = K(((p = l.item) == null ? void 0 : p.label) ?? ""), m = K(((v = l.item) == null ? void 0 : v.formula) ?? ""), M = K(null), i = K(null), r = K(!1), a = G(() => [...d.state.draft.rows, ...d.state.draft.values].filter((w) => {
+    const l = t, g = u, d = ye(Ee), b = ye("rg-theme", "light"), { api: f } = Le(), o = K(((p = l.item) == null ? void 0 : p.label) ?? ""), m = K(((v = l.item) == null ? void 0 : v.formula) ?? ""), M = K(null), i = K(null), r = K(!1), a = G(() => [...d.state.draft.rows, ...d.state.draft.values].filter((x) => {
       var O;
-      return w.uid !== ((O = l.item) == null ? void 0 : O.uid);
+      return x.uid !== ((O = l.item) == null ? void 0 : O.uid);
     })), c = [
       ["IF(condition, then, else)", "IF(, , )"],
       ["SAFE_DIVIDE(a, b)", "SAFE_DIVIDE(, )"],
@@ -3403,21 +3420,21 @@ const Ya = {
       ["LEAST(a, b)", "LEAST(, )"],
       ["CONCAT(a, b)", "CONCAT(, )"]
     ];
-    function k(w) {
+    function k(x) {
       const O = M.value, _ = (O == null ? void 0 : O.selectionStart) ?? m.value.length, S = (O == null ? void 0 : O.selectionEnd) ?? m.value.length;
-      m.value = m.value.slice(0, _) + w + m.value.slice(S), requestAnimationFrame(() => {
+      m.value = m.value.slice(0, _) + x + m.value.slice(S), requestAnimationFrame(() => {
         O == null || O.focus();
-        const $ = _ + (w.includes("(") ? w.indexOf("(") + 1 : w.length);
+        const $ = _ + (x.includes("(") ? x.indexOf("(") + 1 : x.length);
         O == null || O.setSelectionRange($, $);
       }), i.value = null;
     }
     async function C() {
       r.value = !0;
       try {
-        const w = JSON.parse(JSON.stringify(d.state.draft)), O = { uid: "__probe", kind: "formula", label: o.value || "Formula", formula: m.value, as: "__formula_check", format: null };
-        return l.item ? w.values = w.values.map((_) => _.uid === l.item.uid ? { ...O, as: _.as } : _) : w.values.push(O), await f.query.validate(ns(w).definition), i.value = { ok: !0, message: "The formula is valid." }, !0;
-      } catch (w) {
-        return i.value = { ok: !1, message: w.message }, !1;
+        const x = JSON.parse(JSON.stringify(d.state.draft)), O = { uid: "__probe", kind: "formula", label: o.value || "Formula", formula: m.value, as: "__formula_check", format: null };
+        return l.item ? x.values = x.values.map((_) => _.uid === l.item.uid ? { ...O, as: _.as } : _) : x.values.push(O), await f.query.validate(ns(x).definition), i.value = { ok: !0, message: "The formula is valid." }, !0;
+      } catch (x) {
+        return i.value = { ok: !1, message: x.message }, !1;
       } finally {
         r.value = !1;
       }
@@ -3425,7 +3442,7 @@ const Ya = {
     async function h() {
       !o.value.trim() || !m.value.trim() || await C() && (l.item ? d.updateFormula(l.item.uid, o.value.trim(), m.value.trim()) : d.addFormula(o.value.trim(), m.value.trim()), g("close"));
     }
-    return (w, O) => (s(), ae(ze, {
+    return (x, O) => (s(), ae(ze, {
       title: t.item ? "Edit formula" : "New formula",
       "data-rg-theme": R(b),
       class: "rg-dialog--wide",
@@ -3437,7 +3454,7 @@ const Ya = {
           class: "rg-btn",
           disabled: r.value || !m.value.trim(),
           onClick: C
-        }, "Check", 8, Nr),
+        }, "Check", 8, Pr),
         e("button", {
           type: "button",
           class: "rg-btn",
@@ -3448,10 +3465,10 @@ const Ya = {
           class: "rg-btn rg-btn--primary",
           disabled: r.value || !o.value.trim() || !m.value.trim(),
           onClick: h
-        }, y(t.item ? "Save formula" : "Add formula"), 9, Vr)
+        }, y(t.item ? "Save formula" : "Add formula"), 9, Fr)
       ]),
       default: de(() => [
-        e("label", Mr, [
+        e("label", Er, [
           O[5] || (O[5] = N(" Column name ", -1)),
           se(e("input", {
             id: "rg-formula-label",
@@ -3463,7 +3480,7 @@ const Ya = {
             [ce, o.value]
           ])
         ]),
-        e("label", Tr, [
+        e("label", Or, [
           O[6] || (O[6] = N(" Formula ", -1)),
           se(e("textarea", {
             id: "rg-formula-text",
@@ -3478,7 +3495,7 @@ const Ya = {
               Ie(ge(h, ["ctrl", "prevent"]), ["enter"]),
               Ie(ge(h, ["meta", "prevent"]), ["enter"])
             ]
-          }, null, 40, Er), [
+          }, null, 40, Rr), [
             [ce, m.value]
           ])
         ]),
@@ -3487,15 +3504,15 @@ const Ya = {
             class: "rg-faint",
             style: { "font-size": "11.5px", "margin-bottom": "4px" }
           }, "Fields in this report (click to insert)", -1)),
-          e("div", Or, [
+          e("div", Dr, [
             (s(!0), n(U, null, H(a.value, (_) => (s(), n("button", {
               key: _.uid,
               type: "button",
               class: "rg-token",
               title: _.label,
               onClick: (S) => k(_.as)
-            }, y(_.as), 9, Rr))), 128)),
-            a.value.length ? x("", !0) : (s(), n("span", Dr, "Add fields first; formulas calculate with them."))
+            }, y(_.as), 9, Ar))), 128)),
+            a.value.length ? w("", !0) : (s(), n("span", Lr, "Add fields first; formulas calculate with them."))
           ])
         ]),
         e("div", null, [
@@ -3503,13 +3520,13 @@ const Ya = {
             class: "rg-faint",
             style: { "font-size": "11.5px", "margin-bottom": "4px" }
           }, "Functions", -1)),
-          e("div", Ar, [
+          e("div", Nr, [
             (s(), n(U, null, H(c, ([_, S]) => e("button", {
               key: _,
               type: "button",
               class: "rg-token",
               onClick: ($) => k(S)
-            }, y(_), 9, Lr)), 64))
+            }, y(_), 9, Vr)), 64))
           ])
         ]),
         O[9] || (O[9] = e("p", {
@@ -3520,30 +3537,30 @@ const Ya = {
           key: 0,
           class: ne(["rg-check-result", i.value.ok ? "rg-check-result--ok" : "rg-check-result--error"]),
           role: "status"
-        }, y(i.value.message), 3)) : x("", !0)
+        }, y(i.value.message), 3)) : w("", !0)
       ]),
       _: 1
     }, 8, ["title", "data-rg-theme"]));
   }
-}, Fr = {
-  class: "rg-field-inline",
-  style: { "flex-direction": "column", "align-items": "stretch" },
-  for: "rg-save-name"
-}, qr = {
-  class: "rg-field-inline",
-  style: { "flex-direction": "column", "align-items": "stretch" },
-  for: "rg-save-description"
 }, Ir = {
   class: "rg-field-inline",
   style: { "flex-direction": "column", "align-items": "stretch" },
+  for: "rg-save-name"
+}, Ur = {
+  class: "rg-field-inline",
+  style: { "flex-direction": "column", "align-items": "stretch" },
+  for: "rg-save-description"
+}, jr = {
+  class: "rg-field-inline",
+  style: { "flex-direction": "column", "align-items": "stretch" },
   for: "rg-save-folder"
-}, Ur = { id: "rg-save-folders" }, jr = ["value"], zr = { style: { border: "0", padding: "0", margin: "0", display: "flex", "flex-direction": "column", gap: "6px" } }, Br = {
+}, zr = { id: "rg-save-folders" }, Br = ["value"], Gr = { style: { border: "0", padding: "0", margin: "0", display: "flex", "flex-direction": "column", gap: "6px" } }, Kr = {
   class: "rg-field-inline",
   for: "rg-vis-private"
-}, Gr = {
+}, Hr = {
   class: "rg-field-inline",
   for: "rg-vis-public"
-}, Kr = ["disabled"], os = {
+}, Wr = ["disabled"], os = {
   __name: "SaveDialog",
   props: {
     copy: { type: Boolean, default: !1 },
@@ -3575,7 +3592,7 @@ const Ya = {
           form: "rg-save-form",
           class: "rg-btn rg-btn--primary",
           disabled: R(d).state.saving || !o.value.trim()
-        }, y(R(d).state.saving ? "Saving…" : "Save"), 9, Kr)
+        }, y(R(d).state.saving ? "Saving…" : "Save"), 9, Wr)
       ]),
       default: de(() => [
         e("form", {
@@ -3583,7 +3600,7 @@ const Ya = {
           style: { display: "contents" },
           onSubmit: ge(r, ["prevent"])
         }, [
-          e("label", Fr, [
+          e("label", Ir, [
             c[7] || (c[7] = N(" Name ", -1)),
             se(e("input", {
               id: "rg-save-name",
@@ -3595,7 +3612,7 @@ const Ya = {
               [ce, o.value]
             ])
           ]),
-          e("label", qr, [
+          e("label", Ur, [
             c[8] || (c[8] = N(" Description (optional) ", -1)),
             se(e("textarea", {
               id: "rg-save-description",
@@ -3606,7 +3623,7 @@ const Ya = {
               [ce, m.value]
             ])
           ]),
-          e("label", Ir, [
+          e("label", jr, [
             c[9] || (c[9] = N(" Folder (optional) ", -1)),
             se(e("input", {
               id: "rg-save-folder",
@@ -3618,19 +3635,19 @@ const Ya = {
             }, null, 512), [
               [ce, M.value]
             ]),
-            e("datalist", Ur, [
+            e("datalist", zr, [
               (s(!0), n(U, null, H(t.folders, (k) => (s(), n("option", {
                 key: k,
                 value: k
-              }, null, 8, jr))), 128))
+              }, null, 8, Br))), 128))
             ])
           ]),
-          e("fieldset", zr, [
+          e("fieldset", Gr, [
             c[12] || (c[12] = e("legend", {
               class: "rg-muted",
               style: { "font-size": "12px", "margin-bottom": "4px" }
             }, "Who can open it", -1)),
-            e("label", Br, [
+            e("label", Kr, [
               se(e("input", {
                 id: "rg-vis-private",
                 "onUpdate:modelValue": c[3] || (c[3] = (k) => i.value = k),
@@ -3641,7 +3658,7 @@ const Ya = {
               ]),
               c[10] || (c[10] = N(" Only me (and people I share it with) ", -1))
             ]),
-            e("label", Gr, [
+            e("label", Hr, [
               se(e("input", {
                 id: "rg-vis-public",
                 "onUpdate:modelValue": c[4] || (c[4] = (k) => i.value = k),
@@ -3662,40 +3679,40 @@ const Ya = {
       _: 1
     }, 8, ["title", "data-rg-theme"]));
   }
-}, Hr = {
+}, Yr = {
   key: 0,
   class: "rg-skeleton-list"
-}, Wr = { class: "rg-muted rg-publish__intro" }, Yr = {
+}, Jr = { class: "rg-muted rg-publish__intro" }, Zr = {
   class: "rg-publish__field",
   for: "rg-publish-permission"
-}, Jr = {
+}, Qr = {
   key: 0,
   class: "rg-publish__error"
-}, Zr = {
+}, Xr = {
   key: 1,
   class: "rg-faint"
-}, Qr = { class: "rg-publish__field" }, Xr = { class: "rg-num rg-faint" }, ei = { class: "rg-search" }, ti = {
+}, ei = { class: "rg-publish__field" }, ti = { class: "rg-num rg-faint" }, si = { class: "rg-search" }, li = {
   class: "rg-publish__roles",
   role: "group",
   "aria-label": "Roles"
-}, si = ["aria-pressed", "onClick"], li = {
+}, ni = ["aria-pressed", "onClick"], ai = {
   key: 0,
   class: "rg-faint"
-}, ni = {
+}, oi = {
   key: 0,
   class: "rg-publish__error"
-}, ai = { class: "rg-publish__menu" }, oi = {
+}, ri = { class: "rg-publish__menu" }, ii = {
   class: "rg-field-inline",
   for: "rg-publish-menu"
-}, ri = {
+}, ui = {
   key: 0,
   class: "rg-publish__field",
   for: "rg-publish-group"
-}, ii = {
+}, di = {
   key: 0,
   class: "rg-publish__error",
   role: "alert"
-}, ui = ["disabled"], di = ["disabled"], Rt = {
+}, ci = ["disabled"], gi = ["disabled"], Rt = {
   __name: "PublishDialog",
   props: {
     uuid: { type: String, required: !0 },
@@ -3759,12 +3776,12 @@ const Ya = {
       return ((v = o.errors[p]) == null ? void 0 : v[0]) ?? null;
     }, h = G(() => {
       var p, v;
-      return ((v = (p = Object.entries(o.errors).find(([w]) => w.startsWith("roles"))) == null ? void 0 : p[1]) == null ? void 0 : v[0]) ?? null;
+      return ((v = (p = Object.entries(o.errors).find(([x]) => x.startsWith("roles"))) == null ? void 0 : p[1]) == null ? void 0 : v[0]) ?? null;
     });
     return (p, v) => (s(), ae(ze, {
       title: o.published ? `Publishing: ${t.name}` : `Publish “${t.name}”`,
       "data-rg-theme": R(f),
-      onClose: v[5] || (v[5] = (w) => g("close"))
+      onClose: v[5] || (v[5] = (x) => g("close"))
     }, {
       footer: de(() => [
         o.published ? (s(), n("button", {
@@ -3773,24 +3790,24 @@ const Ya = {
           class: "rg-btn rg-btn--danger",
           disabled: o.saving,
           onClick: k
-        }, "Unpublish", 8, ui)) : x("", !0),
+        }, "Unpublish", 8, ci)) : w("", !0),
         v[11] || (v[11] = e("span", { style: { flex: "1" } }, null, -1)),
         e("button", {
           type: "button",
           class: "rg-btn",
-          onClick: v[4] || (v[4] = (w) => g("close"))
+          onClick: v[4] || (v[4] = (x) => g("close"))
         }, "Cancel"),
         e("button", {
           type: "submit",
           form: "rg-publish-form",
           class: "rg-btn rg-btn--primary",
           disabled: o.loading || o.saving || !m.permission.trim()
-        }, y(o.saving ? "Saving…" : o.published ? "Update" : "Publish"), 9, di)
+        }, y(o.saving ? "Saving…" : o.published ? "Update" : "Publish"), 9, gi)
       ]),
       default: de(() => [
-        o.loading ? (s(), n("div", Hr, [
-          (s(), n(U, null, H(4, (w) => e("div", {
-            key: w,
+        o.loading ? (s(), n("div", Yr, [
+          (s(), n(U, null, H(4, (x) => e("div", {
+            key: x,
             class: "rg-skeleton"
           })), 64))
         ])) : (s(), n("form", {
@@ -3799,12 +3816,12 @@ const Ya = {
           class: "rg-publish",
           onSubmit: ge(c, ["prevent"])
         }, [
-          e("p", Wr, " Everyone with the permission below can open " + y(t.kind === "dashboard" ? "this dashboard" : "and run this report") + ", each seeing only their own data. Building reports is not needed. ", 1),
-          e("label", Yr, [
+          e("p", Jr, " Everyone with the permission below can open " + y(t.kind === "dashboard" ? "this dashboard" : "and run this report") + ", each seeing only their own data. Building reports is not needed. ", 1),
+          e("label", Zr, [
             v[6] || (v[6] = e("span", null, "Permission", -1)),
             se(e("input", {
               id: "rg-publish-permission",
-              "onUpdate:modelValue": v[0] || (v[0] = (w) => m.permission = w),
+              "onUpdate:modelValue": v[0] || (v[0] = (x) => m.permission = x),
               class: "rg-input rg-mono",
               maxlength: "191",
               required: "",
@@ -3812,18 +3829,18 @@ const Ya = {
             }, null, 512), [
               [ce, m.permission]
             ]),
-            C("permission") ? (s(), n("small", Jr, y(C("permission")), 1)) : (s(), n("small", Zr, "Created if it does not exist. Lowercase letters, digits, dots, dashes and underscores."))
+            C("permission") ? (s(), n("small", Qr, y(C("permission")), 1)) : (s(), n("small", Xr, "Created if it does not exist. Lowercase letters, digits, dots, dashes and underscores."))
           ]),
-          e("fieldset", Qr, [
+          e("fieldset", ei, [
             e("legend", null, [
               v[7] || (v[7] = N("Roles that get it ", -1)),
-              e("span", Xr, y(m.roles.length) + " selected", 1)
+              e("span", ti, y(m.roles.length) + " selected", 1)
             ]),
-            e("label", ei, [
+            e("label", si, [
               v[8] || (v[8] = e("span", { class: "rg-sr-only" }, "Search roles", -1)),
               E(F, { name: "search" }),
               se(e("input", {
-                "onUpdate:modelValue": v[1] || (v[1] = (w) => i.value = w),
+                "onUpdate:modelValue": v[1] || (v[1] = (x) => i.value = x),
                 class: "rg-input",
                 type: "search",
                 placeholder: "Search roles",
@@ -3832,29 +3849,29 @@ const Ya = {
                 [ce, i.value]
               ])
             ]),
-            e("div", ti, [
-              (s(!0), n(U, null, H(r.value, (w) => (s(), n("button", {
-                key: w.id,
+            e("div", li, [
+              (s(!0), n(U, null, H(r.value, (x) => (s(), n("button", {
+                key: x.id,
                 type: "button",
                 class: "rg-publish__role",
-                "aria-pressed": m.roles.includes(w.name),
-                onClick: (O) => a(w.name)
+                "aria-pressed": m.roles.includes(x.name),
+                onClick: (O) => a(x.name)
               }, [
                 E(F, {
-                  name: m.roles.includes(w.name) ? "check" : "plus",
+                  name: m.roles.includes(x.name) ? "check" : "plus",
                   small: ""
                 }, null, 8, ["name"]),
-                N(y(w.name), 1)
-              ], 8, si))), 128)),
-              r.value.length ? x("", !0) : (s(), n("span", li, "No role matches."))
+                N(y(x.name), 1)
+              ], 8, ni))), 128)),
+              r.value.length ? w("", !0) : (s(), n("span", ai, "No role matches."))
             ]),
-            h.value ? (s(), n("small", ni, y(h.value), 1)) : x("", !0)
+            h.value ? (s(), n("small", oi, y(h.value), 1)) : w("", !0)
           ]),
-          e("div", ai, [
-            e("label", oi, [
+          e("div", ri, [
+            e("label", ii, [
               se(e("input", {
                 id: "rg-publish-menu",
-                "onUpdate:modelValue": v[2] || (v[2] = (w) => m.inMenu = w),
+                "onUpdate:modelValue": v[2] || (v[2] = (x) => m.inMenu = x),
                 type: "checkbox",
                 class: "rg-check"
               }, null, 512), [
@@ -3862,28 +3879,28 @@ const Ya = {
               ]),
               v[9] || (v[9] = N(" Show in the sidebar ", -1))
             ]),
-            m.inMenu ? (s(), n("label", ri, [
+            m.inMenu ? (s(), n("label", ui, [
               v[10] || (v[10] = e("span", null, "Sidebar group (optional)", -1)),
               se(e("input", {
                 id: "rg-publish-group",
-                "onUpdate:modelValue": v[3] || (v[3] = (w) => m.menuGroup = w),
+                "onUpdate:modelValue": v[3] || (v[3] = (x) => m.menuGroup = x),
                 class: "rg-input",
                 maxlength: "120",
                 placeholder: "Sales"
               }, null, 512), [
                 [ce, m.menuGroup]
               ])
-            ])) : x("", !0)
+            ])) : w("", !0)
           ]),
-          o.error ? (s(), n("p", ii, y(o.error), 1)) : x("", !0)
+          o.error ? (s(), n("p", di, y(o.error), 1)) : w("", !0)
         ], 32))
       ]),
       _: 1
     }, 8, ["title", "data-rg-theme"]));
   }
-}, ci = 200;
-let gi = 0;
-const st = () => `c${++gi}`, rs = [
+}, mi = 200;
+let pi = 0;
+const st = () => `c${++pi}`, rs = [
   { key: "line", label: "Line" },
   { key: "division", label: "Division" },
   { key: "employee", label: "Employee" }
@@ -3917,7 +3934,7 @@ function Ct() {
     sort: []
   };
 }
-function mi(t) {
+function vi(t) {
   var g, d;
   const u = t.definition ?? {}, l = ((g = u.context) == null ? void 0 : g.period) ?? "this_month";
   return {
@@ -3939,7 +3956,7 @@ function mi(t) {
     sort: u.sort ?? []
   };
 }
-function pi(t, u) {
+function fi(t, u) {
   const l = $e({
     loading: !1,
     draft: Ct(),
@@ -3966,7 +3983,7 @@ function pi(t, u) {
   async function M(z = null) {
     l.loading = !0;
     try {
-      l.draft = z ? mi(z) : Ct(), l.reports = await t.combine.reports(), l.savedSnapshot = d(), f.value && $();
+      l.draft = z ? vi(z) : Ct(), l.reports = await t.combine.reports(), l.savedSnapshot = d(), f.value && $();
     } catch (B) {
       u.error(B);
     } finally {
@@ -4029,7 +4046,7 @@ function pi(t, u) {
     const q = { uid: st(), formula: B, as: k(z || "formula"), label: z || "Formula" };
     return l.draft.fields.push(q), q;
   }
-  function w(z, B) {
+  function x(z, B) {
     const q = l.draft.fields.find((L) => L.uid === z);
     q && Object.assign(q, B);
   }
@@ -4055,7 +4072,7 @@ function pi(t, u) {
     for (const z of Object.keys(l.fieldsByReport))
       l.fieldsByReport[z].fields === null && !l.fieldsByReport[z].loading && delete l.fieldsByReport[z];
   });
-  async function X({ offset: z = 0, top: B = !1, size: q = ci, fresh: L = !1 } = {}) {
+  async function X({ offset: z = 0, top: B = !1, size: q = mi, fresh: L = !1 } = {}) {
     const D = B && (z === 0 || L);
     D && (l.running = !0, l.error = null);
     try {
@@ -4112,7 +4129,7 @@ function pi(t, u) {
     toggleField: h,
     toggleBase: p,
     addFormula: v,
-    updateColumn: w,
+    updateColumn: x,
     removeColumn: O,
     moveColumn: _,
     run: $,
@@ -4131,16 +4148,16 @@ function pi(t, u) {
     save: pe
   };
 }
-const vi = {
+const bi = {
   class: "rg-multi",
   style: { position: "relative" }
-}, fi = ["aria-expanded", "aria-label"], bi = { class: "rg-search" }, hi = { class: "rg-sr-only" }, yi = ["placeholder"], $i = ["aria-label"], _i = {
+}, hi = ["aria-expanded", "aria-label"], yi = { class: "rg-search" }, $i = { class: "rg-sr-only" }, _i = ["placeholder"], ki = ["aria-label"], wi = {
   key: 0,
   class: "rg-faint"
-}, ki = {
+}, xi = {
   key: 1,
   class: "rg-faint"
-}, wi = ["aria-selected"], xi = ["checked", "onChange"], Ci = { class: "rg-pop__foot" }, Si = ["disabled"], Ye = {
+}, Ci = ["aria-selected"], Si = ["checked", "onChange"], Mi = { class: "rg-pop__foot" }, Ti = ["disabled"], Ye = {
   __name: "RgMultiSelect",
   props: {
     modelValue: { type: Array, default: () => [] },
@@ -4160,7 +4177,7 @@ const vi = {
       try {
         const v = await l.load(b.value.trim());
         if (p !== M) return;
-        f.value = v, v.forEach((w) => o.value.set(w.id, w.label));
+        f.value = v, v.forEach((x) => o.value.set(x.id, x.label));
       } catch {
         p === M && (f.value = []);
       } finally {
@@ -4174,7 +4191,7 @@ const vi = {
     }, { deep: !0 });
     const a = G(() => new Set(l.modelValue)), c = G(() => l.modelValue.length ? l.modelValue.length === 1 ? o.value.get(l.modelValue[0]) ?? "1 selected" : `${l.modelValue.length} selected` : l.allLabel);
     function k(p) {
-      const v = a.value.has(p) ? l.modelValue.filter((w) => w !== p) : [...l.modelValue, p];
+      const v = a.value.has(p) ? l.modelValue.filter((x) => x !== p) : [...l.modelValue, p];
       g("update:modelValue", v);
     }
     function C() {
@@ -4183,13 +4200,13 @@ const vi = {
     function h() {
       d.value = !1, g("change");
     }
-    return (p, v) => (s(), n("div", vi, [
+    return (p, v) => (s(), n("div", bi, [
       e("button", {
         type: "button",
         class: "rg-input rg-multi__button",
         "aria-expanded": d.value,
         "aria-label": `${t.label}: ${c.value}`,
-        onClick: v[0] || (v[0] = (w) => d.value ? h() : d.value = !0)
+        onClick: v[0] || (v[0] = (x) => d.value ? h() : d.value = !0)
       }, [
         e("span", {
           class: ne({ "rg-faint": !t.modelValue.length })
@@ -4199,7 +4216,7 @@ const vi = {
           small: "",
           class: "rg-multi__chev"
         })
-      ], 8, fi),
+      ], 8, hi),
       E(it, { name: "rg-swap" }, {
         default: de(() => [
           d.value ? (s(), ae(Et, {
@@ -4208,16 +4225,16 @@ const vi = {
             onClose: h
           }, {
             default: de(() => [
-              e("label", bi, [
-                e("span", hi, "Search " + y(t.label), 1),
+              e("label", yi, [
+                e("span", $i, "Search " + y(t.label), 1),
                 E(F, { name: "search" }),
                 se(e("input", {
-                  "onUpdate:modelValue": v[1] || (v[1] = (w) => b.value = w),
+                  "onUpdate:modelValue": v[1] || (v[1] = (x) => b.value = x),
                   class: "rg-input",
                   type: "search",
                   placeholder: `Search ${t.label.toLowerCase()}`,
                   autocomplete: "off"
-                }, null, 8, yi), [
+                }, null, 8, _i), [
                   [ce, b.value]
                 ])
               ]),
@@ -4227,37 +4244,37 @@ const vi = {
                 "aria-label": t.label,
                 "aria-multiselectable": "true"
               }, [
-                m.value && !f.value.length ? (s(), n("li", _i, [
+                m.value && !f.value.length ? (s(), n("li", wi, [
                   E(F, {
                     name: "loader",
                     spin: "",
                     small: ""
                   }),
                   v[2] || (v[2] = N(" Loading…", -1))
-                ])) : f.value.length ? x("", !0) : (s(), n("li", ki, "Nothing to pick.")),
-                (s(!0), n(U, null, H(f.value, (w) => (s(), n("li", {
-                  key: w.id,
+                ])) : f.value.length ? w("", !0) : (s(), n("li", xi, "Nothing to pick.")),
+                (s(!0), n(U, null, H(f.value, (x) => (s(), n("li", {
+                  key: x.id,
                   role: "option",
-                  "aria-selected": a.value.has(w.id)
+                  "aria-selected": a.value.has(x.id)
                 }, [
                   e("label", null, [
                     e("input", {
                       type: "checkbox",
                       class: "rg-check",
-                      checked: a.value.has(w.id),
-                      onChange: (O) => k(w.id)
-                    }, null, 40, xi),
-                    N(" " + y(w.label), 1)
+                      checked: a.value.has(x.id),
+                      onChange: (O) => k(x.id)
+                    }, null, 40, Si),
+                    N(" " + y(x.label), 1)
                   ])
-                ], 8, wi))), 128))
-              ], 8, $i),
-              e("div", Ci, [
+                ], 8, Ci))), 128))
+              ], 8, ki),
+              e("div", Mi, [
                 e("button", {
                   type: "button",
                   class: "rg-btn rg-btn--sm rg-btn--ghost",
                   disabled: !t.modelValue.length,
                   onClick: C
-                }, "Clear", 8, Si),
+                }, "Clear", 8, Ti),
                 e("button", {
                   type: "button",
                   class: "rg-btn rg-btn--sm rg-btn--primary",
@@ -4266,13 +4283,13 @@ const vi = {
               ])
             ]),
             _: 1
-          })) : x("", !0)
+          })) : w("", !0)
         ]),
         _: 1
       })
     ]));
   }
-}, Mi = { class: "rg-kpi" }, Ti = { class: "rg-kpi__label" }, Ei = ["aria-label"], Oi = {
+}, Ei = { class: "rg-kpi" }, Oi = { class: "rg-kpi__label" }, Ri = ["aria-label"], Di = {
   __name: "KpiTile",
   props: {
     label: { type: String, required: !0 },
@@ -4298,12 +4315,12 @@ const vi = {
     }
     he(() => u.value, (f, o) => d(o ?? 0, f)), Se(() => d(0, u.value)), Ne(() => cancelAnimationFrame(g));
     const b = (f) => f == null ? "—" : ke(u.column.type === "integer" ? Math.round(f) : f, u.column);
-    return (f, o) => (s(), n("div", Mi, [
-      e("span", Ti, y(t.label), 1),
+    return (f, o) => (s(), n("div", Ei, [
+      e("span", Oi, y(t.label), 1),
       e("span", {
         class: "rg-kpi__value rg-num",
         "aria-label": b(t.value)
-      }, y(b(l.value)), 9, Ei)
+      }, y(b(l.value)), 9, Ri)
     ]));
   }
 };
@@ -4324,7 +4341,7 @@ function Dt(t, u) {
   const l = new ResizeObserver((g) => u(Math.max(120, Math.round(g[0].contentRect.width))));
   return l.observe(t), () => l.disconnect();
 }
-const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"], Ai = ["y", "width", "height"], Li = ["x", "y"], Ni = ["transform"], Vi = ["width"], Pi = ["d"], Fi = ["x", "y"], qi = { class: "rg-num" }, Ae = 22, nt = 10, Ii = 72, Ui = {
+const Ai = ["width", "height", "aria-label"], Li = ["transform", "onMouseenter"], Ni = ["y", "width", "height"], Vi = ["x", "y"], Pi = ["transform"], Fi = ["width"], qi = ["d"], Ii = ["x", "y"], Ui = { class: "rg-num" }, Ae = 22, nt = 10, ji = 72, zi = {
   __name: "BarChart",
   props: {
     rows: { type: Array, required: !0 },
@@ -4336,7 +4353,7 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
     let b = () => {
     };
     Se(() => b = Dt(l.value, (a) => g.value = a)), Ne(() => b());
-    const f = G(() => Math.min(180, Math.max(80, g.value * 0.32))), o = G(() => Math.max(40, g.value - f.value - Ii - 12)), m = G(() => Math.max(0, ...u.rows.map((a) => Number(a[u.value.alias]) || 0))), M = G(() => u.rows.map((a, c) => {
+    const f = G(() => Math.min(180, Math.max(80, g.value * 0.32))), o = G(() => Math.max(40, g.value - f.value - ji - 12)), m = G(() => Math.max(0, ...u.rows.map((a) => Number(a[u.value.alias]) || 0))), M = G(() => u.rows.map((a, c) => {
       const k = Number(a[u.value.alias]) || 0, C = m.value > 0 ? Math.max(k > 0 ? 3 : 0, k / m.value * o.value) : 0;
       return { i: c, row: a, v: k, w: C, y: c * (Ae + nt), name: ke(a[u.category.alias], u.category) || "(empty)", text: ke(a[u.value.alias], u.value) };
     })), i = G(() => Math.max(Ae, u.rows.length * (Ae + nt) - nt));
@@ -4369,14 +4386,14 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
             width: g.value,
             height: Ae + nt,
             fill: "transparent"
-          }, null, 8, Ai),
+          }, null, 8, Ni),
           e("text", {
             x: f.value - 8,
             y: Ae / 2,
             class: "rg-chart__label",
             "text-anchor": "end",
             "dominant-baseline": "central"
-          }, y(k.name.length > 24 ? `${k.name.slice(0, 23)}…` : k.name), 9, Li),
+          }, y(k.name.length > 24 ? `${k.name.slice(0, 23)}…` : k.name), 9, Vi),
           e("g", {
             transform: `translate(${f.value}, 0)`
           }, [
@@ -4385,21 +4402,21 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
               height: Ae,
               class: "rg-bar__track",
               rx: "4"
-            }, null, 8, Vi),
+            }, null, 8, Fi),
             e("path", {
               d: r(k.w),
               class: ne(["rg-bar__fill rg-series-1", { "is-dim": d.value && d.value.i !== k.i }]),
               style: Me({ "--rg-delay": `${k.i * 40}ms` })
-            }, null, 14, Pi),
+            }, null, 14, qi),
             e("text", {
               x: k.w + 6,
               y: Ae / 2,
               class: "rg-chart__value",
               "dominant-baseline": "central"
-            }, y(k.text), 9, Fi)
-          ], 8, Ni)
-        ], 40, Di))), 128))
-      ], 8, Ri)),
+            }, y(k.text), 9, Ii)
+          ], 8, Pi)
+        ], 40, Li))), 128))
+      ], 8, Ai)),
       d.value ? (s(), n("div", {
         key: 0,
         class: "rg-chart__tip",
@@ -4409,20 +4426,20 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
         e("b", null, y(d.value.name), 1),
         e("span", null, [
           N(y(t.value.label) + ": ", 1),
-          e("b", qi, y(d.value.text), 1)
+          e("b", Ui, y(d.value.text), 1)
         ])
-      ], 4)) : x("", !0)
+      ], 4)) : w("", !0)
     ], 544));
   }
-}, ji = {
+}, Bi = {
   key: 0,
   class: "rg-legend"
-}, zi = ["width", "height", "aria-label"], Bi = ["transform"], Gi = { class: "rg-chart__grid" }, Ki = ["transform"], Hi = ["x2"], Wi = {
+}, Gi = ["width", "height", "aria-label"], Ki = ["transform"], Hi = { class: "rg-chart__grid" }, Wi = ["transform"], Yi = ["x2"], Ji = {
   x: "-8",
   "dominant-baseline": "central",
   "text-anchor": "end",
   class: "rg-chart__axis"
-}, Yi = ["x", "y"], Ji = ["d"], Zi = ["d"], Qi = ["cx", "cy"], Xi = ["x", "y"], eu = { key: 0 }, tu = ["x1", "x2", "y2"], su = ["cx", "cy"], lu = { class: "rg-num" }, nu = {
+}, Zi = ["x", "y"], Qi = ["d"], Xi = ["d"], eu = ["cx", "cy"], tu = ["x", "y"], su = { key: 0 }, lu = ["x1", "x2", "y2"], nu = ["cx", "cy"], au = { class: "rg-num" }, ou = {
   __name: "LineChart",
   props: {
     rows: { type: Array, required: !0 },
@@ -4439,22 +4456,22 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
     Se(() => b = Dt(l.value, (h) => g.value = h)), Ne(() => b());
     const f = { top: 12, right: 64, bottom: 28, left: 52 }, o = G(() => Math.max(40, g.value - f.left - f.right)), m = G(() => u.height - f.top - f.bottom), M = G(() => is(Math.max(0, ...u.rows.flatMap((h) => u.values.map((p) => Number(h[p.alias]) || 0))))), i = (h) => u.rows.length < 2 ? o.value / 2 : h / (u.rows.length - 1) * o.value, r = (h) => m.value - (Number(h) || 0) / M.value.max * m.value, a = G(() => u.values.map((h, p) => {
       const v = u.rows.map((_, S) => [i(S), _[h.alias] === null || _[h.alias] === void 0 ? null : r(_[h.alias])]);
-      let w = "";
+      let x = "";
       v.forEach(([_, S], $) => {
         var X;
-        S !== null && (w += `${w === "" || ((X = v[$ - 1]) == null ? void 0 : X[1]) === null ? "M" : "L"}${_.toFixed(1)},${S.toFixed(1)}`);
+        S !== null && (x += `${x === "" || ((X = v[$ - 1]) == null ? void 0 : X[1]) === null ? "M" : "L"}${_.toFixed(1)},${S.toFixed(1)}`);
       });
       const O = [...v].reverse().find((_) => _[1] !== null);
-      return { column: h, slot: p + 1, d: w, area: u.area && w ? `${w}L${i(u.rows.length - 1)},${m.value}L${i(0)},${m.value}Z` : null, last: O };
+      return { column: h, slot: p + 1, d: x, area: u.area && x ? `${x}L${i(u.rows.length - 1)},${m.value}L${i(0)},${m.value}Z` : null, last: O };
     })), c = G(() => {
-      const h = u.rows.length, p = Math.max(1, Math.ceil(h / Math.max(2, Math.floor(o.value / 70)))), v = u.rows.map((O, _) => ({ i: _, text: ke(O[u.category.alias], u.category) })).filter((O) => O.i % p === 0 || O.i === h - 1), w = v[v.length - 1];
-      return v.filter((O) => O === w || i(w.i) - i(O.i) >= 64);
+      const h = u.rows.length, p = Math.max(1, Math.ceil(h / Math.max(2, Math.floor(o.value / 70)))), v = u.rows.map((O, _) => ({ i: _, text: ke(O[u.category.alias], u.category) })).filter((O) => O.i % p === 0 || O.i === h - 1), x = v[v.length - 1];
+      return v.filter((O) => O === x || i(x.i) - i(O.i) >= 64);
     });
     function k(h) {
       const p = h.currentTarget.getBoundingClientRect(), v = h.clientX - p.left - f.left;
       if (u.rows.length === 0) return;
-      const w = u.rows.length < 2 ? 0 : Math.round(v / o.value * (u.rows.length - 1));
-      d.value = Math.min(u.rows.length - 1, Math.max(0, w));
+      const x = u.rows.length < 2 ? 0 : Math.round(v / o.value * (u.rows.length - 1));
+      d.value = Math.min(u.rows.length - 1, Math.max(0, x));
     }
     const C = (h) => {
       var p;
@@ -4465,7 +4482,7 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
       ref: l,
       class: "rg-chart rg-line"
     }, [
-      t.values.length > 1 ? (s(), n("ul", ji, [
+      t.values.length > 1 ? (s(), n("ul", Bi, [
         (s(!0), n(U, null, H(a.value, (v) => (s(), n("li", {
           key: v.column.alias
         }, [
@@ -4474,7 +4491,7 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
           }, null, 2),
           N(y(v.column.label), 1)
         ]))), 128))
-      ])) : x("", !0),
+      ])) : w("", !0),
       (s(), n("svg", {
         width: g.value,
         height: t.height,
@@ -4486,14 +4503,14 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
         e("g", {
           transform: `translate(${f.left}, ${f.top})`
         }, [
-          e("g", Gi, [
+          e("g", Hi, [
             (s(!0), n(U, null, H(M.value.ticks, (v) => (s(), n("g", {
               key: v,
               transform: `translate(0, ${r(v)})`
             }, [
-              e("line", { x2: o.value }, null, 8, Hi),
-              e("text", Wi, y(R(us)(v, M.value.max)), 1)
-            ], 8, Ki))), 128))
+              e("line", { x2: o.value }, null, 8, Yi),
+              e("text", Ji, y(R(us)(v, M.value.max)), 1)
+            ], 8, Wi))), 128))
           ]),
           (s(!0), n(U, null, H(c.value, (v) => (s(), n("text", {
             key: v.i,
@@ -4501,12 +4518,12 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
             y: m.value + 18,
             "text-anchor": "middle",
             class: "rg-chart__axis"
-          }, y(v.text), 9, Yi))), 128)),
+          }, y(v.text), 9, Zi))), 128)),
           (s(!0), n(U, null, H(a.value, (v) => se((s(), n("path", {
             key: `a${v.slot}`,
             d: v.area ?? "",
             class: ne(`rg-line__area rg-series-${v.slot}`)
-          }, null, 10, Ji)), [
+          }, null, 10, Qi)), [
             [Ut, v.area]
           ])), 128)),
           (s(!0), n(U, null, H(a.value, (v) => (s(), n("path", {
@@ -4514,7 +4531,7 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
             d: v.d,
             class: ne(`rg-line__path rg-series-${v.slot}`),
             pathLength: "1"
-          }, null, 10, Zi))), 128)),
+          }, null, 10, Xi))), 128)),
           (s(!0), n(U, null, H(a.value, (v) => se((s(), n("g", {
             key: `e${v.slot}`
           }, [
@@ -4524,41 +4541,41 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
               cy: v.last[1],
               r: "4",
               class: ne(`rg-line__dot rg-series-${v.slot}`)
-            }, null, 10, Qi)) : x("", !0),
+            }, null, 10, eu)) : w("", !0),
             v.last && t.values.length <= 4 ? (s(), n("text", {
               key: 1,
               x: v.last[0] + 8,
               y: v.last[1],
               "dominant-baseline": "central",
               class: "rg-chart__value"
-            }, y(C(v)), 9, Xi)) : x("", !0)
+            }, y(C(v)), 9, tu)) : w("", !0)
           ])), [
             [Ut, v.last]
           ])), 128)),
-          d.value !== null ? (s(), n("g", eu, [
+          d.value !== null ? (s(), n("g", su, [
             e("line", {
               x1: i(d.value),
               x2: i(d.value),
               y2: m.value,
               class: "rg-line__cross"
-            }, null, 8, tu),
+            }, null, 8, lu),
             (s(!0), n(U, null, H(a.value, (v) => {
-              var w, O;
+              var x, O;
               return s(), n(U, {
                 key: `h${v.slot}`
               }, [
-                ((w = t.rows[d.value]) == null ? void 0 : w[v.column.alias]) !== null && ((O = t.rows[d.value]) == null ? void 0 : O[v.column.alias]) !== void 0 ? (s(), n("circle", {
+                ((x = t.rows[d.value]) == null ? void 0 : x[v.column.alias]) !== null && ((O = t.rows[d.value]) == null ? void 0 : O[v.column.alias]) !== void 0 ? (s(), n("circle", {
                   key: 0,
                   cx: i(d.value),
                   cy: r(t.rows[d.value][v.column.alias]),
                   r: "4",
                   class: ne(`rg-line__dot rg-series-${v.slot}`)
-                }, null, 10, su)) : x("", !0)
+                }, null, 10, nu)) : w("", !0)
               ], 64);
             }), 128))
-          ])) : x("", !0)
-        ], 8, Bi)
-      ], 40, zi)),
+          ])) : w("", !0)
+        ], 8, Ki)
+      ], 40, Gi)),
       d.value !== null ? (s(), n("div", {
         key: 1,
         class: "rg-chart__tip",
@@ -4572,14 +4589,14 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
           t.values.length > 1 ? (s(), n("i", {
             key: 0,
             class: ne(`rg-swatch rg-series-${v.slot}`)
-          }, null, 2)) : x("", !0),
+          }, null, 2)) : w("", !0),
           N(y(v.column.label) + ": ", 1),
-          e("b", lu, y(R(ke)(t.rows[d.value][v.column.alias], v.column)), 1)
+          e("b", au, y(R(ke)(t.rows[d.value][v.column.alias], v.column)), 1)
         ]))), 128))
-      ], 4)) : x("", !0)
+      ], 4)) : w("", !0)
     ], 512));
   }
-}, au = { class: "rg-chart rg-share" }, ou = ["aria-label"], ru = ["onMouseenter"], iu = { class: "rg-share__legend" }, uu = ["onMouseenter"], du = { class: "rg-share__name" }, cu = { class: "rg-num" }, gu = { class: "rg-num rg-faint" }, mu = {
+}, ru = { class: "rg-chart rg-share" }, iu = ["aria-label"], uu = ["onMouseenter"], du = { class: "rg-share__legend" }, cu = ["onMouseenter"], gu = { class: "rg-share__name" }, mu = { class: "rg-num" }, pu = { class: "rg-num rg-faint" }, vu = {
   __name: "ShareBar",
   props: {
     rows: { type: Array, required: !0 },
@@ -4593,7 +4610,7 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
       const f = [...u.rows].sort((r, a) => (Number(a[u.value.alias]) || 0) - (Number(r[u.value.alias]) || 0)), o = f.slice(0, Math.min(6, u.parts)), m = f.slice(o.length), M = o.map((r, a) => ({ key: a, slot: a + 1, name: ke(r[u.category.alias], u.category) || "(empty)", v: Math.max(0, Number(r[u.value.alias]) || 0) })), i = m.reduce((r, a) => r + Math.max(0, Number(a[u.value.alias]) || 0), 0);
       return i > 0 && M.push({ key: "other", slot: "other", name: `Other (${m.length})`, v: i }), M.map((r) => ({ ...r, share: g.value > 0 ? r.v / g.value : 0, text: ke(r.v, u.value) }));
     }), b = (f) => new Intl.NumberFormat("en", { style: "percent", maximumFractionDigits: 1 }).format(f);
-    return (f, o) => (s(), n("div", au, [
+    return (f, o) => (s(), n("div", ru, [
       e("div", {
         class: "rg-share__bar",
         role: "img",
@@ -4605,9 +4622,9 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
           class: ne(["rg-share__seg", `rg-series-${m.slot}`, { "is-dim": l.value !== null && l.value !== m.key }]),
           style: Me({ flexGrow: m.share, "--rg-delay": `${M * 60}ms` }),
           onMouseenter: (i) => l.value = m.key
-        }, null, 46, ru))), 128))
-      ], 40, ou),
-      e("ul", iu, [
+        }, null, 46, uu))), 128))
+      ], 40, iu),
+      e("ul", du, [
         (s(!0), n(U, null, H(d.value, (m) => (s(), n("li", {
           key: m.key,
           class: ne({ "is-hover": l.value === m.key }),
@@ -4617,19 +4634,19 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
           e("i", {
             class: ne(`rg-swatch rg-series-${m.slot}`)
           }, null, 2),
-          e("span", du, y(m.name), 1),
-          e("b", cu, y(m.text), 1),
-          e("span", gu, y(b(m.share)), 1)
-        ], 42, uu))), 128))
+          e("span", gu, y(m.name), 1),
+          e("b", mu, y(m.text), 1),
+          e("span", pu, y(b(m.share)), 1)
+        ], 42, cu))), 128))
       ])
     ]));
   }
-}, pu = ["width", "height", "aria-label"], vu = ["transform"], fu = { class: "rg-chart__grid" }, bu = ["transform"], hu = ["x2"], yu = {
+}, fu = ["width", "height", "aria-label"], bu = ["transform"], hu = { class: "rg-chart__grid" }, yu = ["transform"], $u = ["x2"], _u = {
   x: "-8",
   "dominant-baseline": "central",
   "text-anchor": "end",
   class: "rg-chart__axis"
-}, $u = ["onMouseenter"], _u = ["x", "width", "height"], ku = ["d", "transform"], wu = ["x", "y"], xu = ["x", "y"], Cu = { class: "rg-num" }, Su = {
+}, ku = ["onMouseenter"], wu = ["x", "width", "height"], xu = ["d", "transform"], Cu = ["x", "y"], Su = ["x", "y"], Mu = { class: "rg-num" }, Tu = {
   __name: "ColumnChart",
   props: {
     rows: { type: Array, required: !0 },
@@ -4654,14 +4671,14 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
     })), c = G(() => Math.max(3, Math.floor(i.value / 6.5))), k = (p) => p.length > c.value ? `${p.slice(0, c.value - 1)}…` : p, C = G(() => i.value >= 34);
     function h(p) {
       if (p <= 0) return "";
-      const v = r.value, w = Math.min(4, v / 2, p);
-      return `M0,${p} V${w} Q0,0 ${w},0 H${v - w} Q${v},0 ${v},${w} V${p} Z`;
+      const v = r.value, x = Math.min(4, v / 2, p);
+      return `M0,${p} V${x} Q0,0 ${x},0 H${v - x} Q${v},0 ${v},${x} V${p} Z`;
     }
     return (p, v) => (s(), n("div", {
       ref_key: "el",
       ref: l,
       class: "rg-chart rg-column",
-      onMouseleave: v[0] || (v[0] = (w) => d.value = null)
+      onMouseleave: v[0] || (v[0] = (x) => d.value = null)
     }, [
       (s(), n("svg", {
         width: g.value,
@@ -4672,48 +4689,48 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
         e("g", {
           transform: `translate(${f.left}, ${f.top})`
         }, [
-          e("g", fu, [
-            (s(!0), n(U, null, H(M.value.ticks, (w) => (s(), n("g", {
-              key: w,
-              transform: `translate(0, ${m.value - w / M.value.max * m.value})`
+          e("g", hu, [
+            (s(!0), n(U, null, H(M.value.ticks, (x) => (s(), n("g", {
+              key: x,
+              transform: `translate(0, ${m.value - x / M.value.max * m.value})`
             }, [
-              e("line", { x2: o.value }, null, 8, hu),
-              e("text", yu, y(R(us)(w, M.value.max)), 1)
-            ], 8, bu))), 128))
+              e("line", { x2: o.value }, null, 8, $u),
+              e("text", _u, y(R(us)(x, M.value.max)), 1)
+            ], 8, yu))), 128))
           ]),
-          (s(!0), n(U, null, H(a.value, (w) => (s(), n("g", {
-            key: w.i,
-            onMouseenter: (O) => d.value = w
+          (s(!0), n(U, null, H(a.value, (x) => (s(), n("g", {
+            key: x.i,
+            onMouseenter: (O) => d.value = x
           }, [
             e("rect", {
-              x: w.i * i.value,
+              x: x.i * i.value,
               y: "0",
               width: i.value,
               height: m.value,
               fill: "transparent"
-            }, null, 8, _u),
+            }, null, 8, wu),
             e("path", {
-              d: h(w.h),
-              transform: `translate(${w.x}, ${m.value - w.h})`,
-              class: ne(["rg-column__fill rg-series-1", { "is-dim": d.value && d.value.i !== w.i }]),
-              style: Me({ "--rg-delay": `${w.i * 40}ms` })
-            }, null, 14, ku),
+              d: h(x.h),
+              transform: `translate(${x.x}, ${m.value - x.h})`,
+              class: ne(["rg-column__fill rg-series-1", { "is-dim": d.value && d.value.i !== x.i }]),
+              style: Me({ "--rg-delay": `${x.i * 40}ms` })
+            }, null, 14, xu),
             C.value ? (s(), n("text", {
               key: 0,
-              x: w.x + r.value / 2,
-              y: m.value - w.h - 6,
+              x: x.x + r.value / 2,
+              y: m.value - x.h - 6,
               "text-anchor": "middle",
               class: "rg-chart__value"
-            }, y(w.text), 9, wu)) : x("", !0),
+            }, y(x.text), 9, Cu)) : w("", !0),
             e("text", {
-              x: w.x + r.value / 2,
+              x: x.x + r.value / 2,
               y: m.value + 16,
               "text-anchor": "middle",
               class: "rg-chart__axis"
-            }, y(k(w.name)), 9, xu)
-          ], 40, $u))), 128))
-        ], 8, vu)
-      ], 8, pu)),
+            }, y(k(x.name)), 9, Su)
+          ], 40, ku))), 128))
+        ], 8, bu)
+      ], 8, fu)),
       d.value ? (s(), n("div", {
         key: 0,
         class: "rg-chart__tip",
@@ -4723,15 +4740,15 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
         e("b", null, y(d.value.name), 1),
         e("span", null, [
           N(y(t.value.label) + ": ", 1),
-          e("b", Cu, y(d.value.text), 1)
+          e("b", Mu, y(d.value.text), 1)
         ])
-      ], 4)) : x("", !0)
+      ], 4)) : w("", !0)
     ], 544));
   }
-}, Mu = { class: "rg-chart rg-pie" }, Tu = ["viewBox", "aria-label"], Eu = ["d", "onMouseenter"], Ou = {
+}, Eu = { class: "rg-chart rg-pie" }, Ou = ["viewBox", "aria-label"], Ru = ["d", "onMouseenter"], Du = {
   key: 0,
   class: "rg-pie__centre"
-}, Ru = ["x", "y"], Du = ["x", "y"], Au = { class: "rg-share__legend rg-pie__legend" }, Lu = ["onMouseenter"], Nu = { class: "rg-share__name" }, Vu = { class: "rg-num" }, Pu = { class: "rg-num rg-faint" }, Ve = 168, Fu = {
+}, Au = ["x", "y"], Lu = ["x", "y"], Nu = { class: "rg-share__legend rg-pie__legend" }, Vu = ["onMouseenter"], Pu = { class: "rg-share__name" }, Fu = { class: "rg-num" }, qu = { class: "rg-num rg-faint" }, Ve = 168, Iu = {
   __name: "PieChart",
   props: {
     rows: { type: Array, required: !0 },
@@ -4756,7 +4773,7 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
       return c <= 0 ? `M${g + 2},${g + 2} L${C(a, i)} A${a},${a} 0 ${k} 1 ${C(a, r)} Z` : `M${C(a, i)} A${a},${a} 0 ${k} 1 ${C(a, r)} L${C(c, r)} A${c},${c} 0 ${k} 0 ${C(c, i)} Z`;
     }
     const m = (i) => new Intl.NumberFormat("en", { style: "percent", maximumFractionDigits: 1 }).format(i), M = G(() => l.value !== null ? f.value.find((i) => i.key === l.value) : null);
-    return (i, r) => (s(), n("div", Mu, [
+    return (i, r) => (s(), n("div", Eu, [
       (s(), n("svg", {
         width: Ve,
         height: Ve,
@@ -4772,23 +4789,23 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
           class: ne(["rg-pie__slice", `rg-series-${a.slot}`, { "is-dim": l.value !== null && l.value !== a.key }]),
           style: Me({ "--rg-delay": `${c * 70}ms` }),
           onMouseenter: (k) => l.value = a.key
-        }, null, 46, Eu))), 128)),
-        t.donut ? (s(), n("g", Ou, [
+        }, null, 46, Ru))), 128)),
+        t.donut ? (s(), n("g", Du, [
           e("text", {
             x: Ve / 2,
             y: Ve / 2 - 6,
             "text-anchor": "middle",
             class: "rg-pie__total rg-num"
-          }, y(M.value ? m(M.value.share) : R(ke)(b.value, t.value)), 9, Ru),
+          }, y(M.value ? m(M.value.share) : R(ke)(b.value, t.value)), 9, Au),
           e("text", {
             x: Ve / 2,
             y: Ve / 2 + 13,
             "text-anchor": "middle",
             class: "rg-chart__axis"
-          }, y(M.value ? M.value.name.slice(0, 18) : "Total"), 9, Du)
-        ])) : x("", !0)
-      ], 40, Tu)),
-      e("ul", Au, [
+          }, y(M.value ? M.value.name.slice(0, 18) : "Total"), 9, Lu)
+        ])) : w("", !0)
+      ], 40, Ou)),
+      e("ul", Nu, [
         (s(!0), n(U, null, H(f.value, (a) => (s(), n("li", {
           key: a.key,
           class: ne({ "is-hover": l.value === a.key }),
@@ -4798,35 +4815,35 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
           e("i", {
             class: ne(`rg-swatch rg-series-${a.slot}`)
           }, null, 2),
-          e("span", Nu, y(a.name), 1),
-          e("b", Vu, y(a.text), 1),
-          e("span", Pu, y(m(a.share)), 1)
-        ], 42, Lu))), 128))
+          e("span", Pu, y(a.name), 1),
+          e("b", Fu, y(a.text), 1),
+          e("span", qu, y(m(a.share)), 1)
+        ], 42, Vu))), 128))
       ])
     ]));
   }
-}, qu = { class: "rg-widget__head" }, Iu = { class: "rg-widget__titles" }, Uu = {
+}, Uu = { class: "rg-widget__head" }, ju = { class: "rg-widget__titles" }, zu = {
   key: 0,
   class: "rg-faint"
-}, ju = ["aria-busy"], zu = {
+}, Bu = ["aria-busy"], Gu = {
   key: 0,
   class: "rg-widget__locked"
-}, Bu = { class: "rg-empty__icon" }, Gu = {
+}, Ku = { class: "rg-empty__icon" }, Hu = {
   key: 1,
   class: "rg-widget__skeleton"
-}, Ku = {
+}, Wu = {
   key: 2,
   class: "rg-widget__error"
-}, Hu = {
+}, Yu = {
   key: 3,
   class: "rg-widget__empty rg-faint"
-}, Wu = {
+}, Ju = {
   key: 0,
   class: "rg-kpis"
-}, Yu = {
+}, Zu = {
   key: 6,
   class: "rg-widget__table"
-}, Ju = { class: "rg-grid" }, Zu = {
+}, Qu = { class: "rg-grid" }, Xu = {
   key: 0,
   class: "rg-sr-only"
 }, vt = {
@@ -4865,8 +4882,8 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
       var v;
       const C = i.value[l.widget.category];
       if (!C || C.grain || !["date", "datetime"].includes(C.type)) return C ?? null;
-      const h = (((v = d.value) == null ? void 0 : v.rows) ?? []).map((w) => w[C.alias]).filter((w) => w != null);
-      return h.length > 1 && h.every((w) => /^\d{4}-\d{2}-01/.test(String(w))) ? { ...C, grain: "month" } : C;
+      const h = (((v = d.value) == null ? void 0 : v.rows) ?? []).map((x) => x[C.alias]).filter((x) => x != null);
+      return h.length > 1 && h.every((x) => /^\d{4}-\d{2}-01/.test(String(x))) ? { ...C, grain: "month" } : C;
     }), a = G(() => (l.widget.values ?? []).map((C) => i.value[C]).filter(Boolean)), c = G(() => d.value && d.value.rows.length === 0), k = G(() => {
       var C;
       return ((C = d.value) == null ? void 0 : C.columns) ?? [];
@@ -4876,10 +4893,10 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
       return s(), n("article", {
         class: ne(["rg-widget", [`rg-widget--${t.widget.type}`, `rg-widget--${t.widget.size ?? "md"}`]])
       }, [
-        e("header", qu, [
-          e("div", Iu, [
+        e("header", Uu, [
+          e("div", ju, [
             e("h3", null, y(t.widget.title || (((p = a.value[0]) == null ? void 0 : p.label) ?? "Widget")), 1),
-            t.widget.report_name ? (s(), n("small", Uu, y(t.widget.report_name), 1)) : x("", !0)
+            t.widget.report_name ? (s(), n("small", zu, y(t.widget.report_name), 1)) : w("", !0)
           ]),
           rt(C.$slots, "actions")
         ]),
@@ -4887,8 +4904,8 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
           class: "rg-widget__body",
           "aria-busy": o.value ? "true" : "false"
         }, [
-          f.value ? (s(), n("div", zu, [
-            e("span", Bu, [
+          f.value ? (s(), n("div", Gu, [
+            e("span", Ku, [
               E(F, { name: "lock" })
             ]),
             e("span", null, [
@@ -4896,63 +4913,63 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
               e("b", null, y(t.widget.report_name ?? "its report"), 1),
               h[1] || (h[1] = N(" to see this.", -1))
             ])
-          ])) : o.value && !d.value ? (s(), n("div", Gu, [
+          ])) : o.value && !d.value ? (s(), n("div", Hu, [
             (s(!0), n(U, null, H(t.widget.type === "kpi" ? 2 : 5, (v) => (s(), n("span", {
               key: v,
               class: "rg-skeleton",
               style: Me({ width: `${40 + v * 29 % 55}%` })
             }, null, 4))), 128))
-          ])) : b.value ? (s(), n("p", Ku, [
+          ])) : b.value ? (s(), n("p", Wu, [
             E(F, {
               name: "alert",
               small: ""
             }),
             N(" " + y(b.value), 1)
-          ])) : c.value ? (s(), n("p", Hu, "No data for these filters.")) : d.value ? (s(), n(U, { key: 4 }, [
+          ])) : c.value ? (s(), n("p", Yu, "No data for these filters.")) : d.value ? (s(), n(U, { key: 4 }, [
             e("div", {
               class: ne({ "rg-widget__stale": o.value })
             }, [
-              t.widget.type === "kpi" ? (s(), n("div", Wu, [
+              t.widget.type === "kpi" ? (s(), n("div", Ju, [
                 (s(!0), n(U, null, H(a.value, (v) => {
-                  var w;
-                  return s(), ae(Oi, {
+                  var x;
+                  return s(), ae(Di, {
                     key: v.alias,
                     label: a.value.length > 1 || !t.widget.title ? v.label : "",
-                    value: ((w = d.value.rows[0]) == null ? void 0 : w[v.alias]) ?? null,
+                    value: ((x = d.value.rows[0]) == null ? void 0 : x[v.alias]) ?? null,
                     column: v
                   }, null, 8, ["label", "value", "column"]);
                 }), 128))
-              ])) : t.widget.type === "bar" && r.value && a.value[0] ? (s(), ae(Ui, {
+              ])) : t.widget.type === "bar" && r.value && a.value[0] ? (s(), ae(zi, {
                 key: 1,
                 rows: d.value.rows,
                 category: r.value,
                 value: a.value[0]
-              }, null, 8, ["rows", "category", "value"])) : t.widget.type === "column" && r.value && a.value[0] ? (s(), ae(Su, {
+              }, null, 8, ["rows", "category", "value"])) : t.widget.type === "column" && r.value && a.value[0] ? (s(), ae(Tu, {
                 key: 2,
                 rows: d.value.rows,
                 category: r.value,
                 value: a.value[0]
-              }, null, 8, ["rows", "category", "value"])) : ["line", "area"].includes(t.widget.type) && r.value && a.value.length ? (s(), ae(nu, {
+              }, null, 8, ["rows", "category", "value"])) : ["line", "area"].includes(t.widget.type) && r.value && a.value.length ? (s(), ae(ou, {
                 key: 3,
                 rows: d.value.rows,
                 category: r.value,
                 values: a.value,
                 area: t.widget.type === "area"
-              }, null, 8, ["rows", "category", "values", "area"])) : ["pie", "donut"].includes(t.widget.type) && r.value && a.value[0] ? (s(), ae(Fu, {
+              }, null, 8, ["rows", "category", "values", "area"])) : ["pie", "donut"].includes(t.widget.type) && r.value && a.value[0] ? (s(), ae(Iu, {
                 key: 4,
                 rows: d.value.rows,
                 category: r.value,
                 value: a.value[0],
                 donut: t.widget.type === "donut",
                 parts: t.widget.top ?? 6
-              }, null, 8, ["rows", "category", "value", "donut", "parts"])) : t.widget.type === "share" && r.value && a.value[0] ? (s(), ae(mu, {
+              }, null, 8, ["rows", "category", "value", "donut", "parts"])) : t.widget.type === "share" && r.value && a.value[0] ? (s(), ae(vu, {
                 key: 5,
                 rows: d.value.rows,
                 category: r.value,
                 value: a.value[0],
                 parts: t.widget.top ?? 6
-              }, null, 8, ["rows", "category", "value", "parts"])) : t.widget.type === "table" ? (s(), n("div", Yu, [
-                e("table", Ju, [
+              }, null, 8, ["rows", "category", "value", "parts"])) : t.widget.type === "table" ? (s(), n("div", Zu, [
+                e("table", Qu, [
                   e("thead", null, [
                     e("tr", null, [
                       (s(!0), n(U, null, H(k.value, (v) => (s(), n("th", {
@@ -4962,8 +4979,8 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
                     ])
                   ]),
                   e("tbody", null, [
-                    (s(!0), n(U, null, H(d.value.rows, (v, w) => (s(), n("tr", {
-                      key: w,
+                    (s(!0), n(U, null, H(d.value.rows, (v, x) => (s(), n("tr", {
+                      key: x,
                       class: "rg-row"
                     }, [
                       (s(!0), n(U, null, H(k.value, (O) => (s(), n("td", {
@@ -4973,9 +4990,9 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
                     ]))), 128))
                   ])
                 ])
-              ])) : x("", !0)
+              ])) : w("", !0)
             ], 2),
-            t.widget.type !== "table" && !f.value ? (s(), n("table", Zu, [
+            t.widget.type !== "table" && !f.value ? (s(), n("table", Xu, [
               e("caption", null, y(t.widget.title), 1),
               e("thead", null, [
                 e("tr", null, [
@@ -4985,15 +5002,15 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
                 ])
               ]),
               e("tbody", null, [
-                (s(!0), n(U, null, H(d.value.rows, (v, w) => (s(), n("tr", { key: w }, [
+                (s(!0), n(U, null, H(d.value.rows, (v, x) => (s(), n("tr", { key: x }, [
                   (s(!0), n(U, null, H(k.value, (O) => (s(), n("td", {
                     key: O.alias
                   }, y(R(ke)(v[O.alias], O)), 1))), 128))
                 ]))), 128))
               ])
-            ])) : x("", !0)
-          ], 64)) : x("", !0)
-        ], 8, ju)
+            ])) : w("", !0)
+          ], 64)) : w("", !0)
+        ], 8, Bu)
       ], 2);
     };
   }
@@ -5007,27 +5024,27 @@ const Ri = ["width", "height", "aria-label"], Di = ["transform", "onMouseenter"]
   { value: "donut", label: "Donut", icon: "globe", hint: "Parts, with the total", fits: (t) => He(t) && qe(t) },
   { value: "share", label: "Share bar", icon: "table", hint: "Parts in one bar", fits: (t) => He(t) && qe(t) },
   { value: "table", label: "Table", icon: "table", hint: "First rows", fits: () => !0 }
-], cs = ["bar", "column", "pie", "donut", "share"], Qu = { line: 120, area: 120, pie: 6, donut: 6, share: 6 }, Xu = { kpi: "sm", table: "full", line: "full", area: "full" };
+], cs = ["bar", "column", "pie", "donut", "share"], ed = { line: 120, area: 120, pie: 6, donut: 6, share: 6 }, td = { kpi: "sm", table: "full", line: "full", area: "full" };
 function gs(t, u, { resize: l = !1 } = {}) {
   const g = { ...t, type: u };
   cs.includes(u) && (g.values = (t.values ?? []).slice(0, 1)), u === "kpi" && (g.category = null);
   const d = ["pie", "donut", "share"].includes(t.type), b = ["pie", "donut", "share"].includes(u), f = ["line", "area"].includes(t.type), o = ["line", "area"].includes(u);
-  return (l || d !== b || f !== o) && (g.top = Qu[u] ?? 10), l && (g.size = Xu[u] ?? "md"), g;
+  return (l || d !== b || f !== o) && (g.top = ed[u] ?? 10), l && (g.size = td[u] ?? "md"), g;
 }
-const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["value"], nd = { class: "rg-publish__field" }, ad = {
+const sd = { class: "rg-publish" }, ld = ["for"], nd = ["id", "value"], ad = ["value"], od = { class: "rg-publish__field" }, rd = {
   class: "rg-widget-types",
   role: "group",
   "aria-label": "Widget type"
-}, od = ["aria-pressed", "onClick"], rd = ["for"], id = ["id"], ud = ["value"], dd = {
+}, id = ["aria-pressed", "onClick"], ud = ["for"], dd = ["id"], cd = ["value"], gd = {
   key: 2,
   class: "rg-publish__field"
-}, cd = {
+}, md = {
   key: 0,
   class: "rg-faint"
-}, gd = { class: "rg-publish__roles" }, md = ["aria-pressed", "onClick"], pd = {
+}, pd = { class: "rg-publish__roles" }, vd = ["aria-pressed", "onClick"], fd = {
   key: 0,
   class: "rg-faint"
-}, vd = { class: "rg-widget-dialog__row" }, fd = ["for"], bd = ["id"], hd = ["for"], yd = ["id", "max"], $d = ["for"], _d = ["id"], kd = ["value"], ms = {
+}, bd = { class: "rg-widget-dialog__row" }, hd = ["for"], yd = ["id"], $d = ["for"], _d = ["id", "max"], kd = ["for"], wd = ["id"], xd = ["value"], ms = {
   __name: "WidgetForm",
   props: {
     widget: { type: Object, required: !0 },
@@ -5050,7 +5067,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
     function i(r) {
       Object.assign(l.widget, { report: r, category: null, values: [] }), g("report", r);
     }
-    return (r, a) => (s(), n("div", ed, [
+    return (r, a) => (s(), n("div", sd, [
       t.reports ? (s(), n("label", {
         key: 0,
         class: "rg-publish__field",
@@ -5070,12 +5087,12 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           (s(!0), n(U, null, H(t.reports, (c) => (s(), n("option", {
             key: c.uuid,
             value: c.uuid
-          }, y(c.name), 9, ld))), 128))
-        ], 40, sd)
-      ], 8, td)) : x("", !0),
-      e("div", nd, [
+          }, y(c.name), 9, ad))), 128))
+        ], 40, nd)
+      ], 8, ld)) : w("", !0),
+      e("div", od, [
         a[7] || (a[7] = e("span", null, "Show as", -1)),
-        e("div", ad, [
+        e("div", rd, [
           (s(!0), n(U, null, H(R(ds), (c) => (s(), n("button", {
             key: c.value,
             type: "button",
@@ -5089,10 +5106,10 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             }, null, 8, ["name"]),
             e("b", null, y(c.label), 1),
             e("small", null, y(c.hint), 1)
-          ], 8, od))), 128))
+          ], 8, id))), 128))
         ])
       ]),
-      ["kpi", "table"].includes(t.widget.type) ? x("", !0) : (s(), n("label", {
+      ["kpi", "table"].includes(t.widget.type) ? w("", !0) : (s(), n("label", {
         key: 1,
         class: "rg-publish__field",
         for: `${t.idPrefix}-category`
@@ -5110,17 +5127,17 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           (s(!0), n(U, null, H(t.columns.dims, (c) => (s(), n("option", {
             key: c.as,
             value: c.as
-          }, y(c.label), 9, ud))), 128))
-        ], 8, id), [
+          }, y(c.label), 9, cd))), 128))
+        ], 8, dd), [
           [Pe, t.widget.category]
         ])
-      ], 8, rd)),
-      t.widget.type !== "table" ? (s(), n("fieldset", dd, [
+      ], 8, ud)),
+      t.widget.type !== "table" ? (s(), n("fieldset", gd, [
         e("legend", null, [
           N(y(b.value ? "Number" : "Numbers"), 1),
-          f.value ? (s(), n("small", cd, " · pick numbers of the same scale: they share one axis")) : x("", !0)
+          f.value ? (s(), n("small", md, " · pick numbers of the same scale: they share one axis")) : w("", !0)
         ]),
-        e("div", gd, [
+        e("div", pd, [
           (s(!0), n(U, null, H(t.columns.nums, (c) => (s(), n("button", {
             key: c.as,
             type: "button",
@@ -5133,18 +5150,18 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }, null, 8, ["name"]),
             N(y(c.label), 1)
-          ], 8, md))), 128)),
-          t.columns.loading ? (s(), n("span", pd, [
+          ], 8, vd))), 128)),
+          t.columns.loading ? (s(), n("span", fd, [
             E(F, {
               name: "loader",
               spin: "",
               small: ""
             }),
             a[9] || (a[9] = N(" Loading columns…", -1))
-          ])) : x("", !0)
+          ])) : w("", !0)
         ])
-      ])) : x("", !0),
-      e("div", vd, [
+      ])) : w("", !0),
+      e("div", bd, [
         e("label", {
           class: "rg-publish__field",
           for: `${t.idPrefix}-title`
@@ -5156,10 +5173,10 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             class: "rg-input",
             maxlength: "160",
             placeholder: "From the numbers"
-          }, null, 8, bd), [
+          }, null, 8, yd), [
             [ce, t.widget.title]
           ])
-        ], 8, fd),
+        ], 8, hd),
         t.widget.type !== "kpi" ? (s(), n("label", {
           key: 0,
           class: "rg-publish__field",
@@ -5173,7 +5190,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             type: "number",
             min: "1",
             max: o.value ? 12 : f.value ? 400 : 50
-          }, null, 8, yd), [
+          }, null, 8, _d), [
             [
               ce,
               t.widget.top,
@@ -5181,7 +5198,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               { number: !0 }
             ]
           ])
-        ], 8, hd)) : x("", !0),
+        ], 8, $d)) : w("", !0),
         e("label", {
           class: "rg-publish__field",
           for: `${t.idPrefix}-size`
@@ -5195,25 +5212,25 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             (s(), n(U, null, H(d, ([c, k]) => e("option", {
               key: c,
               value: c
-            }, y(k), 9, kd)), 64))
-          ], 8, _d), [
+            }, y(k), 9, xd)), 64))
+          ], 8, wd), [
             [Pe, t.widget.size]
           ])
-        ], 8, $d)
+        ], 8, kd)
       ])
     ]));
   }
-}, wd = {
+}, Cd = {
   key: 0,
   class: "rg-pin__done"
-}, xd = { class: "rg-empty__icon" }, Cd = {
+}, Sd = { class: "rg-empty__icon" }, Md = {
   key: 0,
   class: "rg-widget-dialog__preview"
-}, Sd = { class: "rg-publish__field rg-pin__target" }, Md = ["value"], Td = {
+}, Td = { class: "rg-publish__field rg-pin__target" }, Ed = ["value"], Od = {
   key: 1,
   class: "rg-publish__error",
   role: "alert"
-}, Ed = ["disabled"], At = {
+}, Rd = ["disabled"], At = {
   __name: "PinToDashboard",
   props: {
     report: { type: String, required: !0 },
@@ -5225,8 +5242,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
     Se(async () => {
       var h;
       try {
-        const [p, v] = await Promise.all([d.reports.view(l.report), d.dashboards.list().catch(() => [])]), w = p.fields ?? [];
-        o.dims = w.filter((O) => O.kind === "dimension").map((O) => ({ as: O.as, label: O.label ?? O.as })), o.nums = w.filter((O) => O.kind !== "dimension").map((O) => ({ as: O.as, label: O.label ?? O.as })), f.category = ((h = o.dims[0]) == null ? void 0 : h.as) ?? null, f.values = o.nums[0] ? [o.nums[0].as] : [], f.category || Object.assign(f, { type: "kpi", size: "sm" }), m.value = v.filter((O) => O.is_owner), m.value.length && (M.value = m.value[0].uuid);
+        const [p, v] = await Promise.all([d.reports.view(l.report), d.dashboards.list().catch(() => [])]), x = p.fields ?? [];
+        o.dims = x.filter((O) => O.kind === "dimension").map((O) => ({ as: O.as, label: O.label ?? O.as })), o.nums = x.filter((O) => O.kind !== "dimension").map((O) => ({ as: O.as, label: O.label ?? O.as })), f.category = ((h = o.dims[0]) == null ? void 0 : h.as) ?? null, f.values = o.nums[0] ? [o.nums[0].as] : [], f.category || Object.assign(f, { type: "kpi", size: "sm" }), m.value = v.filter((O) => O.is_owner), m.value.length && (M.value = m.value[0].uuid);
       } catch (p) {
         r.error = p.message;
       } finally {
@@ -5237,9 +5254,9 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
     function k() {
       var v;
       const { id: h, ...p } = f;
-      return (v = p.title) != null && v.trim() || (p.title = p.values.map((w) => {
+      return (v = p.title) != null && v.trim() || (p.title = p.values.map((x) => {
         var O;
-        return ((O = o.nums.find((_) => _.as === w)) == null ? void 0 : O.label) ?? w;
+        return ((O = o.nums.find((_) => _.as === x)) == null ? void 0 : O.label) ?? x;
       }).join(", ") || l.reportName || "Widget"), p;
     }
     async function C() {
@@ -5294,12 +5311,12 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             N(" " + y(r.saving ? "Pinning…" : "Pin"), 1)
-          ], 8, Ed)
+          ], 8, Rd)
         ], 64))
       ]),
       default: de(() => [
-        r.done ? (s(), n("div", wd, [
-          e("span", xd, [
+        r.done ? (s(), n("div", Cd, [
+          e("span", Sd, [
             E(F, { name: "check" })
           ]),
           e("p", null, [
@@ -5318,15 +5335,15 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             columns: o,
             "id-prefix": "rg-pin"
           }, null, 8, ["widget", "columns"]),
-          a.value ? (s(), n("div", Cd, [
+          a.value ? (s(), n("div", Md, [
             p[9] || (p[9] = e("span", { class: "rg-faint" }, "Preview", -1)),
             E(vt, {
               widget: { ...f, size: "full" },
               load: () => R(d).dashboards.preview(f),
               version: c.value
             }, null, 8, ["widget", "load", "version"])
-          ])) : x("", !0),
-          e("div", Sd, [
+          ])) : w("", !0),
+          e("div", Td, [
             p[11] || (p[11] = e("span", null, "Add to", -1)),
             se(e("select", {
               id: "rg-pin-target",
@@ -5336,7 +5353,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               (s(!0), n(U, null, H(m.value, (v) => (s(), n("option", {
                 key: v.uuid,
                 value: v.uuid
-              }, y(v.name) + " (" + y(v.widgets_count) + " widgets)", 9, Md))), 128)),
+              }, y(v.name) + " (" + y(v.widgets_count) + " widgets)", 9, Ed))), 128)),
               p[10] || (p[10] = e("option", { value: "new" }, "A new dashboard…", -1))
             ], 512), [
               [Pe, M.value]
@@ -5350,85 +5367,85 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               "aria-label": "New dashboard name"
             }, null, 512)), [
               [ce, i.value]
-            ]) : x("", !0)
+            ]) : w("", !0)
           ]),
-          r.error ? (s(), n("p", Td, y(r.error), 1)) : x("", !0)
+          r.error ? (s(), n("p", Od, y(r.error), 1)) : w("", !0)
         ], 32))
       ]),
       _: 1
     }, 8, ["title", "data-rg-theme"]));
   }
-}, Od = ["data-rg-theme"], Rd = { class: "rg-topbar" }, Dd = { class: "rg-topbar__title" }, Ad = { class: "rg-topbar__meta" }, Ld = { class: "rg-root-chip" }, Nd = { key: 0 }, Vd = {
+}, Dd = ["data-rg-theme"], Ad = { class: "rg-topbar" }, Ld = { class: "rg-topbar__title" }, Nd = { class: "rg-topbar__meta" }, Vd = { class: "rg-root-chip" }, Pd = { key: 0 }, Fd = {
   key: 1,
   class: "rg-badge rg-badge--success"
-}, Pd = { class: "rg-topbar__actions" }, Fd = ["disabled"], qd = ["disabled"], Id = {
+}, qd = { class: "rg-topbar__actions" }, Id = ["disabled"], Ud = ["disabled"], jd = {
   key: 0,
   class: "rg-builder__body"
-}, Ud = { class: "rg-explorer" }, jd = { class: "rg-skeleton-list" }, zd = {
+}, zd = { class: "rg-explorer" }, Bd = { class: "rg-skeleton-list" }, Gd = {
   key: 1,
   class: "rg-builder__body"
-}, Bd = {
+}, Kd = {
   class: "rg-explorer rg-catalog",
   "aria-label": "Reports"
-}, Gd = { class: "rg-explorer__head" }, Kd = { class: "rg-search" }, Hd = { class: "rg-catalog__list" }, Wd = {
+}, Hd = { class: "rg-explorer__head" }, Wd = { class: "rg-search" }, Yd = { class: "rg-catalog__list" }, Jd = {
   key: 0,
   class: "rg-list__empty"
-}, Yd = ["aria-expanded", "disabled", "onClick"], Jd = {
+}, Zd = ["aria-expanded", "disabled", "onClick"], Qd = {
   key: 0,
   class: "rg-faint"
-}, Zd = {
+}, Xd = {
   key: 1,
   class: "rg-faint"
-}, Qd = {
-  key: 0,
-  class: "rg-badge rg-badge--info"
-}, Xd = {
-  key: 0,
-  class: "rg-catalog__fields"
 }, ec = {
   key: 0,
-  class: "rg-faint"
+  class: "rg-badge rg-badge--info"
 }, tc = {
-  key: 1,
-  class: "rg-catalog__error"
-}, sc = ["checked", "onChange"], lc = {
+  key: 0,
+  class: "rg-catalog__fields"
+}, sc = {
   key: 0,
   class: "rg-faint"
-}, nc = { class: "rg-builder__main" }, ac = { class: "rg-combined__settings" }, oc = {
+}, lc = {
+  key: 1,
+  class: "rg-catalog__error"
+}, nc = ["checked", "onChange"], ac = {
+  key: 0,
+  class: "rg-faint"
+}, oc = { class: "rg-builder__main" }, rc = { class: "rg-combined__settings" }, ic = {
   class: "rg-segmented",
   role: "group",
   "aria-label": "One row per"
-}, rc = ["aria-pressed"], ic = ["aria-pressed"], uc = {
+}, uc = ["aria-pressed"], dc = ["aria-pressed"], cc = {
   class: "rg-field-inline",
   for: "rg-combined-period"
-}, dc = ["value"], cc = { class: "rg-field-inline" }, gc = { class: "rg-combined__columns" }, mc = {
+}, gc = ["value"], mc = { class: "rg-field-inline" }, pc = { class: "rg-combined__columns" }, vc = {
   class: "rg-combined__base",
   role: "group",
   "aria-label": "Structure columns"
-}, pc = ["aria-pressed", "onClick"], vc = ["onDragstart", "onDrop"], fc = { class: "rg-combined__text" }, bc = ["aria-label", "onKeydown"], hc = ["onClick"], yc = { class: "rg-faint" }, $c = ["aria-label", "onClick"], _c = ["aria-label", "disabled", "onClick"], kc = ["aria-label", "onClick"], wc = ["disabled"], xc = {
+}, fc = ["aria-pressed", "onClick"], bc = ["onDragstart", "onDrop"], hc = { class: "rg-combined__text" }, yc = ["aria-label", "onKeydown"], $c = ["onClick"], _c = { class: "rg-faint" }, kc = ["aria-label", "onClick"], wc = ["aria-label", "disabled", "onClick"], xc = ["aria-label", "onClick"], Cc = ["disabled"], Sc = {
   class: "rg-results",
   "aria-label": "Results"
-}, Cc = {
+}, Mc = {
   class: "rg-statusbar",
   role: "status",
   "aria-live": "polite"
-}, Sc = { key: 0 }, Mc = { class: "rg-num" }, Tc = {
+}, Tc = { key: 0 }, Ec = { class: "rg-num" }, Oc = {
   key: 0,
   class: "rg-badge rg-badge--success"
-}, Ec = {
+}, Rc = {
   key: 2,
   class: "rg-faint"
-}, Oc = {
+}, Dc = {
   key: 0,
   class: "rg-errorbox",
   role: "alert"
-}, Rc = { class: "rg-errorbox__title" }, Dc = {
+}, Ac = { class: "rg-errorbox__title" }, Lc = {
   class: "rg-publish__field",
   for: "rg-combined-formula-label"
-}, Ac = {
+}, Nc = {
   class: "rg-publish__field",
   for: "rg-combined-formula-text"
-}, Lc = { class: "rg-publish__field" }, Nc = { class: "rg-token-list" }, Vc = ["title", "onClick"], Pc = ["disabled"], Fc = {
+}, Vc = { class: "rg-publish__field" }, Pc = { class: "rg-token-list" }, Fc = ["title", "onClick"], qc = ["disabled"], Ic = {
   __name: "CombinedBuilder",
   props: {
     /** Saved combined report to open (from api.reports.get), or null for a new one. */
@@ -5437,7 +5454,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
   },
   emits: ["saved", "published", "back", "open-dashboard"],
   setup(t, { emit: u }) {
-    const l = t, g = u, d = K(!1), { api: b } = Le(), f = ft(), o = pi(b, f);
+    const l = t, g = u, d = K(!1), { api: b } = Le(), f = ft(), o = fi(b, f);
     Re(Ee, o), ye("rg-theme", null) || Re("rg-theme", l.theme);
     const m = [
       ["this_month", "This month"],
@@ -5455,7 +5472,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
         T.has(re) || T.set(re, []), T.get(re).push(V);
       }
       return [...T];
-    }), w = G(() => new Set(i.value.fields.filter((A) => A.report).map((A) => A.report))), O = G(() => i.value.fields.map((A) => ({ uid: A.uid, as: A.as, label: A.label ?? A.as })));
+    }), x = G(() => new Set(i.value.fields.filter((A) => A.report).map((A) => A.report))), O = G(() => i.value.fields.map((A) => ({ uid: A.uid, as: A.as, label: A.label ?? A.as })));
     function _(A) {
       return A.levels.includes(i.value.level);
     }
@@ -5503,8 +5520,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
       class: "rg-root rg-combined",
       "data-rg-theme": t.theme
     }, [
-      e("header", Rd, [
-        e("div", Dd, [
+      e("header", Ad, [
+        e("div", Ld, [
           T[32] || (T[32] = e("label", {
             class: "rg-sr-only",
             for: "rg-combined-name"
@@ -5517,37 +5534,37 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           }, null, 512), [
             [ce, i.value.name]
           ]),
-          e("div", Ad, [
-            e("span", Ld, [
+          e("div", Nd, [
+            e("span", Vd, [
               E(F, {
                 name: "table",
                 small: ""
               }),
               T[29] || (T[29] = N(" Combined report, one row per ", -1)),
               e("b", null, y(i.value.level), 1),
-              i.value.uuid ? x("", !0) : (s(), n("button", {
+              i.value.uuid ? w("", !0) : (s(), n("button", {
                 key: 0,
                 type: "button",
                 onClick: T[1] || (T[1] = (V) => g("back"))
               }, "change type"))
             ]),
-            R(o).dirty.value ? (s(), n("span", Nd, [...T[30] || (T[30] = [
+            R(o).dirty.value ? (s(), n("span", Pd, [...T[30] || (T[30] = [
               e("i", {
                 class: "rg-dot",
                 "aria-hidden": "true"
               }, null, -1),
               N(" Unsaved changes", -1)
-            ])])) : x("", !0),
-            i.value.published ? (s(), n("span", Vd, [
+            ])])) : w("", !0),
+            i.value.published ? (s(), n("span", Fd, [
               E(F, {
                 name: "globe",
                 small: ""
               }),
               T[31] || (T[31] = N(" Published", -1))
-            ])) : x("", !0)
+            ])) : w("", !0)
           ])
         ]),
-        e("div", Pd, [
+        e("div", qd, [
           e("button", {
             type: "button",
             class: "rg-btn",
@@ -5559,7 +5576,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             T[33] || (T[33] = N(" Run", -1))
-          ], 8, Fd),
+          ], 8, Id),
           T[37] || (T[37] = e("span", { class: "rg-toolbar-sep" }, null, -1)),
           i.value.uuid ? (s(), n("button", {
             key: 0,
@@ -5573,7 +5590,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             T[34] || (T[34] = N(" Pin", -1))
-          ])) : x("", !0),
+          ])) : w("", !0),
           i.value.uuid && i.value.canPublish ? (s(), n("button", {
             key: 1,
             type: "button",
@@ -5585,7 +5602,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             N(" " + y(i.value.published ? "Publishing" : "Publish"), 1)
-          ])) : x("", !0),
+          ])) : w("", !0),
           i.value.uuid ? (s(), n("button", {
             key: 2,
             type: "button",
@@ -5597,7 +5614,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             T[35] || (T[35] = N(" Save a copy", -1))
-          ])) : x("", !0),
+          ])) : w("", !0),
           e("button", {
             type: "button",
             class: "rg-btn rg-btn--primary",
@@ -5609,12 +5626,12 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             T[36] || (T[36] = N(" Save ", -1))
-          ], 8, qd)
+          ], 8, Ud)
         ])
       ]),
-      R(o).state.loading ? (s(), n("div", Id, [
-        e("aside", Ud, [
-          e("div", jd, [
+      R(o).state.loading ? (s(), n("div", jd, [
+        e("aside", zd, [
+          e("div", Bd, [
             (s(), n(U, null, H(8, (V) => e("div", {
               key: V,
               class: "rg-skeleton"
@@ -5622,10 +5639,10 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           ])
         ]),
         T[38] || (T[38] = e("main", { class: "rg-builder__main" }, null, -1))
-      ])) : (s(), n("div", zd, [
-        e("aside", Bd, [
-          e("div", Gd, [
-            e("label", Kd, [
+      ])) : (s(), n("div", Gd, [
+        e("aside", Kd, [
+          e("div", Hd, [
+            e("label", Wd, [
               T[39] || (T[39] = e("span", { class: "rg-sr-only" }, "Search reports", -1)),
               E(F, { name: "search" }),
               se(e("input", {
@@ -5639,8 +5656,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               ])
             ])
           ]),
-          e("div", Hd, [
-            R(o).state.reports.length ? x("", !0) : (s(), n("p", Wd, "No existing reports can be combined yet.")),
+          e("div", Yd, [
+            R(o).state.reports.length ? w("", !0) : (s(), n("p", Jd, "No existing reports can be combined yet.")),
             (s(!0), n(U, null, H(v.value, ([V, re]) => (s(), n("section", {
               key: V,
               class: "rg-catalog__group"
@@ -5648,7 +5665,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               e("h3", null, y(V), 1),
               (s(!0), n(U, null, H(re, (ie) => (s(), n("article", {
                 key: ie.key,
-                class: ne(["rg-catalog__report", { "is-open": a.value.has(ie.key), "is-used": w.value.has(ie.key), "is-off": !_(ie) }])
+                class: ne(["rg-catalog__report", { "is-open": a.value.has(ie.key), "is-used": x.value.has(ie.key), "is-off": !_(ie) }])
               }, [
                 e("button", {
                   type: "button",
@@ -5664,23 +5681,23 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   }),
                   e("span", null, [
                     e("b", null, y(ie.label), 1),
-                    _(ie) ? ie.description ? (s(), n("small", Zd, y(ie.description), 1)) : x("", !0) : (s(), n("small", Jd, "Per " + y(ie.levels.join(" / ")) + " only", 1))
+                    _(ie) ? ie.description ? (s(), n("small", Xd, y(ie.description), 1)) : w("", !0) : (s(), n("small", Qd, "Per " + y(ie.levels.join(" / ")) + " only", 1))
                   ]),
-                  w.value.has(ie.key) ? (s(), n("span", Qd, "in use")) : x("", !0)
-                ], 8, Yd),
+                  x.value.has(ie.key) ? (s(), n("span", ec, "in use")) : w("", !0)
+                ], 8, Zd),
                 E(it, { name: "rg-swap" }, {
                   default: de(() => {
                     var fe, Je, Te;
                     return [
-                      a.value.has(ie.key) ? (s(), n("ul", Xd, [
-                        (fe = R(o).fieldsOf(ie.key)) != null && fe.loading ? (s(), n("li", ec, [
+                      a.value.has(ie.key) ? (s(), n("ul", tc, [
+                        (fe = R(o).fieldsOf(ie.key)) != null && fe.loading ? (s(), n("li", sc, [
                           E(F, {
                             name: "loader",
                             spin: "",
                             small: ""
                           }),
                           T[40] || (T[40] = N(" Reading its columns…", -1))
-                        ])) : (Je = R(o).fieldsOf(ie.key)) != null && Je.error ? (s(), n("li", tc, y(R(o).fieldsOf(ie.key).error), 1)) : x("", !0),
+                        ])) : (Je = R(o).fieldsOf(ie.key)) != null && Je.error ? (s(), n("li", lc, y(R(o).fieldsOf(ie.key).error), 1)) : w("", !0),
                         (s(!0), n(U, null, H(((Te = R(o).fieldsOf(ie.key)) == null ? void 0 : Te.fields) ?? [], (xe) => (s(), n("li", {
                           key: xe.key
                         }, [
@@ -5690,16 +5707,16 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                               class: "rg-check",
                               checked: R(o).hasField(ie.key, xe.key),
                               onChange: (Ze) => R(o).toggleField(ie.key, xe)
-                            }, null, 40, sc),
+                            }, null, 40, nc),
                             E(F, {
                               name: M[xe.type] ?? "text",
                               small: ""
                             }, null, 8, ["name"]),
                             e("span", null, y(xe.label), 1),
-                            xe.type === "percent" ? (s(), n("small", lc, "%")) : x("", !0)
+                            xe.type === "percent" ? (s(), n("small", ac, "%")) : w("", !0)
                           ])
                         ]))), 128))
-                      ])) : x("", !0)
+                      ])) : w("", !0)
                     ];
                   }),
                   _: 2
@@ -5708,21 +5725,21 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             ]))), 128))
           ])
         ]),
-        e("main", nc, [
-          e("div", ac, [
-            e("div", oc, [
+        e("main", oc, [
+          e("div", rc, [
+            e("div", ic, [
               e("button", {
                 type: "button",
                 "aria-pressed": i.value.level === "employee",
                 onClick: T[8] || (T[8] = (V) => i.value.level = "employee")
-              }, "Per employee", 8, rc),
+              }, "Per employee", 8, uc),
               e("button", {
                 type: "button",
                 "aria-pressed": i.value.level === "division",
                 onClick: T[9] || (T[9] = (V) => i.value.level = "division")
-              }, "Per division", 8, ic)
+              }, "Per division", 8, dc)
             ]),
-            e("label", uc, [
+            e("label", cc, [
               E(F, {
                 name: "calendar",
                 small: ""
@@ -5737,7 +5754,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 (s(), n(U, null, H(m, ([V, re]) => e("option", {
                   key: V,
                   value: V
-                }, y(re), 9, dc)), 64)),
+                }, y(re), 9, gc)), 64)),
                 T[41] || (T[41] = e("option", { value: "custom" }, "Custom range…", -1))
               ], 512), [
                 [Pe, i.value.period]
@@ -5763,8 +5780,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               }, null, 512), [
                 [ce, i.value.to]
               ])
-            ], 64)) : x("", !0),
-            e("div", cc, [
+            ], 64)) : w("", !0),
+            e("div", mc, [
               E(F, {
                 name: "folder",
                 small: ""
@@ -5779,15 +5796,15 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               }, null, 8, ["modelValue"])
             ])
           ]),
-          e("div", gc, [
-            e("div", mc, [
+          e("div", pc, [
+            e("div", vc, [
               (s(!0), n(U, null, H(R(rs), (V) => (s(), n("button", {
                 key: V.key,
                 type: "button",
                 class: "rg-chip-toggle",
                 "aria-pressed": i.value.fields.some((re) => re.base === V.key),
                 onClick: (re) => R(o).toggleBase(V.key)
-              }, y(V.label), 9, pc))), 128))
+              }, y(V.label), 9, fc))), 128))
             ]),
             E(lt, {
               tag: "ol",
@@ -5812,7 +5829,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                       class: "rg-combined__grip",
                       "aria-hidden": "true"
                     }, "⋮⋮", -1)),
-                    e("span", fc, [
+                    e("span", hc, [
                       ((ie = h.value) == null ? void 0 : ie.uid) === V.uid ? se((s(), n("input", {
                         key: 0,
                         "onUpdate:modelValue": T[14] || (T[14] = (fe) => h.value.label = fe),
@@ -5823,7 +5840,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                           T[15] || (T[15] = Ie((fe) => h.value = null, ["escape"]))
                         ],
                         onBlur: W
-                      }, null, 40, bc)), [
+                      }, null, 40, yc)), [
                         [ce, h.value.label]
                       ]) : (s(), n("button", {
                         key: 1,
@@ -5831,8 +5848,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                         class: "rg-linkish",
                         title: "Rename",
                         onClick: (fe) => X(V)
-                      }, y(V.label ?? V.as), 9, hc)),
-                      e("small", yc, [
+                      }, y(V.label ?? V.as), 9, $c)),
+                      e("small", _c, [
                         V.formula ? (s(), n(U, { key: 0 }, [
                           E(F, {
                             name: "fx",
@@ -5855,14 +5872,14 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                         name: "fx",
                         small: ""
                       })
-                    ], 8, $c)) : x("", !0),
+                    ], 8, kc)) : w("", !0),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
                       "aria-label": `Move ${V.label ?? V.as} left`,
                       disabled: re === 0,
                       onClick: (fe) => R(o).moveColumn(V.uid, re - 1)
-                    }, "‹", 8, _c),
+                    }, "‹", 8, wc),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
@@ -5873,8 +5890,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                         name: "x",
                         small: ""
                       })
-                    ], 8, kc)
-                  ], 42, vc);
+                    ], 8, xc)
+                  ], 42, bc);
                 }), 128))
               ]),
               _: 1
@@ -5890,11 +5907,11 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 small: ""
               }),
               T[46] || (T[46] = N(" Formula ", -1))
-            ], 8, wc)
+            ], 8, Cc)
           ]),
-          e("section", xc, [
-            e("div", Cc, [
-              R(o).state.running ? (s(), n("span", Sc, [
+          e("section", Sc, [
+            e("div", Mc, [
+              R(o).state.running ? (s(), n("span", Tc, [
                 E(F, {
                   name: "loader",
                   spin: "",
@@ -5902,14 +5919,14 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 }),
                 T[47] || (T[47] = N(" Running the reports…", -1))
               ])) : R(o).state.meta && !R(o).state.error ? (s(), n(U, { key: 1 }, [
-                e("span", null, y(w.value.size) + " " + y(w.value.size === 1 ? "report" : "reports") + " combined", 1),
-                e("span", Mc, y(R(o).state.meta.duration_ms) + " ms", 1),
-                R(o).state.meta.cached ? (s(), n("span", Tc, "from cache")) : x("", !0)
-              ], 64)) : R(o).runnable.value ? x("", !0) : (s(), n("span", Ec, "Open a report on the left and tick the columns you want."))
+                e("span", null, y(x.value.size) + " " + y(x.value.size === 1 ? "report" : "reports") + " combined", 1),
+                e("span", Ec, y(R(o).state.meta.duration_ms) + " ms", 1),
+                R(o).state.meta.cached ? (s(), n("span", Oc, "from cache")) : w("", !0)
+              ], 64)) : R(o).runnable.value ? w("", !0) : (s(), n("span", Rc, "Open a report on the left and tick the columns you want."))
             ]),
             e("div", null, [
-              R(o).state.error ? (s(), n("div", Oc, [
-                e("span", Rc, [
+              R(o).state.error ? (s(), n("div", Dc, [
+                e("span", Ac, [
                   E(F, {
                     name: "alert",
                     small: ""
@@ -5917,7 +5934,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   N(y(D[R(o).state.error.code] ?? "This report cannot run yet"), 1)
                 ]),
                 e("span", null, y(R(o).state.error.message), 1)
-              ])) : x("", !0)
+              ])) : w("", !0)
             ]),
             E(Ot)
           ])
@@ -5942,7 +5959,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               form: "rg-combined-formula",
               class: "rg-btn rg-btn--primary",
               disabled: !((V = C.value.formula) != null && V.trim())
-            }, y(C.value.uid ? "Update" : "Add"), 9, Pc)
+            }, y(C.value.uid ? "Update" : "Add"), 9, qc)
           ];
         }),
         default: de(() => [
@@ -5951,7 +5968,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             class: "rg-publish",
             onSubmit: ge(z, ["prevent"])
           }, [
-            e("label", Dc, [
+            e("label", Lc, [
               T[48] || (T[48] = e("span", null, "Column name", -1)),
               se(e("input", {
                 id: "rg-combined-formula-label",
@@ -5963,7 +5980,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 [ce, C.value.label]
               ])
             ]),
-            e("label", Ac, [
+            e("label", Nc, [
               T[49] || (T[49] = e("span", null, "Formula", -1)),
               se(e("textarea", {
                 id: "rg-combined-formula-text",
@@ -5975,23 +5992,23 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 [ce, C.value.formula]
               ])
             ]),
-            e("div", Lc, [
+            e("div", Vc, [
               T[50] || (T[50] = e("span", null, "Columns you can use", -1)),
-              e("div", Nc, [
+              e("div", Pc, [
                 (s(!0), n(U, null, H(O.value.filter((V) => V.uid !== C.value.uid), (V) => (s(), n("button", {
                   key: V.as,
                   type: "button",
                   class: "rg-chip-toggle",
                   title: V.label,
                   onClick: (re) => B(V.as)
-                }, y(V.as), 9, Vc))), 128))
+                }, y(V.as), 9, Fc))), 128))
               ]),
               T[51] || (T[51] = e("small", { class: "rg-faint" }, "+ − * / %, comparisons, IF, ROUND, ABS, COALESCE, NULLIF, GREATEST, LEAST, SAFE_DIVIDE. Dividing by zero gives an empty cell.", -1))
             ])
           ], 32)
         ]),
         _: 1
-      }, 8, ["title", "data-rg-theme"])) : x("", !0),
+      }, 8, ["title", "data-rg-theme"])) : w("", !0),
       d.value && i.value.uuid ? (s(), ae(At, {
         key: 3,
         report: i.value.uuid,
@@ -6000,13 +6017,13 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
         onOpenDashboard: T[24] || (T[24] = (V) => {
           d.value = !1, g("open-dashboard", V);
         })
-      }, null, 8, ["report", "report-name"])) : x("", !0),
+      }, null, 8, ["report", "report-name"])) : w("", !0),
       c.value ? (s(), ae(os, {
         key: 4,
         copy: c.value.copy,
         onClose: T[25] || (T[25] = (V) => c.value = null),
         onSaved: L
-      }, null, 8, ["copy"])) : x("", !0),
+      }, null, 8, ["copy"])) : w("", !0),
       k.value ? (s(), ae(Rt, {
         key: 5,
         uuid: i.value.uuid,
@@ -6018,20 +6035,20 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
         onUnpublished: T[28] || (T[28] = (V) => {
           i.value.published = !1, g("published", V);
         })
-      }, null, 8, ["uuid", "name"])) : x("", !0),
+      }, null, 8, ["uuid", "name"])) : w("", !0),
       E(bt, {
         toasts: R(f),
         "data-rg-theme": t.theme
       }, null, 8, ["toasts", "data-rg-theme"])
-    ], 8, Od));
+    ], 8, Dd));
   }
-}, qc = {
+}, Uc = {
   class: "rg-muted",
   style: { margin: "0" }
-}, Ic = ["onClick"], Uc = {
+}, jc = ["onClick"], zc = {
   key: 0,
   class: "rg-badge rg-badge--warning"
-}, jc = {
+}, Bc = {
   __name: "PathDialog",
   setup(t) {
     const u = ye(Ee), l = ye("rg-theme", "light");
@@ -6049,7 +6066,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
         }, "Cancel")
       ]),
       default: de(() => [
-        e("p", qc, y(R(u).state.pathChoice.dataset.label) + " can be reached in more than one way, and each gives different numbers. ", 1),
+        e("p", Uc, y(R(u).state.pathChoice.dataset.label) + " can be reached in more than one way, and each gives different numbers. ", 1),
         (s(!0), n(U, null, H(R(u).state.pathChoice.options, (b) => (s(), n("button", {
           key: b.path.join("."),
           type: "button",
@@ -6057,38 +6074,38 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           onClick: (f) => R(u).choosePath(b.path)
         }, [
           e("b", null, y(b.description), 1),
-          b.multiplies_rows ? (s(), n("span", Uc, "several per report row")) : x("", !0)
-        ], 8, Ic))), 128))
+          b.multiplies_rows ? (s(), n("span", zc, "several per report row")) : w("", !0)
+        ], 8, jc))), 128))
       ]),
       _: 1
-    }, 8, ["title", "data-rg-theme"])) : x("", !0);
+    }, 8, ["title", "data-rg-theme"])) : w("", !0);
   }
-}, zc = ["data-rg-theme"], Bc = {
+}, Gc = ["data-rg-theme"], Kc = {
   key: 0,
   class: "rg-builder__body"
-}, Gc = { class: "rg-explorer" }, Kc = { class: "rg-skeleton-list" }, Hc = {
+}, Hc = { class: "rg-explorer" }, Wc = { class: "rg-skeleton-list" }, Yc = {
   key: 1,
   class: "rg-main"
-}, Wc = {
+}, Jc = {
   key: 2,
   class: "rg-builder__body"
-}, Yc = { class: "rg-builder__main" }, Jc = { class: "rg-shelves" }, Zc = { class: "rg-shelf" }, Qc = {
+}, Zc = { class: "rg-builder__main" }, Qc = { class: "rg-shelves" }, Xc = { class: "rg-shelf" }, eg = {
   key: 1,
   class: "rg-shelf__empty"
-}, Xc = {
+}, tg = {
   key: 2,
   style: { "margin-top": "6px" }
-}, eg = { class: "rg-shelf" }, tg = {
+}, sg = { class: "rg-shelf" }, lg = {
   class: "rg-panel__controls",
   style: { gap: "16px", "padding-top": "4px" }
-}, sg = {
+}, ng = {
   class: "rg-field-inline",
   for: "rg-opt-grouped",
   title: "Show rows as groups you open one level at a time"
-}, lg = ["disabled"], ng = {
+}, ag = ["disabled"], og = {
   class: "rg-field-inline",
   for: "rg-opt-subtotals"
-}, ag = ["disabled"], hp = {
+}, rg = ["disabled"], $p = {
   __name: "ReportBuilder",
   props: {
     /** uuid of a saved report to open; null starts a new one */
@@ -6097,7 +6114,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
   },
   emits: ["saved", "published", "open-dashboard"],
   setup(t, { emit: u }) {
-    const l = t, g = u, d = K(!1), { api: b } = Le(), f = ft(), o = Ql(b, f);
+    const l = t, g = u, d = K(!1), { api: b } = Le(), f = ft(), o = en(b, f);
     Re(Ee, o), Re("rg-theme", l.theme);
     const m = K(null), M = K(null), i = K(!1), r = K(null), a = K(null), c = K(!1);
     Re("rg-start-combined", c), Re("rg-choose-combined", () => {
@@ -6138,16 +6155,16 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
       } catch {
       }
     }
-    function w(O) {
+    function x(O) {
       g("saved", O);
     }
     return (O, _) => {
       var S;
-      return r.value === "combined" ? (s(), ae(Fc, {
+      return r.value === "combined" ? (s(), ae(Ic, {
         key: ((S = a.value) == null ? void 0 : S.uuid) ?? "new",
         report: a.value,
         theme: t.theme,
-        onSaved: w,
+        onSaved: x,
         onPublished: _[0] || (_[0] = ($) => g("published", $)),
         onOpenDashboard: _[1] || (_[1] = ($) => g("open-dashboard", $)),
         onBack: _[2] || (_[2] = ($) => {
@@ -6158,15 +6175,15 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
         class: "rg-root rg-builder",
         "data-rg-theme": t.theme
       }, [
-        E(fn, {
+        E(hn, {
           onSave: _[3] || (_[3] = ($) => M.value = { copy: !1 }),
           onSaveCopy: _[4] || (_[4] = ($) => M.value = { copy: !0 }),
           onPublish: _[5] || (_[5] = ($) => i.value = !0),
           onPin: _[6] || (_[6] = ($) => d.value = !0)
         }),
-        R(o).state.loading ? (s(), n("div", Bc, [
-          e("aside", Gc, [
-            e("div", Kc, [
+        R(o).state.loading ? (s(), n("div", Kc, [
+          e("aside", Hc, [
+            e("div", Wc, [
               (s(), n(U, null, H(10, ($) => e("div", {
                 key: $,
                 class: "rg-skeleton"
@@ -6174,10 +6191,10 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             ])
           ]),
           _[21] || (_[21] = e("main", { class: "rg-builder__main" }, null, -1))
-        ])) : R(o).state.draft.root ? (s(), n("div", Wc, [
-          E(Yn),
-          e("main", Yc, [
-            e("div", Jc, [
+        ])) : R(o).state.draft.root ? (s(), n("div", Jc, [
+          E(Zn),
+          e("main", Zc, [
+            e("div", Qc, [
               E(Ht, {
                 shelf: "rows",
                 title: "Rows",
@@ -6204,7 +6221,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 ]),
                 _: 1
               }),
-              e("div", Zc, [
+              e("div", Xc, [
                 _[23] || (_[23] = e("span", { class: "rg-shelf__title" }, "Filters", -1)),
                 e("div", {
                   class: ne(["rg-shelf__drop", { "rg-shelf__drop--over": C.value }]),
@@ -6214,11 +6231,11 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   onDragleave: _[11] || (_[11] = ge(($) => C.value = !1, ["self"])),
                   onDrop: ge(v, ["prevent"])
                 }, [
-                  R(o).state.draft.filters.items.length ? (s(), ae(Ba, {
+                  R(o).state.draft.filters.items.length ? (s(), ae(Ka, {
                     key: 0,
                     group: R(o).state.draft.filters
-                  }, null, 8, ["group"])) : (s(), n("span", Qc, "Drop a field to filter the rows, or a value to filter totals")),
-                  R(o).state.draft.filters.items.length ? (s(), n("div", Xc, [
+                  }, null, 8, ["group"])) : (s(), n("span", eg, "Drop a field to filter the rows, or a value to filter totals")),
+                  R(o).state.draft.filters.items.length ? (s(), n("div", tg, [
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--sm rg-btn--ghost",
@@ -6230,32 +6247,32 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                       }),
                       N(" Add a group (" + y(R(o).state.draft.filters.boolean === "and" ? "any of" : "all of") + ") ", 1)
                     ])
-                  ])) : x("", !0)
+                  ])) : w("", !0)
                 ], 34)
               ]),
-              e("div", eg, [
+              e("div", sg, [
                 _[26] || (_[26] = e("span", { class: "rg-shelf__title" }, "Options", -1)),
-                e("div", tg, [
-                  e("label", sg, [
+                e("div", lg, [
+                  e("label", ng, [
                     se(e("input", {
                       id: "rg-opt-grouped",
                       "onUpdate:modelValue": _[12] || (_[12] = ($) => R(o).state.draft.grouped = $),
                       class: "rg-check",
                       type: "checkbox",
                       disabled: R(o).state.draft.rows.length < 2
-                    }, null, 8, lg), [
+                    }, null, 8, ag), [
                       [ot, R(o).state.draft.grouped]
                     ]),
                     _[24] || (_[24] = N(" Group rows (open level by level) ", -1))
                   ]),
-                  e("label", ng, [
+                  e("label", og, [
                     se(e("input", {
                       id: "rg-opt-subtotals",
                       "onUpdate:modelValue": _[13] || (_[13] = ($) => R(o).state.draft.subtotals = $),
                       class: "rg-check",
                       type: "checkbox",
                       disabled: !R(o).state.draft.values.length || R(o).grouped.value
-                    }, null, 8, ag), [
+                    }, null, 8, rg), [
                       [ot, R(o).state.draft.subtotals]
                     ]),
                     _[25] || (_[25] = N(" Subtotals ", -1))
@@ -6263,16 +6280,16 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 ])
               ])
             ]),
-            E(kr)
+            E(xr)
           ])
-        ])) : (s(), n("main", Hc, [
-          E(Mn)
+        ])) : (s(), n("main", Yc, [
+          E(En)
         ])),
-        m.value ? (s(), ae(Pr, {
+        m.value ? (s(), ae(qr, {
           key: 3,
           item: m.value.item,
           onClose: _[14] || (_[14] = ($) => m.value = null)
-        }, null, 8, ["item"])) : x("", !0),
+        }, null, 8, ["item"])) : w("", !0),
         d.value && R(o).state.draft.uuid ? (s(), ae(At, {
           key: 4,
           report: R(o).state.draft.uuid,
@@ -6281,7 +6298,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           onOpenDashboard: _[16] || (_[16] = ($) => {
             d.value = !1, g("open-dashboard", $);
           })
-        }, null, 8, ["report", "report-name"])) : x("", !0),
+        }, null, 8, ["report", "report-name"])) : w("", !0),
         i.value ? (s(), ae(Rt, {
           key: 5,
           uuid: R(o).state.draft.uuid,
@@ -6293,61 +6310,61 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           onUnpublished: _[19] || (_[19] = ($) => {
             R(o).state.draft.published = !1, g("published", $);
           })
-        }, null, 8, ["uuid", "name"])) : x("", !0),
+        }, null, 8, ["uuid", "name"])) : w("", !0),
         M.value ? (s(), ae(os, {
           key: 6,
           copy: M.value.copy,
           folders: k.value,
           onClose: _[20] || (_[20] = ($) => M.value = null),
-          onSaved: w
-        }, null, 8, ["copy", "folders"])) : x("", !0),
-        E(jc),
+          onSaved: x
+        }, null, 8, ["copy", "folders"])) : w("", !0),
+        E(Bc),
         E(bt, {
           toasts: R(f),
           "data-rg-theme": t.theme
         }, null, 8, ["toasts", "data-rg-theme"])
-      ], 8, zc));
+      ], 8, Gc));
     };
   }
-}, og = ["data-rg-theme"], rg = { class: "rg-topbar" }, ig = { class: "rg-topbar__actions" }, ug = { class: "rg-library__filters" }, dg = {
+}, ig = ["data-rg-theme"], ug = { class: "rg-topbar" }, dg = { class: "rg-topbar__actions" }, cg = { class: "rg-library__filters" }, gg = {
   class: "rg-tabs",
   role: "tablist"
-}, cg = ["aria-selected", "onClick"], gg = {
+}, mg = ["aria-selected", "onClick"], pg = {
   class: "rg-search",
   style: { width: "260px" }
-}, mg = {
+}, vg = {
   key: 0,
   class: "rg-tabs",
   "aria-label": "Folders"
-}, pg = ["aria-selected"], vg = ["aria-selected", "onClick"], fg = { class: "rg-library__list" }, bg = {
+}, fg = ["aria-selected"], bg = ["aria-selected", "onClick"], hg = { class: "rg-library__list" }, yg = {
   key: 0,
   class: "rg-skeleton-list"
-}, hg = {
+}, $g = {
   key: 1,
   class: "rg-empty"
-}, yg = { class: "rg-empty__icon" }, $g = { class: "rg-report-row__title" }, _g = ["onClick"], kg = { class: "rg-report-row__meta" }, wg = { style: { display: "flex", gap: "6px", "align-items": "center" } }, xg = {
+}, _g = { class: "rg-empty__icon" }, kg = { class: "rg-report-row__title" }, wg = ["onClick"], xg = { class: "rg-report-row__meta" }, Cg = { style: { display: "flex", gap: "6px", "align-items": "center" } }, Sg = {
   key: 0,
   class: "rg-badge rg-badge--success"
-}, Cg = {
+}, Mg = {
   key: 1,
   class: "rg-badge rg-badge--info"
-}, Sg = { class: "rg-report-row__actions" }, Mg = ["aria-label", "onClick"], Tg = {
+}, Tg = { class: "rg-report-row__actions" }, Eg = ["aria-label", "onClick"], Og = {
   key: 3,
   class: "rg-empty"
-}, Eg = { class: "rg-empty__icon" }, Og = { class: "rg-report-row__title" }, Rg = ["onClick"], Dg = { class: "rg-report-row__meta" }, Ag = { key: 0 }, Lg = {
+}, Rg = { class: "rg-empty__icon" }, Dg = { class: "rg-report-row__title" }, Ag = ["onClick"], Lg = { class: "rg-report-row__meta" }, Ng = { key: 0 }, Vg = {
   key: 1,
   class: "rg-faint",
   style: { overflow: "hidden", "text-overflow": "ellipsis", "white-space": "nowrap", "max-width": "420px" }
-}, Ng = { style: { display: "flex", gap: "6px", "align-items": "center" } }, Vg = {
+}, Pg = { style: { display: "flex", gap: "6px", "align-items": "center" } }, Fg = {
   key: 0,
   class: "rg-badge rg-badge--info"
-}, Pg = {
+}, qg = {
   key: 1,
   class: "rg-badge rg-badge--info"
-}, Fg = {
+}, Ig = {
   key: 2,
   class: "rg-badge"
-}, qg = { class: "rg-report-row__actions" }, Ig = ["onClick"], Ug = ["onClick"], jg = ["aria-label", "onClick"], yp = {
+}, Ug = { class: "rg-report-row__actions" }, jg = ["onClick"], zg = ["onClick"], Bg = ["aria-label", "onClick"], _p = {
   __name: "ReportLibrary",
   props: { theme: { type: String, default: "light" } },
   emits: ["open", "create", "dashboard", "open-dashboard"],
@@ -6388,7 +6405,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
         d.error(S);
       }
     }
-    async function w(_) {
+    async function x(_) {
       if (r.value = null, _.widgets_count !== void 0) {
         try {
           await g.dashboards.remove(_.uuid), c.value = c.value.filter((S) => S.uuid !== _.uuid), d.success(`Deleted "${_.name}".`);
@@ -6408,14 +6425,14 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
       class: "rg-root rg-library",
       "data-rg-theme": t.theme
     }, [
-      e("header", rg, [
+      e("header", ug, [
         S[8] || (S[8] = e("div", { class: "rg-topbar__title" }, [
           e("h1", null, "Reports"),
           e("div", { class: "rg-topbar__meta" }, [
             e("span", null, "Build a report from any connected data, save it, and share it.")
           ])
         ], -1)),
-        e("div", ig, [
+        e("div", dg, [
           e("button", {
             type: "button",
             class: "rg-btn rg-btn--primary",
@@ -6429,8 +6446,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           ])
         ])
       ]),
-      e("div", ug, [
-        e("div", dg, [
+      e("div", cg, [
+        e("div", gg, [
           (s(), n(U, null, H(a, ([$, X]) => e("button", {
             key: $,
             type: "button",
@@ -6438,9 +6455,9 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             class: "rg-tab",
             "aria-selected": b.value === $ ? "true" : "false",
             onClick: (W) => b.value = $
-          }, y(X), 9, cg)), 64))
+          }, y(X), 9, mg)), 64))
         ]),
-        e("label", gg, [
+        e("label", pg, [
           S[9] || (S[9] = e("span", { class: "rg-sr-only" }, "Search reports", -1)),
           E(F, { name: "search" }),
           se(e("input", {
@@ -6454,13 +6471,13 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             [ce, f.value]
           ])
         ]),
-        M.value.length && !k.value ? (s(), n("div", mg, [
+        M.value.length && !k.value ? (s(), n("div", vg, [
           e("button", {
             type: "button",
             class: "rg-tab",
             "aria-selected": o.value ? "false" : "true",
             onClick: S[2] || (S[2] = ($) => o.value = null)
-          }, "All folders", 8, pg),
+          }, "All folders", 8, fg),
           (s(!0), n(U, null, H(M.value, ($) => (s(), n("button", {
             key: $,
             type: "button",
@@ -6473,18 +6490,18 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             N(" " + y($), 1)
-          ], 8, vg))), 128))
-        ])) : x("", !0)
+          ], 8, bg))), 128))
+        ])) : w("", !0)
       ]),
-      e("div", fg, [
-        i.value ? (s(), n("div", bg, [
+      e("div", hg, [
+        i.value ? (s(), n("div", yg, [
           (s(), n(U, null, H(5, ($) => e("div", {
             key: $,
             class: "rg-skeleton",
             style: { height: "44px" }
           })), 64))
-        ])) : O.value && k.value ? (s(), n("div", hg, [
-          e("div", yg, [
+        ])) : O.value && k.value ? (s(), n("div", $g, [
+          e("div", _g, [
             E(F, { name: "view" })
           ]),
           e("h2", null, y(f.value ? "No dashboard matches" : "No dashboards yet"), 1),
@@ -6497,7 +6514,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           key: $.uuid,
           class: "rg-report-row"
         }, [
-          e("div", $g, [
+          e("div", kg, [
             e("button", {
               type: "button",
               onClick: (X) => l("open-dashboard", $.uuid)
@@ -6507,28 +6524,28 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 small: ""
               }),
               N(" " + y($.name), 1)
-            ], 8, _g),
-            e("div", kg, [
+            ], 8, wg),
+            e("div", xg, [
               e("span", null, y($.widgets_count) + " widgets", 1),
               e("span", null, "Updated " + y(R(Kt)($.updated_at)), 1)
             ])
           ]),
-          e("div", wg, [
-            $.published ? (s(), n("span", xg, [
+          e("div", Cg, [
+            $.published ? (s(), n("span", Sg, [
               E(F, {
                 name: "globe",
                 small: ""
               }),
               S[11] || (S[11] = N(" Published", -1))
-            ])) : $.visibility === "public" ? (s(), n("span", Cg, [
+            ])) : $.visibility === "public" ? (s(), n("span", Mg, [
               E(F, {
                 name: "globe",
                 small: ""
               }),
               S[12] || (S[12] = N(" Everyone", -1))
-            ])) : x("", !0)
+            ])) : w("", !0)
           ]),
-          e("div", Sg, [
+          e("div", Tg, [
             $.is_owner ? (s(), n("button", {
               key: 0,
               type: "button",
@@ -6540,10 +6557,10 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 name: "trash",
                 small: ""
               })
-            ], 8, Mg)) : x("", !0)
+            ], 8, Eg)) : w("", !0)
           ])
-        ]))), 128)) : O.value ? (s(), n("div", Tg, [
-          e("div", Eg, [
+        ]))), 128)) : O.value ? (s(), n("div", Og, [
+          e("div", Rg, [
             E(F, { name: "table" })
           ]),
           e("h2", null, y(f.value || o.value ? "No report matches" : b.value === "shared" ? "Nothing shared with you yet" : "No reports yet"), 1),
@@ -6559,46 +6576,46 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
               small: ""
             }),
             S[13] || (S[13] = N(" New report", -1))
-          ])) : x("", !0)
+          ])) : w("", !0)
         ])) : (s(!0), n(U, { key: 4 }, H(m.value, ($) => (s(), n("article", {
           key: $.uuid,
           class: "rg-report-row"
         }, [
-          e("div", Og, [
+          e("div", Dg, [
             e("button", {
               type: "button",
               onClick: (X) => l("open", $.uuid)
-            }, y($.name), 9, Rg),
-            e("div", Dg, [
-              $.folder ? (s(), n("span", Ag, [
+            }, y($.name), 9, Ag),
+            e("div", Lg, [
+              $.folder ? (s(), n("span", Ng, [
                 E(F, {
                   name: "folder",
                   small: ""
                 }),
                 N(" " + y($.folder), 1)
-              ])) : x("", !0),
+              ])) : w("", !0),
               e("span", null, y($.fields_count) + " fields", 1),
               e("span", null, "Updated " + y(R(Kt)($.updated_at)), 1),
-              $.description ? (s(), n("span", Lg, y($.description), 1)) : x("", !0)
+              $.description ? (s(), n("span", Vg, y($.description), 1)) : w("", !0)
             ])
           ]),
-          e("div", Ng, [
-            $.visibility === "public" ? (s(), n("span", Vg, [
+          e("div", Pg, [
+            $.visibility === "public" ? (s(), n("span", Fg, [
               E(F, {
                 name: "globe",
                 small: ""
               }),
               S[14] || (S[14] = N(" Everyone", -1))
-            ])) : $.shared ? (s(), n("span", Pg, [
+            ])) : $.shared ? (s(), n("span", qg, [
               E(F, {
                 name: "users",
                 small: ""
               }),
               S[15] || (S[15] = N(" Shared", -1))
-            ])) : x("", !0),
-            $.is_owner ? x("", !0) : (s(), n("span", Fg, y($.can_edit ? "Can edit" : "View only"), 1))
+            ])) : w("", !0),
+            $.is_owner ? w("", !0) : (s(), n("span", Ig, y($.can_edit ? "Can edit" : "View only"), 1))
           ]),
-          e("div", qg, [
+          e("div", Ug, [
             e("button", {
               type: "button",
               class: "rg-btn rg-btn--sm rg-btn--ghost",
@@ -6610,7 +6627,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 small: ""
               }),
               S[16] || (S[16] = N(" Dashboard", -1))
-            ], 8, Ig),
+            ], 8, jg),
             e("button", {
               type: "button",
               class: "rg-btn rg-btn--sm rg-btn--ghost",
@@ -6621,7 +6638,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 small: ""
               }),
               S[17] || (S[17] = N(" Duplicate", -1))
-            ], 8, Ug),
+            ], 8, zg),
             $.is_owner ? (s(), n("button", {
               key: 0,
               type: "button",
@@ -6633,7 +6650,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 name: "trash",
                 small: ""
               })
-            ], 8, jg)) : x("", !0)
+            ], 8, Bg)) : w("", !0)
           ])
         ]))), 128))
       ]),
@@ -6652,63 +6669,63 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           e("button", {
             type: "button",
             class: "rg-btn rg-btn--danger",
-            onClick: S[5] || (S[5] = ($) => w(r.value))
+            onClick: S[5] || (S[5] = ($) => x(r.value))
           }, "Delete")
         ]),
         default: de(() => [
           S[18] || (S[18] = e("p", { style: { margin: "0" } }, "People it is shared with will lose it too. This cannot be undone from here.", -1))
         ]),
         _: 1
-      }, 8, ["title", "data-rg-theme"])) : x("", !0),
+      }, 8, ["title", "data-rg-theme"])) : w("", !0),
       E(bt, {
         toasts: R(d),
         "data-rg-theme": t.theme
       }, null, 8, ["toasts", "data-rg-theme"])
-    ], 8, og));
+    ], 8, ig));
   }
-}, zg = ["data-rg-theme"], Bg = {
+}, Gg = ["data-rg-theme"], Kg = {
   key: 0,
   class: "rg-main"
-}, Gg = { class: "rg-empty" }, Kg = { class: "rg-empty__icon" }, Hg = { class: "rg-topbar" }, Wg = { class: "rg-topbar__title" }, Yg = { key: 0 }, Jg = {
+}, Hg = { class: "rg-empty" }, Wg = { class: "rg-empty__icon" }, Yg = { class: "rg-topbar" }, Jg = { class: "rg-topbar__title" }, Zg = { key: 0 }, Qg = {
   key: 1,
   class: "rg-skeleton",
   style: { width: "220px", height: "18px" }
-}, Zg = {
+}, Xg = {
   key: 2,
   class: "rg-topbar__meta"
-}, Qg = { class: "rg-topbar__actions" }, Xg = ["disabled"], em = {
+}, em = { class: "rg-topbar__actions" }, tm = ["disabled"], sm = {
   class: "rg-viewer__filter",
   for: "rg-viewer-period"
-}, tm = ["value"], sm = {
+}, lm = ["value"], nm = {
   key: 0,
   class: "rg-viewer__range"
-}, lm = {
+}, am = {
   key: 0,
   class: "rg-viewer__filter"
-}, nm = {
+}, om = {
   key: 1,
   class: "rg-viewer__filter"
-}, am = {
+}, rm = {
   key: 2,
   class: "rg-viewer__filter"
-}, om = ["for"], rm = {
+}, im = ["for"], um = {
   key: 0,
   class: "rg-viewer__required"
-}, im = ["id", "onUpdate:modelValue"], um = ["value"], dm = ["id", "onUpdate:modelValue", "type"], cm = ["disabled"], gm = {
+}, dm = ["id", "onUpdate:modelValue"], cm = ["value"], gm = ["id", "onUpdate:modelValue", "type"], mm = ["disabled"], pm = {
   class: "rg-results",
   "aria-label": "Results"
-}, mm = {
+}, vm = {
   class: "rg-statusbar",
   role: "status",
   "aria-live": "polite"
-}, pm = { key: 0 }, vm = {
+}, fm = { key: 0 }, bm = {
   key: 1,
   class: "rg-num"
-}, fm = {
+}, hm = {
   key: 0,
   class: "rg-errorbox",
   role: "alert"
-}, bm = { class: "rg-errorbox__title" }, Jt = 200, $p = {
+}, ym = { class: "rg-errorbox__title" }, Jt = 200, kp = {
   __name: "ReportViewer",
   props: {
     reportId: { type: String, required: !0 },
@@ -6756,7 +6773,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
     function v(X) {
       return (W) => f.contextOptions(X, { search: W, lines: X === "lines" ? [] : M.lines, period: C() ?? void 0 });
     }
-    async function w({ keys: X = [], offset: W = 0, top: pe = !1, size: z = Jt, fresh: B = !1 } = {}) {
+    async function x({ keys: X = [], offset: W = 0, top: pe = !1, size: z = Jt, fresh: B = !1 } = {}) {
       var D, A;
       const q = a.value ? { columns: r.draft.rows.map((T) => T.as), keys: X } : void 0, L = pe && (W === 0 || B);
       L && ((D = k == null ? void 0 : k.abort) == null || D.call(k), k = typeof AbortController < "u" ? new AbortController() : null, r.running = !0, r.error = null);
@@ -6793,7 +6810,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
       state: r,
       grouped: a,
       runnable: c,
-      fetchRows: w,
+      fetchRows: x,
       toggleSort: _,
       fetchSummary: () => f.reports.summary(l.reportId, p()),
       exportReport: (X) => f.reports.export(l.reportId, X, p()),
@@ -6837,9 +6854,9 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
         class: "rg-root rg-viewer",
         "data-rg-theme": t.theme
       }, [
-        m.value ? (s(), n("div", Bg, [
-          e("div", Gg, [
-            e("div", Kg, [
+        m.value ? (s(), n("div", Kg, [
+          e("div", Hg, [
+            e("div", Wg, [
               E(F, {
                 name: m.value.status === 403 ? "lock" : "alert"
               }, null, 8, ["name"])
@@ -6853,14 +6870,14 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             }, "Try again")
           ])
         ])) : (s(), n(U, { key: 1 }, [
-          e("header", Hg, [
-            e("div", Wg, [
-              o.value ? (s(), n("h1", Yg, y(o.value.name), 1)) : (s(), n("div", Jg)),
-              (pe = o.value) != null && pe.description ? (s(), n("div", Zg, [
+          e("header", Yg, [
+            e("div", Jg, [
+              o.value ? (s(), n("h1", Zg, y(o.value.name), 1)) : (s(), n("div", Qg)),
+              (pe = o.value) != null && pe.description ? (s(), n("div", Xg, [
                 e("span", null, y(o.value.description), 1)
-              ])) : x("", !0)
+              ])) : w("", !0)
             ]),
-            e("div", Qg, [
+            e("div", em, [
               (z = o.value) != null && z.can_edit ? (s(), n("button", {
                 key: 0,
                 type: "button",
@@ -6872,7 +6889,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   small: ""
                 }),
                 W[12] || (W[12] = N(" Edit", -1))
-              ])) : x("", !0),
+              ])) : w("", !0),
               o.value && t.dashboards ? (s(), n("button", {
                 key: 1,
                 type: "button",
@@ -6885,7 +6902,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   small: ""
                 }),
                 W[13] || (W[13] = N(" Pin to dashboard", -1))
-              ])) : x("", !0),
+              ])) : w("", !0),
               o.value && t.dashboards ? (s(), n("button", {
                 key: 2,
                 type: "button",
@@ -6898,7 +6915,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   small: ""
                 }),
                 W[14] || (W[14] = N(" Dashboard", -1))
-              ])) : x("", !0),
+              ])) : w("", !0),
               e("button", {
                 type: "button",
                 class: "rg-btn rg-btn--primary",
@@ -6910,7 +6927,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   small: ""
                 }),
                 W[15] || (W[15] = N(" Refresh", -1))
-              ], 8, Xg)
+              ], 8, tm)
             ])
           ]),
           o.value ? (s(), n("form", {
@@ -6918,7 +6935,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             class: "rg-viewer__filters",
             onSubmit: ge(O, ["prevent"])
           }, [
-            e("label", em, [
+            e("label", sm, [
               e("span", null, [
                 E(F, {
                   name: "calendar",
@@ -6936,7 +6953,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 (s(), n(U, null, H(b, ([B, q]) => e("option", {
                   key: B,
                   value: B
-                }, y(q), 9, tm)), 64)),
+                }, y(q), 9, lm)), 64)),
                 W[18] || (W[18] = e("option", { value: "custom" }, "Custom range…", -1))
               ], 544), [
                 [Pe, M.period]
@@ -6944,7 +6961,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             ]),
             E(it, { name: "rg-swap" }, {
               default: de(() => [
-                M.period === "custom" ? (s(), n("div", sm, [
+                M.period === "custom" ? (s(), n("div", nm, [
                   se(e("input", {
                     "onUpdate:modelValue": W[5] || (W[5] = (B) => M.from = B),
                     class: "rg-input",
@@ -6964,11 +6981,11 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                   }, null, 512), [
                     [ce, M.to]
                   ])
-                ])) : x("", !0)
+                ])) : w("", !0)
               ]),
               _: 1
             }),
-            i.lines ? (s(), n("div", lm, [
+            i.lines ? (s(), n("div", am, [
               e("span", null, [
                 E(F, {
                   name: "folder",
@@ -6984,8 +7001,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 load: v("lines"),
                 onChange: O
               }, null, 8, ["modelValue", "load"])
-            ])) : x("", !0),
-            i.divisions ? (s(), n("div", nm, [
+            ])) : w("", !0),
+            i.divisions ? (s(), n("div", om, [
               e("span", null, [
                 E(F, {
                   name: "users",
@@ -7002,8 +7019,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 "depends-on": M.lines,
                 onChange: O
               }, null, 8, ["modelValue", "load", "depends-on"])
-            ])) : x("", !0),
-            i.employees ? (s(), n("div", am, [
+            ])) : w("", !0),
+            i.employees ? (s(), n("div", rm, [
               e("span", null, [
                 E(F, {
                   name: "users",
@@ -7020,7 +7037,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 "depends-on": M.lines,
                 onChange: O
               }, null, 8, ["modelValue", "load", "depends-on"])
-            ])) : x("", !0),
+            ])) : w("", !0),
             (s(!0), n(U, null, H(o.value.parameters, (B) => (s(), n("label", {
               key: B.key,
               class: "rg-viewer__filter",
@@ -7028,7 +7045,7 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
             }, [
               e("span", null, [
                 N(y(B.label ?? B.key), 1),
-                B.required ? (s(), n("b", rm, "*")) : x("", !0)
+                B.required ? (s(), n("b", um, "*")) : w("", !0)
               ]),
               B.type === "date_range" ? se((s(), n("select", {
                 key: 0,
@@ -7039,8 +7056,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 (s(), n(U, null, H(b, ([q, L]) => e("option", {
                   key: q,
                   value: q
-                }, y(L), 9, um)), 64))
-              ], 8, im)), [
+                }, y(L), 9, cm)), 64))
+              ], 8, dm)), [
                 [Pe, M.parameters[B.key]]
               ]) : se((s(), n("input", {
                 key: 1,
@@ -7048,34 +7065,34 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 "onUpdate:modelValue": (q) => M.parameters[B.key] = q,
                 class: "rg-input",
                 type: B.type === "number" ? "number" : "text"
-              }, null, 8, dm)), [
+              }, null, 8, gm)), [
                 [ys, M.parameters[B.key]]
               ])
-            ], 8, om))), 128)),
+            ], 8, im))), 128)),
             e("button", {
               type: "submit",
               class: "rg-btn",
               disabled: r.running
-            }, "Apply", 8, cm)
-          ], 32)) : x("", !0),
-          e("section", gm, [
-            e("div", mm, [
-              r.running ? (s(), n("span", pm, [
+            }, "Apply", 8, mm)
+          ], 32)) : w("", !0),
+          e("section", pm, [
+            e("div", vm, [
+              r.running ? (s(), n("span", fm, [
                 E(F, {
                   name: "loader",
                   spin: "",
                   small: ""
                 }),
                 W[23] || (W[23] = N(" Running…", -1))
-              ])) : r.meta ? (s(), n("span", vm, [
+              ])) : r.meta ? (s(), n("span", bm, [
                 N(y(r.meta.has_more ? `${R(je)(r.meta.rows ?? 0)}+ rows` : `${R(je)(r.meta.rows ?? 0)} rows`) + " ", 1),
                 r.meta.duration_ms != null ? (s(), n(U, { key: 0 }, [
                   N(" · " + y(r.meta.duration_ms) + " ms", 1)
-                ], 64)) : x("", !0)
-              ])) : x("", !0)
+                ], 64)) : w("", !0)
+              ])) : w("", !0)
             ]),
-            r.error ? (s(), n("div", fm, [
-              e("span", bm, [
+            r.error ? (s(), n("div", hm, [
+              e("span", ym, [
                 E(F, {
                   name: "alert",
                   small: ""
@@ -7083,8 +7100,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
                 N(y($[r.error.code] ?? "The report could not run"), 1)
               ]),
               e("span", null, y(r.error.message), 1)
-            ])) : x("", !0),
-            o.value ? (s(), ae(Ot, { key: 1 })) : x("", !0)
+            ])) : w("", !0),
+            o.value ? (s(), ae(Ot, { key: 1 })) : w("", !0)
           ])
         ], 64)),
         d.value && o.value ? (s(), ae(At, {
@@ -7095,8 +7112,8 @@ const ed = { class: "rg-publish" }, td = ["for"], sd = ["id", "value"], ld = ["v
           onOpenDashboard: W[11] || (W[11] = (B) => {
             d.value = !1, g("open-dashboard", B);
           })
-        }, null, 8, ["report", "report-name"])) : x("", !0)
-      ], 8, zg);
+        }, null, 8, ["report", "report-name"])) : w("", !0)
+      ], 8, Gg);
     };
   }
 }, ps = [
@@ -7124,41 +7141,41 @@ function vs(t = 3) {
     });
   };
 }
-const hm = ["data-rg-theme"], ym = {
+const $m = ["data-rg-theme"], _m = {
   key: 0,
   class: "rg-main"
-}, $m = { class: "rg-empty" }, _m = { class: "rg-empty__icon" }, km = { class: "rg-topbar" }, wm = { class: "rg-topbar__title" }, xm = { key: 0 }, Cm = {
+}, km = { class: "rg-empty" }, wm = { class: "rg-empty__icon" }, xm = { class: "rg-topbar" }, Cm = { class: "rg-topbar__title" }, Sm = { key: 0 }, Mm = {
   key: 1,
   class: "rg-skeleton",
   style: { width: "220px", height: "18px" }
-}, Sm = {
+}, Tm = {
   key: 2,
   class: "rg-topbar__meta"
-}, Mm = { class: "rg-topbar__actions" }, Tm = ["disabled"], Em = {
+}, Em = { class: "rg-topbar__actions" }, Om = ["disabled"], Rm = {
   class: "rg-viewer__filter",
   for: "rg-dash-period"
-}, Om = ["value"], Rm = {
+}, Dm = ["value"], Am = {
   key: 0,
   class: "rg-viewer__range"
-}, Dm = {
+}, Lm = {
   key: 1,
   class: "rg-viewer__filter"
-}, Am = {
+}, Nm = {
   key: 2,
   class: "rg-viewer__filter"
-}, Lm = {
+}, Vm = {
   key: 3,
   class: "rg-viewer__filter"
-}, Nm = { class: "rg-dashboard__body" }, Vm = {
+}, Pm = { class: "rg-dashboard__body" }, Fm = {
   key: 0,
   class: "rg-dashboard__grid"
-}, Pm = { class: "rg-widget__skeleton" }, Fm = {
+}, qm = { class: "rg-widget__skeleton" }, Im = {
   key: 1,
   class: "rg-dashboard__grid"
-}, qm = {
+}, Um = {
   key: 0,
   class: "rg-faint"
-}, _p = {
+}, wp = {
   __name: "DashboardView",
   props: {
     dashboardId: { type: String, required: !0 },
@@ -7190,10 +7207,10 @@ const hm = ["data-rg-theme"], ym = {
       try {
         const h = await d.dashboards.get(l.dashboardId), p = ((C = h.layout) == null ? void 0 : C.context) ?? {}, v = p.period ?? "";
         Object.assign(m, Array.isArray(v) ? { period: "custom", from: String(v[0]).slice(0, 10), to: String(v[1]).slice(0, 10) } : { period: typeof v == "string" ? v : "", from: "", to: "" });
-        for (const w of ["lines", "divisions", "employees"]) m[w] = Array.isArray(p[w]) ? [...p[w]] : [];
+        for (const x of ["lines", "divisions", "employees"]) m[x] = Array.isArray(p[x]) ? [...p[x]] : [];
         b.value = h, g("loaded", h);
-        for (const w of ["lines", "divisions", "employees"])
-          d.contextOptions(w, { lines: [] }).then((O) => M[w] = O.length > 0).catch(() => M[w] = !1);
+        for (const x of ["lines", "divisions", "employees"])
+          d.contextOptions(x, { lines: [] }).then((O) => M[x] = O.length > 0).catch(() => M[x] = !1);
       } catch (h) {
         f.value = h;
       }
@@ -7204,9 +7221,9 @@ const hm = ["data-rg-theme"], ym = {
         class: "rg-root rg-dashboard",
         "data-rg-theme": t.theme
       }, [
-        f.value ? (s(), n("div", ym, [
-          e("div", $m, [
-            e("div", _m, [
+        f.value ? (s(), n("div", _m, [
+          e("div", km, [
+            e("div", wm, [
               E(F, {
                 name: f.value.status === 403 ? "lock" : "alert"
               }, null, 8, ["name"])
@@ -7220,26 +7237,26 @@ const hm = ["data-rg-theme"], ym = {
             }, "Try again")
           ])
         ])) : (s(), n(U, { key: 1 }, [
-          e("header", km, [
-            e("div", wm, [
-              b.value ? (s(), n("h1", xm, y(b.value.name), 1)) : (s(), n("div", Cm)),
-              (p = b.value) != null && p.description ? (s(), n("div", Sm, [
+          e("header", xm, [
+            e("div", Cm, [
+              b.value ? (s(), n("h1", Sm, y(b.value.name), 1)) : (s(), n("div", Mm)),
+              (p = b.value) != null && p.description ? (s(), n("div", Tm, [
                 e("span", null, y(b.value.description), 1)
-              ])) : x("", !0)
+              ])) : w("", !0)
             ]),
-            e("div", Mm, [
+            e("div", Em, [
               (v = b.value) != null && v.can_edit ? (s(), n("button", {
                 key: 0,
                 type: "button",
                 class: "rg-btn",
-                onClick: h[0] || (h[0] = (w) => g("edit", b.value.uuid))
+                onClick: h[0] || (h[0] = (x) => g("edit", b.value.uuid))
               }, [
                 E(F, {
                   name: "fx",
                   small: ""
                 }),
                 h[8] || (h[8] = N(" Edit", -1))
-              ])) : x("", !0),
+              ])) : w("", !0),
               e("button", {
                 type: "button",
                 class: "rg-btn rg-btn--primary",
@@ -7251,7 +7268,7 @@ const hm = ["data-rg-theme"], ym = {
                   small: ""
                 }),
                 h[9] || (h[9] = N(" Refresh", -1))
-              ], 8, Tm)
+              ], 8, Om)
             ])
           ]),
           b.value ? (s(), n("form", {
@@ -7259,7 +7276,7 @@ const hm = ["data-rg-theme"], ym = {
             class: "rg-viewer__filters",
             onSubmit: ge(a, ["prevent"])
           }, [
-            e("label", Em, [
+            e("label", Rm, [
               e("span", null, [
                 E(F, {
                   name: "calendar",
@@ -7269,23 +7286,23 @@ const hm = ["data-rg-theme"], ym = {
               ]),
               se(e("select", {
                 id: "rg-dash-period",
-                "onUpdate:modelValue": h[1] || (h[1] = (w) => m.period = w),
+                "onUpdate:modelValue": h[1] || (h[1] = (x) => m.period = x),
                 class: "rg-input",
-                onChange: h[2] || (h[2] = (w) => m.period !== "custom" && a())
+                onChange: h[2] || (h[2] = (x) => m.period !== "custom" && a())
               }, [
                 h[11] || (h[11] = e("option", { value: "" }, "As saved in each report", -1)),
-                (s(!0), n(U, null, H(R(ps), ([w, O]) => (s(), n("option", {
-                  key: w,
-                  value: w
-                }, y(O), 9, Om))), 128)),
+                (s(!0), n(U, null, H(R(ps), ([x, O]) => (s(), n("option", {
+                  key: x,
+                  value: x
+                }, y(O), 9, Dm))), 128)),
                 h[12] || (h[12] = e("option", { value: "custom" }, "Custom range…", -1))
               ], 544), [
                 [Pe, m.period]
               ])
             ]),
-            m.period === "custom" ? (s(), n("div", Rm, [
+            m.period === "custom" ? (s(), n("div", Am, [
               se(e("input", {
-                "onUpdate:modelValue": h[3] || (h[3] = (w) => m.from = w),
+                "onUpdate:modelValue": h[3] || (h[3] = (x) => m.from = x),
                 class: "rg-input",
                 type: "date",
                 "aria-label": "From",
@@ -7295,7 +7312,7 @@ const hm = ["data-rg-theme"], ym = {
               ]),
               h[13] || (h[13] = e("span", { class: "rg-faint" }, "to", -1)),
               se(e("input", {
-                "onUpdate:modelValue": h[4] || (h[4] = (w) => m.to = w),
+                "onUpdate:modelValue": h[4] || (h[4] = (x) => m.to = x),
                 class: "rg-input",
                 type: "date",
                 "aria-label": "To",
@@ -7303,8 +7320,8 @@ const hm = ["data-rg-theme"], ym = {
               }, null, 512), [
                 [ce, m.to]
               ])
-            ])) : x("", !0),
-            M.lines ? (s(), n("div", Dm, [
+            ])) : w("", !0),
+            M.lines ? (s(), n("div", Lm, [
               e("span", null, [
                 E(F, {
                   name: "folder",
@@ -7314,14 +7331,14 @@ const hm = ["data-rg-theme"], ym = {
               ]),
               E(Ye, {
                 modelValue: m.lines,
-                "onUpdate:modelValue": h[5] || (h[5] = (w) => m.lines = w),
+                "onUpdate:modelValue": h[5] || (h[5] = (x) => m.lines = x),
                 label: "Lines",
                 "all-label": "All my lines",
                 load: c("lines"),
                 onChange: a
               }, null, 8, ["modelValue", "load"])
-            ])) : x("", !0),
-            M.divisions ? (s(), n("div", Am, [
+            ])) : w("", !0),
+            M.divisions ? (s(), n("div", Nm, [
               e("span", null, [
                 E(F, {
                   name: "users",
@@ -7331,15 +7348,15 @@ const hm = ["data-rg-theme"], ym = {
               ]),
               E(Ye, {
                 modelValue: m.divisions,
-                "onUpdate:modelValue": h[6] || (h[6] = (w) => m.divisions = w),
+                "onUpdate:modelValue": h[6] || (h[6] = (x) => m.divisions = x),
                 label: "Divisions",
                 "all-label": "All my divisions",
                 load: c("divisions"),
                 "depends-on": m.lines,
                 onChange: a
               }, null, 8, ["modelValue", "load", "depends-on"])
-            ])) : x("", !0),
-            M.employees ? (s(), n("div", Lm, [
+            ])) : w("", !0),
+            M.employees ? (s(), n("div", Vm, [
               e("span", null, [
                 E(F, {
                   name: "users",
@@ -7349,35 +7366,35 @@ const hm = ["data-rg-theme"], ym = {
               ]),
               E(Ye, {
                 modelValue: m.employees,
-                "onUpdate:modelValue": h[7] || (h[7] = (w) => m.employees = w),
+                "onUpdate:modelValue": h[7] || (h[7] = (x) => m.employees = x),
                 label: "Employees",
                 "all-label": "All my employees",
                 load: c("employees"),
                 "depends-on": m.lines,
                 onChange: a
               }, null, 8, ["modelValue", "load", "depends-on"])
-            ])) : x("", !0),
+            ])) : w("", !0),
             h[17] || (h[17] = e("button", {
               type: "submit",
               class: "rg-btn"
             }, "Apply", -1))
-          ], 32)) : x("", !0),
-          e("main", Nm, [
-            b.value ? (s(), n("div", Fm, [
-              (s(!0), n(U, null, H(b.value.layout.widgets, (w, O) => (s(), ae(vt, {
-                key: w.id,
-                widget: w,
-                load: r(w),
+          ], 32)) : w("", !0),
+          e("main", Pm, [
+            b.value ? (s(), n("div", Im, [
+              (s(!0), n(U, null, H(b.value.layout.widgets, (x, O) => (s(), ae(vt, {
+                key: x.id,
+                widget: x,
+                load: r(x),
                 version: o.value,
                 style: Me({ "--rg-delay": `${O * 50}ms` })
               }, null, 8, ["widget", "load", "version", "style"]))), 128)),
-              b.value.layout.widgets.length ? x("", !0) : (s(), n("p", qm, "This dashboard has no widgets yet."))
-            ])) : (s(), n("div", Vm, [
-              (s(), n(U, null, H(4, (w) => e("div", {
-                key: w,
+              b.value.layout.widgets.length ? w("", !0) : (s(), n("p", Um, "This dashboard has no widgets yet."))
+            ])) : (s(), n("div", Fm, [
+              (s(), n(U, null, H(4, (x) => e("div", {
+                key: x,
                 class: "rg-widget rg-widget--md"
               }, [
-                e("div", Pm, [
+                e("div", qm, [
                   (s(), n(U, null, H(4, (O) => e("span", {
                     key: O,
                     class: "rg-skeleton"
@@ -7387,29 +7404,29 @@ const hm = ["data-rg-theme"], ym = {
             ]))
           ])
         ], 64))
-      ], 8, hm);
+      ], 8, $m);
     };
   }
-}, Im = ["data-rg-theme"], Um = { class: "rg-topbar" }, jm = { class: "rg-topbar__title" }, zm = { class: "rg-topbar__meta" }, Bm = {
+}, jm = ["data-rg-theme"], zm = { class: "rg-topbar" }, Bm = { class: "rg-topbar__title" }, Gm = { class: "rg-topbar__meta" }, Km = {
   key: 0,
   class: "rg-badge rg-badge--success"
-}, Gm = { class: "rg-topbar__actions" }, Km = {
+}, Hm = { class: "rg-topbar__actions" }, Wm = {
   class: "rg-segmented",
   role: "group",
   "aria-label": "Who can open it"
-}, Hm = ["aria-pressed"], Wm = ["aria-pressed"], Ym = ["disabled"], Jm = { class: "rg-viewer__filters" }, Zm = {
+}, Ym = ["aria-pressed"], Jm = ["aria-pressed"], Zm = ["disabled"], Qm = { class: "rg-viewer__filters" }, Xm = {
   class: "rg-viewer__filter",
   for: "rg-dash-edit-period"
-}, Qm = ["value"], Xm = { class: "rg-dashboard__body" }, ep = {
+}, ep = ["value"], tp = { class: "rg-dashboard__body" }, sp = {
   key: 0,
   class: "rg-dashboard__grid"
-}, tp = { class: "rg-widget__skeleton" }, sp = {
+}, lp = { class: "rg-widget__skeleton" }, np = {
   key: 1,
   class: "rg-empty"
-}, lp = { class: "rg-empty__icon" }, np = { class: "rg-widget__tools" }, ap = ["for"], op = ["id", "value", "onChange"], rp = ["value", "disabled"], ip = ["aria-label", "onClick"], up = ["aria-label", "title", "onClick"], dp = ["aria-label", "disabled", "onClick"], cp = ["aria-label", "disabled", "onClick"], gp = ["aria-label", "onClick"], mp = {
+}, ap = { class: "rg-empty__icon" }, op = { class: "rg-widget__tools" }, rp = ["for"], ip = ["id", "value", "onChange"], up = ["value", "disabled"], dp = ["aria-label", "onClick"], cp = ["aria-label", "title", "onClick"], gp = ["aria-label", "disabled", "onClick"], mp = ["aria-label", "disabled", "onClick"], pp = ["aria-label", "onClick"], vp = {
   key: 0,
   class: "rg-widget-dialog__preview"
-}, pp = ["disabled"], kp = {
+}, fp = ["disabled"], xp = {
   __name: "DashboardEditor",
   props: {
     /** Saved dashboard to edit, or null for a new one. */
@@ -7466,7 +7483,7 @@ const hm = ["data-rg-theme"], ym = {
         o.loading = !1;
       }
     });
-    function w(q = null) {
+    function x(q = null) {
       var D, A;
       const L = (q == null ? void 0 : q.report) ?? ((D = o.widgets[0]) == null ? void 0 : D.report) ?? l.fromReport ?? ((A = i.value[0]) == null ? void 0 : A.uuid) ?? "";
       M.value = q ? { ...q, values: [...q.values ?? []] } : { id: null, type: "kpi", title: "", report: L, category: null, values: [], top: 10, size: "sm" }, v(M.value.report);
@@ -7529,8 +7546,8 @@ const hm = ["data-rg-theme"], ym = {
       class: "rg-root rg-dashboard rg-dashboard--editing",
       "data-rg-theme": t.theme
     }, [
-      e("header", Um, [
-        e("div", jm, [
+      e("header", zm, [
+        e("div", Bm, [
           L[18] || (L[18] = e("label", {
             class: "rg-sr-only",
             for: "rg-dash-name"
@@ -7543,29 +7560,29 @@ const hm = ["data-rg-theme"], ym = {
           }, null, 512), [
             [ce, o.name]
           ]),
-          e("div", zm, [
+          e("div", Gm, [
             e("span", null, y(o.widgets.length) + " " + y(o.widgets.length === 1 ? "widget" : "widgets"), 1),
-            o.published ? (s(), n("span", Bm, [
+            o.published ? (s(), n("span", Km, [
               E(F, {
                 name: "globe",
                 small: ""
               }),
               L[17] || (L[17] = N(" Published", -1))
-            ])) : x("", !0)
+            ])) : w("", !0)
           ])
         ]),
-        e("div", Gm, [
-          e("div", Km, [
+        e("div", Hm, [
+          e("div", Wm, [
             e("button", {
               type: "button",
               "aria-pressed": o.visibility === "private",
               onClick: L[1] || (L[1] = (D) => o.visibility = "private")
-            }, "Only me", 8, Hm),
+            }, "Only me", 8, Ym),
             e("button", {
               type: "button",
               "aria-pressed": o.visibility === "public",
               onClick: L[2] || (L[2] = (D) => o.visibility = "public")
-            }, "Everyone", 8, Wm)
+            }, "Everyone", 8, Jm)
           ]),
           o.uuid && o.canPublish ? (s(), n("button", {
             key: 0,
@@ -7578,7 +7595,7 @@ const hm = ["data-rg-theme"], ym = {
               small: ""
             }),
             N(" " + y(o.published ? "Publishing" : "Publish"), 1)
-          ])) : x("", !0),
+          ])) : w("", !0),
           o.uuid ? (s(), n("button", {
             key: 1,
             type: "button",
@@ -7590,7 +7607,7 @@ const hm = ["data-rg-theme"], ym = {
               small: ""
             }),
             L[19] || (L[19] = N(" View", -1))
-          ])) : x("", !0),
+          ])) : w("", !0),
           e("button", {
             type: "button",
             class: "rg-btn rg-btn--primary",
@@ -7602,11 +7619,11 @@ const hm = ["data-rg-theme"], ym = {
               small: ""
             }),
             N(" " + y(o.saving ? "Saving…" : "Save"), 1)
-          ], 8, Ym)
+          ], 8, Zm)
         ])
       ]),
-      e("div", Jm, [
-        e("label", Zm, [
+      e("div", Qm, [
+        e("label", Xm, [
           e("span", null, [
             E(F, {
               name: "calendar",
@@ -7624,7 +7641,7 @@ const hm = ["data-rg-theme"], ym = {
             (s(!0), n(U, null, H(R(ps), ([D, A]) => (s(), n("option", {
               key: D,
               value: D
-            }, y(A), 9, Qm))), 128))
+            }, y(A), 9, ep))), 128))
           ], 544), [
             [Pe, o.period]
           ])
@@ -7632,7 +7649,7 @@ const hm = ["data-rg-theme"], ym = {
         e("button", {
           type: "button",
           class: "rg-btn rg-btn--primary",
-          onClick: L[7] || (L[7] = (D) => w())
+          onClick: L[7] || (L[7] = (D) => x())
         }, [
           E(F, {
             name: "plus",
@@ -7641,13 +7658,13 @@ const hm = ["data-rg-theme"], ym = {
           L[22] || (L[22] = N(" Add widget", -1))
         ])
       ]),
-      e("main", Xm, [
-        o.loading ? (s(), n("div", ep, [
+      e("main", tp, [
+        o.loading ? (s(), n("div", sp, [
           (s(), n(U, null, H(4, (D) => e("div", {
             key: D,
             class: "rg-widget rg-widget--md"
           }, [
-            e("div", tp, [
+            e("div", lp, [
               (s(), n(U, null, H(4, (A) => e("span", {
                 key: A,
                 class: "rg-skeleton"
@@ -7677,11 +7694,11 @@ const hm = ["data-rg-theme"], ym = {
               actions: de(() => {
                 var T;
                 return [
-                  e("div", np, [
+                  e("div", op, [
                     e("label", {
                       class: "rg-sr-only",
                       for: `rg-type-${D.id}`
-                    }, "Show " + y(D.title) + " as", 9, ap),
+                    }, "Show " + y(D.title) + " as", 9, rp),
                     e("select", {
                       id: `rg-type-${D.id}`,
                       class: "rg-input rg-widget__type",
@@ -7693,40 +7710,40 @@ const hm = ["data-rg-theme"], ym = {
                         key: V.value,
                         value: V.value,
                         disabled: !V.fits(D)
-                      }, y(V.label), 9, rp))), 128))
-                    ], 40, op),
+                      }, y(V.label), 9, up))), 128))
+                    ], 40, ip),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
                       "aria-label": `Edit ${D.title}`,
-                      onClick: (V) => w(D)
+                      onClick: (V) => x(D)
                     }, [
                       E(F, {
                         name: "fx",
                         small: ""
                       })
-                    ], 8, ip),
+                    ], 8, dp),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
                       "aria-label": `Resize ${D.title}`,
                       title: `Size: ${(T = f.find(([V]) => V === (D.size ?? "md"))) == null ? void 0 : T[1]}`,
                       onClick: (V) => pe(D)
-                    }, y({ sm: "S", md: "M", lg: "L", full: "Full" }[D.size ?? "md"]), 9, up),
+                    }, y({ sm: "S", md: "M", lg: "L", full: "Full" }[D.size ?? "md"]), 9, cp),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
                       "aria-label": `Move ${D.title} earlier`,
                       disabled: A === 0,
                       onClick: (V) => W(D.id, -1)
-                    }, "‹", 8, dp),
+                    }, "‹", 8, gp),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
                       "aria-label": `Move ${D.title} later`,
                       disabled: A === o.widgets.length - 1,
                       onClick: (V) => W(D.id, 1)
-                    }, "›", 8, cp),
+                    }, "›", 8, mp),
                     e("button", {
                       type: "button",
                       class: "rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm",
@@ -7737,7 +7754,7 @@ const hm = ["data-rg-theme"], ym = {
                         name: "trash",
                         small: ""
                       })
-                    ], 8, gp)
+                    ], 8, pp)
                   ])
                 ];
               }),
@@ -7745,8 +7762,8 @@ const hm = ["data-rg-theme"], ym = {
             }, 1032, ["widget", "load", "version", "class", "onDragstart", "onDrop"]))), 128))
           ]),
           _: 1
-        })) : (s(), n("div", sp, [
-          e("div", lp, [
+        })) : (s(), n("div", np, [
+          e("div", ap, [
             E(F, { name: "view" })
           ]),
           L[24] || (L[24] = e("h2", null, "Add your first widget", -1)),
@@ -7754,7 +7771,7 @@ const hm = ["data-rg-theme"], ym = {
           e("button", {
             type: "button",
             class: "rg-btn rg-btn--primary",
-            onClick: L[8] || (L[8] = (D) => w())
+            onClick: L[8] || (L[8] = (D) => x())
           }, [
             E(F, {
               name: "plus",
@@ -7782,7 +7799,7 @@ const hm = ["data-rg-theme"], ym = {
             form: "rg-widget-form",
             class: "rg-btn rg-btn--primary",
             disabled: !_.value
-          }, y(M.value.id ? "Update" : "Add"), 9, pp)
+          }, y(M.value.id ? "Update" : "Add"), 9, fp)
         ]),
         default: de(() => [
           e("form", {
@@ -7796,18 +7813,18 @@ const hm = ["data-rg-theme"], ym = {
               columns: O.value,
               onReport: v
             }, null, 8, ["widget", "reports", "columns"]),
-            _.value ? (s(), n("div", mp, [
+            _.value ? (s(), n("div", vp, [
               L[26] || (L[26] = e("span", { class: "rg-faint" }, "Preview", -1)),
               E(vt, {
                 widget: { ...M.value, size: "full" },
                 load: p(M.value),
                 version: m.value
               }, null, 8, ["widget", "load", "version"])
-            ])) : x("", !0)
+            ])) : w("", !0)
           ], 32)
         ]),
         _: 1
-      }, 8, ["title", "data-rg-theme"])) : x("", !0),
+      }, 8, ["title", "data-rg-theme"])) : w("", !0),
       c.value ? (s(), ae(Rt, {
         key: 1,
         kind: "dashboard",
@@ -7820,28 +7837,28 @@ const hm = ["data-rg-theme"], ym = {
         onUnpublished: L[16] || (L[16] = (D) => {
           o.published = !1, g("published", D);
         })
-      }, null, 8, ["uuid", "name"])) : x("", !0),
+      }, null, 8, ["uuid", "name"])) : w("", !0),
       E(bt, {
         toasts: R(b),
         "data-rg-theme": t.theme
       }, null, 8, ["toasts", "data-rg-theme"])
-    ], 8, Im));
+    ], 8, jm));
   }
 };
 export {
-  Fc as CombinedBuilder,
-  kp as DashboardEditor,
-  _p as DashboardView,
+  Ic as CombinedBuilder,
+  xp as DashboardEditor,
+  wp as DashboardView,
   At as PinToDashboard,
   Rt as PublishDialog,
   Xt as REPORT_GENERATOR_KEY,
-  hp as ReportBuilder,
+  $p as ReportBuilder,
   jt as ReportGeneratorApiError,
-  yp as ReportLibrary,
-  $p as ReportViewer,
-  bp as TopicsBrowser,
+  _p as ReportLibrary,
+  kp as ReportViewer,
+  yp as TopicsBrowser,
   _s as createApiClient,
-  fp as createReportGenerator,
+  hp as createReportGenerator,
   Le as useReportGenerator
 };
 //# sourceMappingURL=report-generator.js.map

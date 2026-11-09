@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.0
+- Topics page: through relations read "via <link table>"; link tables carry a "Link table" badge (needs laravel-report-generator 0.9).
+
 ## 0.8.1
 - `dist/` is committed and nothing is built on install: `npm i` from Git is faster and no longer needs Node 18+ or the dev dependencies.
 

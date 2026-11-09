@@ -191,6 +191,7 @@ onMounted(load);
               <div class="rg-topic__badges">
                 <span v-if="current.permission" class="rg-badge rg-badge--warning"><RgIcon name="lock" small />{{ current.permission }}</span>
                 <span v-if="current.public" class="rg-badge rg-badge--info"><RgIcon name="globe" small />Public lookup</span>
+                <span v-if="current.startable === false" class="rg-badge" title="Not offered as a report's main topic; reached through relations"><RgIcon name="link" small />Link table</span>
                 <span v-if="current.lookup" class="rg-badge" title="Readable through relations from topics a user may read; never a report's main topic"><RgIcon name="link" small />Joined only</span>
               </div>
             </div>
@@ -248,7 +249,8 @@ onMounted(load);
                     <span class="rg-topic__relation-kind" :data-kind="relation.type">{{ relation.type === 'hasMany' ? 'many' : 'one' }}</span>
                     <span class="rg-topic__relation-text">
                       <b>{{ relation.label }}</b>
-                      <span class="rg-faint">{{ relation.topic_label }} · <span class="rg-mono">{{ relation.foreign_key }}</span></span>
+                      <span v-if="relation.through" class="rg-faint">{{ relation.topic_label }} · via {{ relation.through }}</span>
+                      <span v-else class="rg-faint">{{ relation.topic_label }} · <span class="rg-mono">{{ relation.foreign_key }}</span></span>
                     </span>
                     <RgIcon name="arrow" small />
                   </button>
