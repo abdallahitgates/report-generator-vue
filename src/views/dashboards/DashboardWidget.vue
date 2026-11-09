@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 import { formatCell, isNumericColumn } from '../../utils/values.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
 import KpiTile from './charts/KpiTile.vue';
@@ -22,6 +22,8 @@ const props = defineProps({
   version: { type: [Number, String], default: 0 },
 });
 
+// Shared by the dashboard: widgets load a few at a time.
+const queue = inject('rg-widget-queue', null);
 const data = ref(null);
 const error = ref(null);
 // No access to the report behind the widget: the card stays, its data does not.
@@ -38,7 +40,7 @@ async function fetch() {
   loading.value = true;
   error.value = null;
   try {
-    const result = await props.load();
+    const result = await (queue ? queue(() => props.load()) : props.load());
     if (mine === seq) data.value = result;
   } catch (e) {
     if (mine === seq && (e?.code === 'REPORT_FORBIDDEN' || e?.status === 403)) locked.value = true;

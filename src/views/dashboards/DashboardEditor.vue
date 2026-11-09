@@ -8,6 +8,7 @@ import RgToaster from '../../components/ui/RgToaster.vue';
 import PublishDialog from '../builder/PublishDialog.vue';
 import DashboardWidget from './DashboardWidget.vue';
 import { PERIODS } from './periods.js';
+import { createQueue } from '../../utils/queue.js';
 import WidgetForm from './WidgetForm.vue';
 
 /**
@@ -26,6 +27,7 @@ const emit = defineEmits(['saved', 'published', 'view']);
 const { api } = useReportGenerator();
 const toasts = createToasts();
 provide('rg-theme', props.theme);
+provide('rg-widget-queue', createQueue(3));
 
 import { WIDGET_TYPES as TYPES, withType } from './widgetTypes.js';
 const SIZES = [['sm', 'Small'], ['md', 'Half'], ['lg', 'Two thirds'], ['full', 'Full width']];

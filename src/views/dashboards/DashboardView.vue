@@ -5,6 +5,7 @@ import RgIcon from '../../components/ui/RgIcon.vue';
 import RgMultiSelect from '../../components/ui/RgMultiSelect.vue';
 import DashboardWidget from './DashboardWidget.vue';
 import { PERIODS } from './periods.js';
+import { createQueue } from '../../utils/queue.js';
 
 /**
  * Opens a dashboard: its widgets in a grid, each loading on its own, with
@@ -19,6 +20,7 @@ const emit = defineEmits(['edit', 'loaded']);
 
 const { api } = useReportGenerator();
 provide('rg-theme', props.theme);
+provide('rg-widget-queue', createQueue(3));
 
 
 const dashboard = ref(null);
