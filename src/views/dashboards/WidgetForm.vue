@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import RgIcon from '../../components/ui/RgIcon.vue';
-import { SINGLE_VALUE, WIDGET_TYPES, withType } from './widgetTypes.js';
+import { SINGLE_VALUE, WIDGET_TYPES, prefillWidget, withType } from './widgetTypes.js';
 
 /**
  * The fields of one widget: report (optional), type, column, numbers,
@@ -24,6 +24,7 @@ const parts = computed(() => ['pie', 'donut', 'share'].includes(props.widget.typ
 
 function onType(type) {
   Object.assign(props.widget, withType(props.widget, type, { resize: true }));
+  prefillWidget(props.widget, props.columns);
 }
 
 function toggleValue(alias) {

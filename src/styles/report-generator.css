@@ -1145,3 +1145,11 @@
   .rg-ds__fields .rg-fld, .rg-grid th .rg-sort, .rg-shelf__drop--over, .rg-progress::before { animation: none !important; }
   .rg-btn, .rg-widget, .rg-root-card, .rg-report-row { transform: none !important; }
 }
+/* Totals stay pinned to the bottom (the cell rule above made them relative). */
+.rg-gridbox .rg-grid tfoot td { position: sticky; bottom: 0; z-index: 2; }
+.rg-gridbox--frozen .rg-grid tfoot td:first-child { z-index: 3; }
+/* Menus inside headers: undo the header's alignment and button layout. */
+.rg-grid th .rg-colmenu { text-align: start; white-space: normal; font-size: 12.5px; }
+.rg-grid th .rg-colmenu button { flex-direction: row !important; justify-content: flex-start; }
+.rg-grid th .rg-colmenu .rg-colmenu__actions button { justify-content: center; }
+.rg-grid th .rg-colmenu .rg-colmenu__actions .rg-btn--primary { color: #fff !important; }
