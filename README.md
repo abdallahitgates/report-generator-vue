@@ -5,7 +5,7 @@ topics browser, report builder, viewer and runs. The host app supplies Vue and
 its own axios instance, so authentication and interceptors work as they
 already do.
 
-> Version **0.7.0** (v2 phase P5). The topics browser (the topics your app
+> Version **0.8.0** (v2 phase P6). The topics browser (the topics your app
 > declares in code, by tab), the report library and the report builder. Model
 > Studio is gone with the database scan.
 
@@ -14,7 +14,7 @@ already do.
 From a Git tag (npm builds the package while installing it):
 
 ```bash
-npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.7.0"
+npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.8.0"
 ```
 
 
