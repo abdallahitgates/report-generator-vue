@@ -2,6 +2,7 @@
 import { computed, inject } from 'vue';
 import { REPORT_BUILDER_KEY } from '../../composables/useReportBuilder.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
+import ExportMenu from '../../components/ui/ExportMenu.vue';
 
 const emit = defineEmits(['save', 'save-copy', 'close', 'publish', 'pin']);
 const builder = inject(REPORT_BUILDER_KEY);
@@ -39,6 +40,7 @@ const rootLabel = computed(() => builder.datasetsByKey.value[draft.value.root]?.
       <button type="button" class="rg-btn" :disabled="!builder.runnable.value || builder.state.running" title="Run (Ctrl+Enter)" @click="builder.run()">
         <RgIcon name="play" small /> Run
       </button>
+      <ExportMenu :run="builder.exportReport" :disabled="!builder.runnable.value" />
       <span class="rg-toolbar-sep" />
       <button v-if="draft.uuid" type="button" class="rg-btn" title="Add a chart or number from this report to a dashboard" @click="emit('pin')">
         <RgIcon name="plus" small /> Pin

@@ -252,6 +252,10 @@ export function createCombinedBuilder(api, toasts) {
     state.draft.sort = !current ? [{ field: alias, dir: 'asc' }] : current.dir === 'asc' ? [{ field: alias, dir: 'desc' }] : [];
   }
 
+  function setSort(list) {
+    state.draft.sort = list;
+  }
+
   async function save({ name, description, folder, visibility, copy = false } = {}) {
     const d = state.draft;
     const payload = {
@@ -299,6 +303,7 @@ export function createCombinedBuilder(api, toasts) {
     run,
     fetchRows,
     toggleSort,
+    setSort,
     fetchSummary: () => api.query.summary(definition.value),
     exportReport: async (format) => {
       try {

@@ -34,3 +34,46 @@ export function withType(widget, type, { resize = false } = {}) {
   if (resize) next.size = DEFAULT_SIZE[type] ?? 'md';
   return next;
 }
+
+/** The report's row count: always a number a widget can show. */
+export const ROW_COUNT = { as: '__count', label: 'Number of rows' };
+
+const NUMERIC = ['integer', 'decimal'];
+
+/**
+ * A saved report's columns as widgets use them: columns to chart by, and
+ * numbers (its totals, numeric columns of a detail report, and the number
+ * of rows, so every report has at least one).
+ *
+ * @param {Array<{as, label, kind, type}>} fields  from reports.view
+ */
+export function widgetColumns(fields = []) {
+  const label = (f) => f.label ?? f.as;
+  const dims = fields.filter((f) => f.kind === 'dimension').map((f) => ({ as: f.as, label: label(f), type: f.type ?? null }));
+  const totals = fields
+    .filter((f) => f.kind !== 'dimension' && !['date', 'datetime', 'string', 'text', 'boolean'].includes(f.type))
+    .map((f) => ({ as: f.as, label: label(f) }));
+  const numericColumns = fields
+    .filter((f) => f.kind === 'dimension' && NUMERIC.includes(f.type))
+    .map((f) => ({ as: f.as, label: `${label(f)} (total)` }));
+  return { dims: dims.filter((d) => !NUMERIC.includes(d.type)).concat(dims.filter((d) => NUMERIC.includes(d.type))), nums: [...totals, ...numericColumns, ROW_COUNT] };
+}
+
+/** Fills what a widget still lacks with the report's first column and number. */
+export function prefillWidget(widget, columns) {
+  if (!widget.values?.length && widget.type !== 'table') widget.values = columns.nums[0] ? [columns.nums[0].as] : [];
+  if (!widget.category && !['kpi', 'table'].includes(widget.type)) {
+    const time = columns.dims.find((d) => ['date', 'datetime'].includes(d.type));
+    widget.category = (['line', 'area'].includes(widget.type) && time ? time.as : columns.dims[0]?.as) ?? null;
+  }
+  return widget;
+}
+
+/** Why a widget cannot be added yet, or null when it can. */
+export function widgetProblem(widget) {
+  if (!widget?.report) return 'Pick a report.';
+  if (widget.type === 'table') return null;
+  if (!widget.values?.length) return 'Pick a number to show.';
+  if (widget.type !== 'kpi' && !widget.category) return 'Pick the column to chart by.';
+  return null;
+}

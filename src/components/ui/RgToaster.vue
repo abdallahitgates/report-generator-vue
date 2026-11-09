@@ -7,6 +7,7 @@ defineProps({ toasts: { type: Object, required: true } });
 <template>
   <Teleport to="body">
     <div class="rg-root rg-toaster" v-bind="$attrs" role="status" aria-live="polite">
+      <TransitionGroup name="rg-toast">
       <div v-for="toast in toasts.items" :key="toast.id" class="rg-toast" :class="`rg-toast--${toast.kind}`">
         <RgIcon :name="toast.kind === 'error' ? 'alert' : 'check'" />
         <p>{{ toast.message }}</p>
@@ -14,6 +15,7 @@ defineProps({ toasts: { type: Object, required: true } });
           <RgIcon name="x" small />
         </button>
       </div>
+      </TransitionGroup>
     </div>
   </Teleport>
 </template>

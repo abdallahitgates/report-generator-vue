@@ -5,6 +5,7 @@ import { formatCell, formatNumber, isNumericColumn } from '../../utils/values.js
 import { formatCount } from '../../utils/format.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
 import GridToolbar from './GridToolbar.vue';
+import ColumnMenu from './ColumnMenu.vue';
 
 /**
  * Results grid with spreadsheet-style handling, all server-side so it stays
@@ -20,7 +21,8 @@ import GridToolbar from './GridToolbar.vue';
  * The host (builder or viewer) provides, through REPORT_BUILDER_KEY:
  * state { draft { rows, values, sort }, runSeq, running, error }, grouped,
  * runnable, fetchRows({ keys, offset, top, size }), toggleSort(alias), and
- * optionally fetchSummary(), exportReport(format) and gridKey.
+ * optionally setSort(list), filterColumn(column, { op, value } | null),
+ * columnFilter(alias), fetchSummary() and gridKey.
  */
 const builder = inject(REPORT_BUILDER_KEY);
 const levels = reactive(new Map()); // key -> { rows, hasMore, loading }
@@ -265,6 +267,48 @@ function sortState(column) {
   return draft.value.sort.find((s) => s.field === alias)?.dir ?? null;
 }
 
+/** 1-based position among the sort levels, 0 when not sorted. */
+function sortLevel(column) {
+  const alias = column.sortAlias ?? column.alias;
+  return draft.value.sort.findIndex((s) => s.field === alias) + 1;
+}
+
+function setSort(list) {
+  if (builder.setSort) builder.setSort(list.slice(0, 5));
+  else if (list[0]) builder.toggleSort(list[0].field);
+}
+
+/** Sorts by a column; `add` keeps the other levels ("then by"). */
+function sortBy(column, dir, add = false) {
+  const alias = column.sortAlias ?? column.alias;
+  const others = draft.value.sort.filter((s) => s.field !== alias);
+  if (!add) return setSort([{ field: alias, dir }]);
+  const at = draft.value.sort.findIndex((s) => s.field === alias);
+  const next = [...others];
+  next.splice(at === -1 ? next.length : at, 0, { field: alias, dir });
+  setSort(next);
+}
+
+function unsort(column) {
+  const alias = column.sortAlias ?? column.alias;
+  setSort(draft.value.sort.filter((s) => s.field !== alias));
+}
+
+/** Header click sorts; Shift+click adds or flips a further level. */
+function onHeaderClick(event, column) {
+  if (!event.shiftKey || !builder.setSort) return builder.toggleSort(column.sortAlias ?? column.alias);
+  const dir = sortState(column);
+  if (dir === 'desc') unsort(column);
+  else sortBy(column, dir === 'asc' ? 'desc' : 'asc', true);
+}
+
+const menuFor = ref(null);
+const canFilter = (column) => !!builder.filterColumn && builder.filterable?.value !== false && column.alias !== '__tree';
+const filterOf = (column) => builder.columnFilter?.(column.alias) ?? null;
+function hide(column) {
+  if (column.alias !== '__tree') prefs.hidden = [...prefs.hidden, column.alias];
+}
+
 function totalCell(column) {
   if (column.alias === '__tree' || !totalsRow.value) return '';
   const value = totalsRow.value[column.alias];
@@ -414,23 +458,6 @@ function autoSize(column) {
   prefs.widths = rest;
 }
 
-// ---------------------------------------------------------------- export
-
-const exporting = ref(null);
-const exportError = ref(null);
-async function exportAs(format) {
-  if (!builder.exportReport || exporting.value) return;
-  exporting.value = format;
-  exportError.value = null;
-  try {
-    await builder.exportReport(format);
-  } catch (error) {
-    exportError.value = error?.message ?? 'Export failed.';
-  } finally {
-    exporting.value = null;
-  }
-}
-
 // --------------------------------------------------------------- lifecycle
 
 onMounted(() => {
@@ -457,20 +484,20 @@ const statText = (n) => formatNumber(n, null);
 </script>
 
 <template>
-  <div class="rg-gridbox" :class="[`rg-gridbox--${prefs.density}`, { 'rg-gridbox--frozen': prefs.freeze }]">
+  <div class="rg-gridbox" :class="[`rg-gridbox--${prefs.density}`, { 'rg-gridbox--frozen': prefs.freeze, 'is-running': builder.state.running }]">
+    <div class="rg-progress" aria-hidden="true" />
     <GridToolbar
       :columns="allColumns"
       :prefs="prefs"
       :grouped="grouped"
-      :can-export="!!builder.exportReport && displayColumns.length > 0"
       :can-total="!!builder.fetchSummary"
-      :exporting="exporting"
       :summary="summary"
       :summary-loading="summaryLoading"
-      @export="exportAs"
+      :sort="draft.sort"
+      :can-sort="!!builder.setSort"
+      @sort="setSort"
       @autosize="(c) => autoSize(c)"
     />
-    <p v-if="exportError" class="rg-gridbox__error" role="alert"><RgIcon name="alert" small /> {{ exportError }}</p>
 
     <div
       ref="wrap"
@@ -491,11 +518,41 @@ const statText = (n) => formatNumber(n, null);
               :class="{ 'rg-num': isNumericColumn(column) }"
               :style="colStyle(column)"
               :aria-sort="sortState(column) === 'asc' ? 'ascending' : sortState(column) === 'desc' ? 'descending' : 'none'"
+              :data-sorted="sortState(column) || undefined"
+              :data-filtered="filterOf(column) ? 'true' : undefined"
             >
-              <button type="button" :title="`Sort by ${column.label}`" @click="builder.toggleSort(column.sortAlias ?? column.alias)">
-                {{ column.label }}
-                <span v-if="sortState(column)" class="rg-sort" aria-hidden="true">{{ sortState(column) === 'asc' ? '↑' : '↓' }}</span>
-              </button>
+              <div class="rg-th">
+                <button type="button" class="rg-th__sort" :title="`Sort by ${column.label} (Shift+click to add a level)`" @click="onHeaderClick($event, column)">
+                  <span class="rg-th__label">{{ column.label }}</span>
+                  <span v-if="sortState(column)" class="rg-sort" aria-hidden="true">
+                    {{ sortState(column) === 'asc' ? '↑' : '↓' }}<sup v-if="draft.sort.length > 1">{{ sortLevel(column) }}</sup>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  class="rg-th__menu"
+                  :class="{ 'is-active': !!filterOf(column) }"
+                  :aria-label="`${column.label}: sort and filter`"
+                  :aria-expanded="menuFor === column.alias"
+                  @click.stop="menuFor = menuFor === column.alias ? null : column.alias"
+                >
+                  <RgIcon :name="filterOf(column) ? 'filter' : 'more'" small />
+                </button>
+                <ColumnMenu
+                  v-if="menuFor === column.alias"
+                  :column="column"
+                  :sorted="sortState(column)"
+                  :level="sortLevel(column)"
+                  :can-filter="canFilter(column)"
+                  :filter="filterOf(column)"
+                  @sort="(dir, add) => sortBy(column, dir, add)"
+                  @unsort="unsort(column)"
+                  @filter="(f) => builder.filterColumn(column, f)"
+                  @unfilter="builder.filterColumn(column, null)"
+                  @hide="hide(column)"
+                  @close="menuFor = null"
+                />
+              </div>
               <span
                 class="rg-resize"
                 role="separator"

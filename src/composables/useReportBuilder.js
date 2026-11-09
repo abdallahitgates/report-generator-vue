@@ -255,9 +255,9 @@ export function createReportBuilder(api, toasts) {
     return item;
   }
 
-  function updateFormula(uidValue, label, formula) {
+  function updateFormula(uidValue, label, formula, format) {
     const found = findItem(uidValue);
-    if (found) Object.assign(found.item, { label, formula });
+    if (found) Object.assign(found.item, { label, formula }, format !== undefined ? { format } : {});
   }
 
   // ------------------------------------------------------------- filters
@@ -277,9 +277,9 @@ export function createReportBuilder(api, toasts) {
     return find(state.draft.filters) ?? state.draft.filters;
   }
 
-  /** @param {{target: string, type: string, label: string, path?: number[], isTotal?: boolean}} info */
+  /** @param {{target: string, type: string, label: string, path?: number[], isTotal?: boolean, op?: string, value?: any}} info */
   function addFilter(info, parentUid = null) {
-    const op = operatorsFor(info.type, info.isTotal)[0];
+    const op = info.op ?? operatorsFor(info.type, info.isTotal)[0];
     const node = {
       uid: uid(),
       target: info.target,
@@ -288,7 +288,7 @@ export function createReportBuilder(api, toasts) {
       isTotal: !!info.isTotal,
       path: info.path ?? null,
       op,
-      value: op === 'between' && (info.type === 'date' || info.type === 'datetime') ? 'this_month' : null,
+      value: info.value !== undefined ? info.value : op === 'between' && (info.type === 'date' || info.type === 'datetime') ? 'this_month' : null,
     };
     filterGroupOf(parentUid).items.push(node);
     return node;
@@ -346,6 +346,51 @@ export function createReportBuilder(api, toasts) {
   }
 
   // ---------------------------------------------------------------- sort
+
+  /** Sort levels from the grid's Sort panel or column menus. */
+  function setSort(list) {
+    state.draft.sort = list;
+  }
+
+  /** The filter a report column maps to: its field (rows) or the column itself (totals). */
+  function columnTarget(alias) {
+    const item = [...state.draft.rows, ...state.draft.values].find((i) => i.as === alias);
+    if (!item) return null;
+    const isTotal = item.kind !== 'dimension';
+    return {
+      item,
+      isTotal,
+      target: isTotal ? item.as : `${item.dataset}.${item.field}`,
+      path: isTotal ? null : item.path ?? null,
+    };
+  }
+
+  function sameFilter(node, t) {
+    return !node.items && node.target === t.target && JSON.stringify(node.path ?? null) === JSON.stringify(t.path);
+  }
+
+  /** Filter from a column's menu (replaces that column's filter); null removes it. */
+  function filterColumn(column, filter) {
+    const t = columnTarget(column.alias);
+    if (!t) return;
+    state.draft.filters.items = state.draft.filters.items.filter((n) => !sameFilter(n, t));
+    if (!filter) return;
+    addFilter({
+      target: t.target,
+      type: t.isTotal ? (['date', 'datetime'].includes(column.type) ? column.type : 'decimal') : t.item.type,
+      label: t.isTotal ? t.item.label : t.item.baseLabel,
+      path: t.path,
+      isTotal: t.isTotal,
+      op: filter.op,
+      value: filter.value,
+    });
+  }
+
+  function columnFilter(alias) {
+    const t = columnTarget(alias);
+    const node = t && state.draft.filters.items.find((n) => sameFilter(n, t));
+    return node ? { op: node.op, value: node.value } : null;
+  }
 
   /** Click on a column header: ascending, then descending, then unsorted. */
   function toggleSort(alias) {
@@ -507,6 +552,9 @@ export function createReportBuilder(api, toasts) {
     updateFilter,
     removeFilter,
     toggleSort,
+    setSort,
+    filterColumn,
+    columnFilter,
     run,
     fetchRows,
     fetchSummary: () => api.query.summary(definition.value),

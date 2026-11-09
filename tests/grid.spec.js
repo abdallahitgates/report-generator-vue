@@ -104,13 +104,46 @@ describe('Results grid', () => {
     expect(wrapper.findAll('tbody tr.rg-row')).toHaveLength(50);
   });
 
-  it('exports through the host', async () => {
-    const { wrapper, builder } = host();
+  it('sorts by several columns from the header menu, Shift+click and the Sort panel', async () => {
+    const { wrapper, builder } = host({ setSort: vi.fn((list) => { builder.state.draft.sort = list; }) });
     await flushPromises();
-    const excel = wrapper.findAll('.rg-gridbar button').find((b) => b.text().includes('Excel'));
-    await excel.trigger('click');
+    const menu = (i) => wrapper.findAll('th .rg-th__menu')[i];
+
+    await menu(1).trigger('click');
+    const item = (text) => wrapper.findAll('.rg-colmenu__item').find((b) => b.text().includes(text));
+    await item('9 → 1').trigger('click');
+    expect(builder.setSort).toHaveBeenLastCalledWith([{ field: 'visits', dir: 'desc' }]);
+
+    await wrapper.findAll('th .rg-th__sort')[0].trigger('click', { shiftKey: true });
+    expect(builder.setSort).toHaveBeenLastCalledWith([{ field: 'visits', dir: 'desc' }, { field: 'rep', dir: 'asc' }]);
     await flushPromises();
-    expect(builder.exportReport).toHaveBeenCalledWith('xlsx');
+    expect(wrapper.findAll('th sup').map((s) => s.text())).toEqual(['2', '1']);
+
+    await wrapper.findAll('.rg-gridbar button').find((b) => b.text().includes('Sort')).trigger('click');
+    expect(wrapper.find('.rg-sorter').text()).toContain('Visits');
+    await wrapper.find('.rg-sorter [aria-label="Move Rep up"]').trigger('click');
+    expect(builder.setSort).toHaveBeenLastCalledWith([{ field: 'rep', dir: 'asc' }, { field: 'visits', dir: 'desc' }]);
+  });
+
+  it('filters a column from its menu when the host can', async () => {
+    const filterColumn = vi.fn();
+    const { wrapper } = host({ filterColumn, columnFilter: () => null });
+    await flushPromises();
+    await wrapper.findAll('th .rg-th__menu')[1].trigger('click');
+    const form = wrapper.find('.rg-colmenu__filter');
+    await form.find('select').setValue('>=');
+    await form.find('input').setValue('10');
+    await form.trigger('submit');
+    expect(filterColumn).toHaveBeenCalledWith(expect.objectContaining({ alias: 'visits' }), { op: '>=', value: 10 });
+
+    // Without filterColumn the menu only sorts and hides.
+    const plain = host();
+    await flushPromises();
+    await plain.wrapper.findAll('th .rg-th__menu')[0].trigger('click');
+    expect(plain.wrapper.find('.rg-colmenu__filter').exists()).toBe(false);
+    await plain.wrapper.findAll('.rg-colmenu__item').find((b) => b.text().includes('Hide')).trigger('click');
+    await flushPromises();
+    expect(plain.wrapper.findAll('th').map((t) => t.text())).not.toContain('Rep');
   });
 });
 

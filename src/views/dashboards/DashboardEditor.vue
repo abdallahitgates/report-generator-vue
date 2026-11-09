@@ -29,7 +29,7 @@ const toasts = createToasts();
 provide('rg-theme', props.theme);
 provide('rg-widget-queue', createQueue(3));
 
-import { WIDGET_TYPES as TYPES, withType } from './widgetTypes.js';
+import { WIDGET_TYPES as TYPES, prefillWidget, widgetColumns, widgetProblem, withType } from './widgetTypes.js';
 const SIZES = [['sm', 'Small'], ['md', 'Half'], ['lg', 'Two thirds'], ['full', 'Full width']];
 
 const state = reactive({ loading: true, saving: false, uuid: null, name: 'Untitled dashboard', visibility: 'private', canPublish: false, published: false, period: '', widgets: [] });
@@ -51,21 +51,26 @@ async function columnsOf(uuid) {
     columnsByReport[uuid] = { dims: [], nums: [], loading: true };
     try {
       const view = await api.reports.view(uuid);
-      const fields = view.fields ?? [];
-      columnsByReport[uuid] = {
-        dims: fields.filter((f) => f.kind === 'dimension').map((f) => ({ as: f.as, label: f.label ?? f.as })),
-        nums: fields.filter((f) => f.kind !== 'dimension').map((f) => ({ as: f.as, label: f.label ?? f.as })),
-      };
+      columnsByReport[uuid] = widgetColumns(view.fields ?? []);
     } catch {
-      columnsByReport[uuid] = { dims: [], nums: [] };
+      columnsByReport[uuid] = { dims: [], nums: [], failed: true };
     }
   }
+  // The widget being edited starts with the report's first column and number.
+  if (editing.value?.report === uuid) prefillWidget(editing.value, columnsByReport[uuid]);
   return columnsByReport[uuid];
 }
 
 onMounted(async () => {
   try {
-    api.reports.list().then((r) => (reports.value = r.data ?? [])).catch(() => {});
+    api.reports.list().then((r) => {
+      reports.value = r.data ?? [];
+      // "Add widget" opened before the list arrived: start on the first report.
+      if (editing.value && !editing.value.report && reports.value[0]) {
+        editing.value.report = reports.value[0].uuid;
+        columnsOf(reports.value[0].uuid);
+      }
+    }).catch(() => {});
     if (props.dashboardId) {
       const d = await api.dashboards.get(props.dashboardId);
       Object.assign(state, {
@@ -92,13 +97,8 @@ function openWidget(widget = null) {
 }
 
 const editCols = computed(() => columnsByReport[editing.value?.report] ?? { dims: [], nums: [], loading: !!editing.value?.report });
-const editReady = computed(() => {
-  const w = editing.value;
-  if (!w?.report) return false;
-  if (w.type === 'table') return true;
-  if (!w.values.length) return false;
-  return w.type === 'kpi' || !!w.category;
-});
+const editProblem = computed(() => widgetProblem(editing.value));
+const editReady = computed(() => !editProblem.value);
 
 /** Switch a widget's chart type from its card, keeping what fits. */
 function switchType(widget, type) {
@@ -250,6 +250,7 @@ async function save() {
         </div>
       </form>
       <template #footer>
+        <span v-if="editProblem" class="rg-faint rg-dialog__why">{{ editProblem }}</span>
         <button type="button" class="rg-btn" @click="editing = null">Cancel</button>
         <button type="submit" form="rg-widget-form" class="rg-btn rg-btn--primary" :disabled="!editReady">{{ editing.id ? 'Update' : 'Add' }}</button>
       </template>

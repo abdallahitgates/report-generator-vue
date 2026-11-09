@@ -4,8 +4,10 @@ import { useReportGenerator } from '../../context.js';
 import { REPORT_BUILDER_KEY } from '../../composables/useReportBuilder.js';
 import { formatCount } from '../../utils/format.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
+import ExportMenu from '../../components/ui/ExportMenu.vue';
 import RgMultiSelect from '../../components/ui/RgMultiSelect.vue';
 import ResultGrid from '../builder/ResultGrid.vue';
+import { OPERATORS } from '../../utils/definition.js';
 import PinToDashboard from '../dashboards/PinToDashboard.vue';
 
 /**
@@ -41,6 +43,8 @@ const pickers = reactive({ lines: false, divisions: false, employees: false });
 
 const state = reactive({
   draft: { rows: [], values: [], sort: [] },
+  /** The viewer's own filters on report columns: [{ field, op, value, label, type }]. */
+  filters: [],
   runSeq: 0,
   running: false,
   error: null,
@@ -67,7 +71,12 @@ function context() {
   return Object.keys(out).length ? out : undefined;
 }
 
-const choices = () => ({ parameters: filters.parameters, context: context(), sort: state.draft.sort });
+const choices = () => ({
+  parameters: filters.parameters,
+  context: context(),
+  sort: state.draft.sort,
+  ...(state.filters.length ? { filters: state.filters.map(({ field, op, value }) => ({ field, op, value })) } : {}),
+});
 
 function optionsFor(kind) {
   return (search) => api.contextOptions(kind, { search, lines: kind === 'lines' ? [] : filters.lines, period: periodValue() ?? undefined });
@@ -115,12 +124,33 @@ function toggleSort(alias) {
   run();
 }
 
+function setSort(list) {
+  state.draft.sort = list;
+  run();
+}
+
+function filterColumn(column, filter) {
+  state.filters = state.filters.filter((f) => f.field !== column.alias);
+  if (filter) state.filters.push({ field: column.alias, label: column.label, type: column.type, kind: column.kind, ...filter });
+  run();
+}
+
+function filterText(f) {
+  const v = Array.isArray(f.value) ? (f.op === 'between' ? f.value.join(' – ') : f.value.join(', ')) : f.value;
+  return `${OPERATORS[f.op] ?? f.op}${v === null || v === undefined ? '' : ` ${v}`}`;
+}
+
 provide(REPORT_BUILDER_KEY, {
   state,
   grouped,
   runnable,
   fetchRows,
   toggleSort,
+  setSort,
+  filterColumn,
+  columnFilter: (alias) => state.filters.find((f) => f.field === alias) ?? null,
+  // Combined reports are filtered by their own reports' filters.
+  filterable: computed(() => report.value?.type !== 'combined'),
   fetchSummary: () => api.reports.summary(props.reportId, choices()),
   exportReport: (format) => api.reports.export(props.reportId, format, choices()),
   gridKey: computed(() => `view:${props.reportId}`),
@@ -194,6 +224,7 @@ const ERROR_TITLES = {
           <button v-if="report?.can_edit" type="button" class="rg-btn" @click="emit('edit', report.uuid)"><RgIcon name="fx" small /> Edit</button>
           <button v-if="report && dashboards" type="button" class="rg-btn" title="Add a chart or number from this report to a dashboard" @click="pinning = true"><RgIcon name="plus" small /> Pin to dashboard</button>
           <button v-if="report && dashboards" type="button" class="rg-btn" title="Make a dashboard from this report" @click="emit('dashboard', report.uuid)"><RgIcon name="view" small /> Dashboard</button>
+          <ExportMenu :run="(format) => api.reports.export(props.reportId, format, choices())" :disabled="!report" />
           <button type="button" class="rg-btn rg-btn--primary" :disabled="!report || state.running" @click="run"><RgIcon name="play" small /> Refresh</button>
         </div>
       </header>
@@ -248,6 +279,14 @@ const ERROR_TITLES = {
           <span class="rg-errorbox__title"><RgIcon name="alert" small />{{ ERROR_TITLES[state.error.code] ?? 'The report could not run' }}</span>
           <span>{{ state.error.message }}</span>
         </div>
+        <TransitionGroup v-if="state.filters.length" tag="div" name="rg-list-fade" class="rg-filterchips" aria-label="Column filters">
+          <span key="label" class="rg-filterchips__label"><RgIcon name="filter" small /> Filtered</span>
+          <span v-for="f in state.filters" :key="f.field" class="rg-filterchip">
+            <b>{{ f.label }}</b> {{ filterText(f) }}
+            <button type="button" :aria-label="`Remove the filter on ${f.label}`" @click="filterColumn({ alias: f.field }, null)"><RgIcon name="x" small /></button>
+          </span>
+          <button key="clear" type="button" class="rg-linkish" @click="state.filters = []; run()">Clear all</button>
+        </TransitionGroup>
         <ResultGrid v-if="report" />
       </section>
     </template>

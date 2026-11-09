@@ -6,20 +6,41 @@ import RgPopover from '../../components/ui/RgPopover.vue';
 
 /**
  * Grid controls: column chooser (show, hide, drag to reorder), density,
- * frozen first column, grand totals, scrolling vs pages, export.
+ * frozen first column, grand totals, scrolling vs pages, sort levels.
  * `prefs` is the grid's reactive preferences object and is changed in place.
  */
 const props = defineProps({
   columns: { type: Array, required: true },
   prefs: { type: Object, required: true },
   grouped: { type: Boolean, default: false },
-  canExport: { type: Boolean, default: false },
   canTotal: { type: Boolean, default: false },
-  exporting: { type: String, default: null },
   summary: { type: Object, default: null },
   summaryLoading: { type: Boolean, default: false },
+  /** Sort levels [{ field, dir }] and whether more than one can be set. */
+  sort: { type: Array, default: () => [] },
+  canSort: { type: Boolean, default: false },
 });
-const emit = defineEmits(['export', 'autosize']);
+const emit = defineEmits(['autosize', 'sort']);
+
+const sorter = ref(false);
+const labelOf = (alias) => props.columns.find((c) => c.alias === alias)?.label ?? alias;
+const unsorted = computed(() => props.columns.filter((c) => !props.sort.some((s) => s.field === c.alias)));
+function setLevel(i, patch) {
+  emit('sort', props.sort.map((s, j) => (j === i ? { ...s, ...patch } : s)));
+}
+function removeLevel(i) {
+  emit('sort', props.sort.filter((_, j) => j !== i));
+}
+function moveLevel(i, by) {
+  const list = [...props.sort];
+  const to = i + by;
+  if (to < 0 || to >= list.length) return;
+  list.splice(to, 0, list.splice(i, 1)[0]);
+  emit('sort', list);
+}
+function addLevel(alias) {
+  if (alias) emit('sort', [...props.sort, { field: alias, dir: 'asc' }]);
+}
 
 const chooser = ref(false);
 const dragging = ref(null);
@@ -86,6 +107,36 @@ function resetLayout() {
         <p class="rg-faint rg-colchooser__hint">Drag to reorder. Drag a header's edge to resize it.</p>
       </RgPopover>
 
+      <div v-if="canSort" style="position: relative">
+        <button type="button" class="rg-btn rg-btn--sm" :aria-expanded="sorter" @click="sorter = !sorter">
+          <RgIcon name="sort" small /> Sort
+          <span v-if="sort.length" class="rg-badge rg-badge--info">{{ sort.length }}</span>
+        </button>
+        <RgPopover v-if="sorter" class="rg-sorter" @close="sorter = false">
+          <div class="rg-colchooser__head">
+            <b>Sort by</b>
+            <button v-if="sort.length" type="button" class="rg-linkish" @click="emit('sort', [])">Clear</button>
+          </div>
+          <TransitionGroup tag="ol" name="rg-list-move" class="rg-sorter__list">
+            <li v-for="(level, i) in sort" :key="level.field">
+              <span class="rg-sorter__n">{{ i === 0 ? 'Sort by' : 'then' }}</span>
+              <b class="rg-sorter__col">{{ labelOf(level.field) }}</b>
+              <div class="rg-segmented" role="group" :aria-label="`Direction for ${labelOf(level.field)}`">
+                <button type="button" :aria-pressed="level.dir === 'asc'" @click="setLevel(i, { dir: 'asc' })">↑ Asc</button>
+                <button type="button" :aria-pressed="level.dir === 'desc'" @click="setLevel(i, { dir: 'desc' })">↓ Desc</button>
+              </div>
+              <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Move ${labelOf(level.field)} up`" :disabled="i === 0" @click="moveLevel(i, -1)">↑</button>
+              <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Remove ${labelOf(level.field)}`" @click="removeLevel(i)"><RgIcon name="x" small /></button>
+            </li>
+          </TransitionGroup>
+          <p v-if="!sort.length" class="rg-faint rg-colchooser__hint">Rows come in the database's order. Add a level, or Shift+click headers.</p>
+          <select v-if="sort.length < 5 && unsorted.length" class="rg-input" aria-label="Add a sort level" @change="addLevel($event.target.value); $event.target.value = ''">
+            <option value="">+ Add a sort level…</option>
+            <option v-for="c in unsorted" :key="c.alias" :value="c.alias">{{ c.label }}</option>
+          </select>
+        </RgPopover>
+      </div>
+
       <div class="rg-segmented" role="group" aria-label="Row height">
         <button type="button" :aria-pressed="prefs.density === 'comfortable'" title="Comfortable rows" @click="prefs.density = 'comfortable'">Comfortable</button>
         <button type="button" :aria-pressed="prefs.density === 'compact'" title="Compact rows" @click="prefs.density = 'compact'">Compact</button>
@@ -110,14 +161,6 @@ function resetLayout() {
           @click="prefs.paging = 'pages'"
         >Pages</button>
       </div>
-      <template v-if="canExport">
-        <button type="button" class="rg-btn rg-btn--sm" :disabled="!!exporting" title="Every row, as CSV" @click="emit('export', 'csv')">
-          <RgIcon :name="exporting === 'csv' ? 'loader' : 'upload'" :spin="exporting === 'csv'" small /> CSV
-        </button>
-        <button type="button" class="rg-btn rg-btn--sm" :disabled="!!exporting" title="Every row, as an Excel file" @click="emit('export', 'xlsx')">
-          <RgIcon :name="exporting === 'xlsx' ? 'loader' : 'upload'" :spin="exporting === 'xlsx'" small /> Excel
-        </button>
-      </template>
     </div>
   </div>
 </template>

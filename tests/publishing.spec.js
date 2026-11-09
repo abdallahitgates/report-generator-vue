@@ -92,7 +92,7 @@ describe('Report viewer', () => {
     await flushPromises();
     expect(run.mock.calls.at(-1)[1].context).toBeUndefined();
 
-    await wrapper.findAll('th button')[1].trigger('click');
+    await wrapper.findAll('th .rg-th__sort')[1].trigger('click');
     await flushPromises();
     expect(run.mock.calls.at(-1)[1].sort).toEqual([{ field: 'visits', dir: 'asc' }]);
     expect(wrapper.text()).not.toContain('Edit');

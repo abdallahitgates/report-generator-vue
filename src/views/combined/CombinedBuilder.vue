@@ -6,6 +6,7 @@ import { BASE_COLUMNS, createCombinedBuilder } from '../../composables/useCombin
 import { createToasts } from '../../composables/useToasts.js';
 import { TYPE_ICONS } from '../../utils/semantic.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
+import ExportMenu from '../../components/ui/ExportMenu.vue';
 import RgDialog from '../../components/ui/RgDialog.vue';
 import RgMultiSelect from '../../components/ui/RgMultiSelect.vue';
 import RgToaster from '../../components/ui/RgToaster.vue';
@@ -145,6 +146,7 @@ const ERROR_TITLES = {
       </div>
       <div class="rg-topbar__actions">
         <button type="button" class="rg-btn" :disabled="!builder.runnable.value || builder.state.running" @click="builder.run()"><RgIcon name="play" small /> Run</button>
+        <ExportMenu :run="builder.exportReport" :disabled="!builder.runnable.value" />
         <span class="rg-toolbar-sep" />
         <button v-if="draft.uuid" type="button" class="rg-btn" title="Add a chart or number from this report to a dashboard" @click="pinning = true"><RgIcon name="plus" small /> Pin</button>
         <button v-if="draft.uuid && draft.canPublish" type="button" class="rg-btn" @click="publishing = true">

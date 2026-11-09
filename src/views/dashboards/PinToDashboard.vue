@@ -1,4 +1,5 @@
 <script setup>
+import { prefillWidget, widgetColumns } from './widgetTypes.js';
 import { computed, inject, onMounted, reactive, ref } from 'vue';
 import { useReportGenerator } from '../../context.js';
 import RgDialog from '../../components/ui/RgDialog.vue';
@@ -30,12 +31,10 @@ onMounted(async () => {
   try {
     const [view, list] = await Promise.all([api.reports.view(props.report), api.dashboards.list().catch(() => [])]);
     const fields = view.fields ?? [];
-    columns.dims = fields.filter((f) => f.kind === 'dimension').map((f) => ({ as: f.as, label: f.label ?? f.as }));
-    columns.nums = fields.filter((f) => f.kind !== 'dimension').map((f) => ({ as: f.as, label: f.label ?? f.as }));
+    Object.assign(columns, widgetColumns(fields));
     // A sensible start: the first column and number of the report.
-    widget.category = columns.dims[0]?.as ?? null;
-    widget.values = columns.nums[0] ? [columns.nums[0].as] : [];
-    if (!widget.category) Object.assign(widget, { type: 'kpi', size: 'sm' });
+    if (!columns.dims.length) Object.assign(widget, { type: 'kpi', size: 'sm' });
+    prefillWidget(widget, columns);
     dashboards.value = list.filter((d) => d.is_owner);
     if (dashboards.value.length) target.value = dashboards.value[0].uuid;
   } catch (error) {
