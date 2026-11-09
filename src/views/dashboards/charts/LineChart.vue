@@ -13,6 +13,8 @@ const props = defineProps({
   category: { type: Object, required: true },
   values: { type: Array, required: true },
   height: { type: Number, default: 220 },
+  /** Fill under every line (area chart); otherwise only under a single series. */
+  area: { type: Boolean, default: false },
 });
 
 const el = ref(null);
@@ -37,7 +39,7 @@ const series = computed(() => props.values.map((column, s) => {
     d += `${d === '' || points[i - 1]?.[1] === null ? 'M' : 'L'}${px.toFixed(1)},${py.toFixed(1)}`;
   });
   const last = [...points].reverse().find((p) => p[1] !== null);
-  return { column, slot: s + 1, d, area: props.values.length === 1 && d ? `${d}L${x(props.rows.length - 1)},${plotH.value}L${x(0)},${plotH.value}Z` : null, last };
+  return { column, slot: s + 1, d, area: (props.area || props.values.length === 1) && d ? `${d}L${x(props.rows.length - 1)},${plotH.value}L${x(0)},${plotH.value}Z` : null, last };
 }));
 
 const xLabels = computed(() => {

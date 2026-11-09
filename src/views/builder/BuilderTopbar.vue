@@ -3,7 +3,7 @@ import { computed, inject } from 'vue';
 import { REPORT_BUILDER_KEY } from '../../composables/useReportBuilder.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
 
-const emit = defineEmits(['save', 'save-copy', 'close', 'publish']);
+const emit = defineEmits(['save', 'save-copy', 'close', 'publish', 'pin']);
 const builder = inject(REPORT_BUILDER_KEY);
 const draft = computed(() => builder.state.draft);
 const rootLabel = computed(() => builder.datasetsByKey.value[draft.value.root]?.label ?? draft.value.root);
@@ -40,6 +40,9 @@ const rootLabel = computed(() => builder.datasetsByKey.value[draft.value.root]?.
         <RgIcon name="play" small /> Run
       </button>
       <span class="rg-toolbar-sep" />
+      <button v-if="draft.uuid" type="button" class="rg-btn" title="Add a chart or number from this report to a dashboard" @click="emit('pin')">
+        <RgIcon name="plus" small /> Pin
+      </button>
       <button v-if="draft.uuid && draft.canPublish" type="button" class="rg-btn" title="Give roles a permission to open this report" @click="emit('publish')">
         <RgIcon name="globe" small /> {{ draft.published ? 'Publishing' : 'Publish' }}
       </button>

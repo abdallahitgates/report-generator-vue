@@ -12,6 +12,7 @@ import RgToaster from '../../components/ui/RgToaster.vue';
 import ResultGrid from '../builder/ResultGrid.vue';
 import SaveDialog from '../builder/SaveDialog.vue';
 import PublishDialog from '../builder/PublishDialog.vue';
+import PinToDashboard from '../dashboards/PinToDashboard.vue';
 
 /**
  * Builder for combined reports: columns of existing reports side by side,
@@ -22,7 +23,8 @@ const props = defineProps({
   report: { type: Object, default: null },
   theme: { type: String, default: 'light' },
 });
-const emit = defineEmits(['saved', 'published', 'back']);
+const emit = defineEmits(['saved', 'published', 'back', 'open-dashboard']);
+const pinning = ref(false);
 
 const { api } = useReportGenerator();
 const toasts = createToasts();
@@ -144,6 +146,7 @@ const ERROR_TITLES = {
       <div class="rg-topbar__actions">
         <button type="button" class="rg-btn" :disabled="!builder.runnable.value || builder.state.running" @click="builder.run()"><RgIcon name="play" small /> Run</button>
         <span class="rg-toolbar-sep" />
+        <button v-if="draft.uuid" type="button" class="rg-btn" title="Add a chart or number from this report to a dashboard" @click="pinning = true"><RgIcon name="plus" small /> Pin</button>
         <button v-if="draft.uuid && draft.canPublish" type="button" class="rg-btn" @click="publishing = true">
           <RgIcon name="globe" small /> {{ draft.published ? 'Publishing' : 'Publish' }}
         </button>
@@ -314,6 +317,7 @@ const ERROR_TITLES = {
       </template>
     </RgDialog>
 
+    <PinToDashboard v-if="pinning && draft.uuid" :report="draft.uuid" :report-name="draft.name" @close="pinning = false" @open-dashboard="(uuid) => { pinning = false; emit('open-dashboard', uuid); }" />
     <SaveDialog v-if="saving" :copy="saving.copy" @close="saving = null" @saved="onSaved" />
     <PublishDialog
       v-if="publishing"

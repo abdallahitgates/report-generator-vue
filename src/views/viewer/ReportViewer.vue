@@ -6,6 +6,7 @@ import { formatCount } from '../../utils/format.js';
 import RgIcon from '../../components/ui/RgIcon.vue';
 import RgMultiSelect from '../../components/ui/RgMultiSelect.vue';
 import ResultGrid from '../builder/ResultGrid.vue';
+import PinToDashboard from '../dashboards/PinToDashboard.vue';
 
 /**
  * Opens a saved report for reading: the people a report is published to
@@ -19,7 +20,8 @@ const props = defineProps({
   /** Offer "Dashboard" (for people who can build dashboards). */
   dashboards: { type: Boolean, default: false },
 });
-const emit = defineEmits(['edit', 'loaded', 'dashboard']);
+const emit = defineEmits(['edit', 'loaded', 'dashboard', 'open-dashboard']);
+const pinning = ref(false);
 
 const PAGE_SIZE = 200;
 const PERIODS = [
@@ -190,6 +192,7 @@ const ERROR_TITLES = {
         </div>
         <div class="rg-topbar__actions">
           <button v-if="report?.can_edit" type="button" class="rg-btn" @click="emit('edit', report.uuid)"><RgIcon name="fx" small /> Edit</button>
+          <button v-if="report && dashboards" type="button" class="rg-btn" title="Add a chart or number from this report to a dashboard" @click="pinning = true"><RgIcon name="plus" small /> Pin to dashboard</button>
           <button v-if="report && dashboards" type="button" class="rg-btn" title="Make a dashboard from this report" @click="emit('dashboard', report.uuid)"><RgIcon name="view" small /> Dashboard</button>
           <button type="button" class="rg-btn rg-btn--primary" :disabled="!report || state.running" @click="run"><RgIcon name="play" small /> Refresh</button>
         </div>
@@ -248,5 +251,6 @@ const ERROR_TITLES = {
         <ResultGrid v-if="report" />
       </section>
     </template>
+    <PinToDashboard v-if="pinning && report" :report="report.uuid" :report-name="report.name" @close="pinning = false" @open-dashboard="(uuid) => { pinning = false; emit('open-dashboard', uuid); }" />
   </div>
 </template>

@@ -8,6 +8,7 @@ import RgToaster from '../../components/ui/RgToaster.vue';
 import PublishDialog from '../builder/PublishDialog.vue';
 import DashboardWidget from './DashboardWidget.vue';
 import { PERIODS } from './periods.js';
+import WidgetForm from './WidgetForm.vue';
 
 /**
  * Builds a dashboard: starts from a report's suggested layout (or empty),
@@ -26,13 +27,7 @@ const { api } = useReportGenerator();
 const toasts = createToasts();
 provide('rg-theme', props.theme);
 
-const TYPES = [
-  { value: 'kpi', label: 'KPI', icon: 'hash', hint: 'Headline numbers' },
-  { value: 'bar', label: 'Bar', icon: 'view', hint: 'Top items' },
-  { value: 'line', label: 'Line', icon: 'clock', hint: 'Over time' },
-  { value: 'share', label: 'Share', icon: 'table', hint: 'How a total splits' },
-  { value: 'table', label: 'Table', icon: 'table', hint: 'First rows' },
-];
+import { WIDGET_TYPES as TYPES, withType } from './widgetTypes.js';
 const SIZES = [['sm', 'Small'], ['md', 'Half'], ['lg', 'Two thirds'], ['full', 'Full width']];
 
 const state = reactive({ loading: true, saving: false, uuid: null, name: 'Untitled dashboard', visibility: 'private', canPublish: false, published: false, period: '', widgets: [] });
@@ -95,7 +90,6 @@ function openWidget(widget = null) {
 }
 
 const editCols = computed(() => columnsByReport[editing.value?.report] ?? { dims: [], nums: [], loading: !!editing.value?.report });
-const single = computed(() => ['bar', 'share'].includes(editing.value?.type));
 const editReady = computed(() => {
   const w = editing.value;
   if (!w?.report) return false;
@@ -104,24 +98,9 @@ const editReady = computed(() => {
   return w.type === 'kpi' || !!w.category;
 });
 
-function toggleValue(alias) {
-  const w = editing.value;
-  if (single.value) w.values = [alias];
-  else w.values = w.values.includes(alias) ? w.values.filter((v) => v !== alias) : [...w.values, alias];
-}
-
-function onType(type) {
-  const w = editing.value;
-  w.type = type;
-  if (single.value) w.values = w.values.slice(0, 1);
-  if (type === 'kpi') w.category = null;
-  w.size = { kpi: 'sm', table: 'full', line: 'full' }[type] ?? 'md';
-  w.top = { share: 6, line: 120 }[type] ?? 10;
-}
-
-function onReport(uuid) {
-  Object.assign(editing.value, { report: uuid, category: null, values: [] });
-  columnsOf(uuid);
+/** Switch a widget's chart type from its card, keeping what fits. */
+function switchType(widget, type) {
+  state.widgets = state.widgets.map((w) => (w.id === widget.id ? withType(w, type) : w));
 }
 
 function saveWidget() {
@@ -245,6 +224,10 @@ async function save() {
         >
           <template #actions>
             <div class="rg-widget__tools">
+              <label class="rg-sr-only" :for="`rg-type-${widget.id}`">Show {{ widget.title }} as</label>
+              <select :id="`rg-type-${widget.id}`" class="rg-input rg-widget__type" :value="widget.type" title="Show as" @change="switchType(widget, $event.target.value)">
+                <option v-for="t in TYPES" :key="t.value" :value="t.value" :disabled="!t.fits(widget)">{{ t.label }}</option>
+              </select>
               <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Edit ${widget.title}`" @click="openWidget(widget)"><RgIcon name="fx" small /></button>
               <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Resize ${widget.title}`" :title="`Size: ${SIZES.find(([s]) => s === (widget.size ?? 'md'))?.[1]}`" @click="resize(widget)">⤢</button>
               <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Move ${widget.title} earlier`" :disabled="i === 0" @click="move(widget.id, -1)">‹</button>
@@ -258,53 +241,7 @@ async function save() {
 
     <RgDialog v-if="editing" :title="editing.id ? 'Edit widget' : 'Add widget'" class="rg-widget-dialog" :data-rg-theme="theme" @close="editing = null">
       <form id="rg-widget-form" class="rg-publish" @submit.prevent="editReady && saveWidget()">
-        <label class="rg-publish__field" for="rg-widget-report">
-          <span>Report</span>
-          <select id="rg-widget-report" class="rg-input" :value="editing.report" @change="onReport($event.target.value)">
-            <option value="" disabled>Pick a report</option>
-            <option v-for="r in reports" :key="r.uuid" :value="r.uuid">{{ r.name }}</option>
-          </select>
-        </label>
-        <div class="rg-publish__field">
-          <span>Show as</span>
-          <div class="rg-widget-types" role="group" aria-label="Widget type">
-            <button v-for="t in TYPES" :key="t.value" type="button" class="rg-widget-type" :aria-pressed="editing.type === t.value" @click="onType(t.value)">
-              <RgIcon :name="t.icon" small /><b>{{ t.label }}</b><small>{{ t.hint }}</small>
-            </button>
-          </div>
-        </div>
-        <label v-if="!['kpi', 'table'].includes(editing.type)" class="rg-publish__field" for="rg-widget-category">
-          <span>{{ editing.type === 'line' ? 'Over' : 'By' }}</span>
-          <select id="rg-widget-category" v-model="editing.category" class="rg-input">
-            <option :value="null" disabled>Pick a column</option>
-            <option v-for="d in editCols.dims" :key="d.as" :value="d.as">{{ d.label }}</option>
-          </select>
-        </label>
-        <fieldset v-if="editing.type !== 'table'" class="rg-publish__field">
-          <legend>{{ single ? 'Number' : 'Numbers' }}<small v-if="editing.type === 'line'" class="rg-faint"> · pick numbers of the same scale: they share one axis</small></legend>
-          <div class="rg-publish__roles">
-            <button v-for="n in editCols.nums" :key="n.as" type="button" class="rg-publish__role" :aria-pressed="editing.values.includes(n.as)" @click="toggleValue(n.as)">
-              <RgIcon :name="editing.values.includes(n.as) ? 'check' : 'plus'" small />{{ n.label }}
-            </button>
-            <span v-if="editCols.loading" class="rg-faint"><RgIcon name="loader" spin small /> Loading columns…</span>
-          </div>
-        </fieldset>
-        <div class="rg-widget-dialog__row">
-          <label class="rg-publish__field" for="rg-widget-title">
-            <span>Title</span>
-            <input id="rg-widget-title" v-model="editing.title" class="rg-input" maxlength="160" placeholder="From the numbers" />
-          </label>
-          <label v-if="editing.type !== 'kpi'" class="rg-publish__field" for="rg-widget-top">
-            <span>{{ editing.type === 'line' ? 'Points' : editing.type === 'share' ? 'Parts' : 'Rows' }}</span>
-            <input id="rg-widget-top" v-model.number="editing.top" class="rg-input" type="number" min="1" :max="editing.type === 'share' ? 6 : editing.type === 'line' ? 400 : 50" />
-          </label>
-          <label class="rg-publish__field" for="rg-widget-size">
-            <span>Size</span>
-            <select id="rg-widget-size" v-model="editing.size" class="rg-input">
-              <option v-for="[value, label] in SIZES" :key="value" :value="value">{{ label }}</option>
-            </select>
-          </label>
-        </div>
+        <WidgetForm :widget="editing" :reports="reports" :columns="editCols" @report="columnsOf" />
         <div v-if="editReady" class="rg-widget-dialog__preview">
           <span class="rg-faint">Preview</span>
           <DashboardWidget :widget="{ ...editing, size: 'full' }" :load="loader(editing)" :version="version" />

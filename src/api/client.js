@@ -172,6 +172,8 @@ export function createApiClient({ http, basePath = '/api/report-generator' } = {
       permission, roles, in_menu: inMenu, menu_group: menuGroup,
     }).then((r) => r.data),
     unpublish: (uuid) => request('delete', `dashboards/${uuid}/publish`).then((r) => r.data),
+    /** Adds a widget to a dashboard you own; returns the dashboard. */
+    pin: (uuid, widget) => request('post', `dashboards/${uuid}/pin`, { widget }).then((r) => r.data),
   };
 
   return {

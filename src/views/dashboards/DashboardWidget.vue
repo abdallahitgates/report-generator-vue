@@ -6,6 +6,8 @@ import KpiTile from './charts/KpiTile.vue';
 import BarChart from './charts/BarChart.vue';
 import LineChart from './charts/LineChart.vue';
 import ShareBar from './charts/ShareBar.vue';
+import ColumnChart from './charts/ColumnChart.vue';
+import PieChart from './charts/PieChart.vue';
 
 /**
  * One dashboard card: loads its data through `load()` whenever `version`
@@ -22,10 +24,16 @@ const props = defineProps({
 
 const data = ref(null);
 const error = ref(null);
+// No access to the report behind the widget: the card stays, its data does not.
+const locked = ref(props.widget.can_view === false);
 const loading = ref(false);
 let seq = 0;
 
 async function fetch() {
+  if (props.widget.can_view === false) {
+    locked.value = true;
+    return;
+  }
   const mine = ++seq;
   loading.value = true;
   error.value = null;
@@ -33,7 +41,8 @@ async function fetch() {
     const result = await props.load();
     if (mine === seq) data.value = result;
   } catch (e) {
-    if (mine === seq) error.value = e?.message ?? 'This widget could not load.';
+    if (mine === seq && (e?.code === 'REPORT_FORBIDDEN' || e?.status === 403)) locked.value = true;
+    else if (mine === seq) error.value = e?.message ?? 'This widget could not load.';
   } finally {
     if (mine === seq) loading.value = false;
   }
@@ -61,7 +70,11 @@ defineExpose({ reload: fetch });
     </header>
 
     <div class="rg-widget__body" :aria-busy="loading ? 'true' : 'false'">
-      <div v-if="loading && !data" class="rg-widget__skeleton">
+      <div v-if="locked" class="rg-widget__locked">
+        <span class="rg-empty__icon"><RgIcon name="lock" /></span>
+        <span>You need access to <b>{{ widget.report_name ?? 'its report' }}</b> to see this.</span>
+      </div>
+      <div v-else-if="loading && !data" class="rg-widget__skeleton">
         <span v-for="n in (widget.type === 'kpi' ? 2 : 5)" :key="n" class="rg-skeleton" :style="{ width: `${40 + ((n * 29) % 55)}%` }" />
       </div>
       <p v-else-if="error" class="rg-widget__error"><RgIcon name="alert" small /> {{ error }}</p>
@@ -72,7 +85,9 @@ defineExpose({ reload: fetch });
             <KpiTile v-for="v in values" :key="v.alias" :label="values.length > 1 || !widget.title ? v.label : ''" :value="data.rows[0]?.[v.alias] ?? null" :column="v" />
           </div>
           <BarChart v-else-if="widget.type === 'bar' && category && values[0]" :rows="data.rows" :category="category" :value="values[0]" />
-          <LineChart v-else-if="widget.type === 'line' && category && values.length" :rows="data.rows" :category="category" :values="values" />
+          <ColumnChart v-else-if="widget.type === 'column' && category && values[0]" :rows="data.rows" :category="category" :value="values[0]" />
+          <LineChart v-else-if="['line', 'area'].includes(widget.type) && category && values.length" :rows="data.rows" :category="category" :values="values" :area="widget.type === 'area'" />
+          <PieChart v-else-if="['pie', 'donut'].includes(widget.type) && category && values[0]" :rows="data.rows" :category="category" :value="values[0]" :donut="widget.type === 'donut'" :parts="widget.top ?? 6" />
           <ShareBar v-else-if="widget.type === 'share' && category && values[0]" :rows="data.rows" :category="category" :value="values[0]" :parts="widget.top ?? 6" />
           <div v-else-if="widget.type === 'table'" class="rg-widget__table">
             <table class="rg-grid">
@@ -86,7 +101,7 @@ defineExpose({ reload: fetch });
           </div>
         </div>
         <!-- The same numbers for screen readers. -->
-        <table v-if="widget.type !== 'table'" class="rg-sr-only">
+        <table v-if="widget.type !== 'table' && !locked" class="rg-sr-only">
           <caption>{{ widget.title }}</caption>
           <thead><tr><th v-for="c in tableColumns" :key="c.alias">{{ c.label }}</th></tr></thead>
           <tbody><tr v-for="(row, i) in data.rows" :key="i"><td v-for="c in tableColumns" :key="c.alias">{{ formatCell(row[c.alias], c) }}</td></tr></tbody>

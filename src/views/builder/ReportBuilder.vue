@@ -15,6 +15,7 @@ import FormulaDialog from './FormulaDialog.vue';
 import SaveDialog from './SaveDialog.vue';
 import PublishDialog from './PublishDialog.vue';
 import CombinedBuilder from '../combined/CombinedBuilder.vue';
+import PinToDashboard from '../dashboards/PinToDashboard.vue';
 import PathDialog from './PathDialog.vue';
 
 const props = defineProps({
@@ -22,7 +23,8 @@ const props = defineProps({
   reportId: { type: String, default: null },
   theme: { type: String, default: 'light' },
 });
-const emit = defineEmits(['saved', 'published']);
+const emit = defineEmits(['saved', 'published', 'open-dashboard']);
+const pinning = ref(false);
 
 const { api } = useReportGenerator();
 const toasts = createToasts();
@@ -117,10 +119,11 @@ function onSaved(report) {
     :theme="theme"
     @saved="onSaved"
     @published="(s) => emit('published', s)"
+    @open-dashboard="(uuid) => emit('open-dashboard', uuid)"
     @back="mode = 'topic'; builder.init(null)"
   />
   <div v-else class="rg-root rg-builder" :data-rg-theme="theme">
-    <BuilderTopbar @save="saving = { copy: false }" @save-copy="saving = { copy: true }" @publish="publishing = true" />
+    <BuilderTopbar @save="saving = { copy: false }" @save-copy="saving = { copy: true }" @publish="publishing = true" @pin="pinning = true" />
 
     <div v-if="builder.state.loading" class="rg-builder__body">
       <aside class="rg-explorer"><div class="rg-skeleton-list"><div v-for="n in 10" :key="n" class="rg-skeleton" /></div></aside>
@@ -180,6 +183,13 @@ function onSaved(report) {
     </div>
 
     <FormulaDialog v-if="formula" :item="formula.item" @close="formula = null" />
+    <PinToDashboard
+      v-if="pinning && builder.state.draft.uuid"
+      :report="builder.state.draft.uuid"
+      :report-name="builder.state.draft.name"
+      @close="pinning = false"
+      @open-dashboard="(uuid) => { pinning = false; emit('open-dashboard', uuid); }"
+    />
     <PublishDialog
       v-if="publishing"
       :uuid="builder.state.draft.uuid"
