@@ -13,7 +13,7 @@ const props = defineProps({
   category: { type: Object, required: true },
   values: { type: Array, required: true },
   height: { type: Number, default: 220 },
-  /** Fill under every line (area chart); otherwise only under a single series. */
+  /** Fill under the lines (area chart). */
   area: { type: Boolean, default: false },
 });
 
@@ -39,13 +39,16 @@ const series = computed(() => props.values.map((column, s) => {
     d += `${d === '' || points[i - 1]?.[1] === null ? 'M' : 'L'}${px.toFixed(1)},${py.toFixed(1)}`;
   });
   const last = [...points].reverse().find((p) => p[1] !== null);
-  return { column, slot: s + 1, d, area: (props.area || props.values.length === 1) && d ? `${d}L${x(props.rows.length - 1)},${plotH.value}L${x(0)},${plotH.value}Z` : null, last };
+  return { column, slot: s + 1, d, area: props.area && d ? `${d}L${x(props.rows.length - 1)},${plotH.value}L${x(0)},${plotH.value}Z` : null, last };
 }));
 
 const xLabels = computed(() => {
   const n = props.rows.length;
   const every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(plotW.value / 70))));
-  return props.rows.map((r, i) => ({ i, text: formatCell(r[props.category.alias], props.category) })).filter((l) => l.i % every === 0 || l.i === n - 1);
+  const labels = props.rows.map((r, i) => ({ i, text: formatCell(r[props.category.alias], props.category) })).filter((l) => l.i % every === 0 || l.i === n - 1);
+  // Never let a label run into the last one.
+  const last = labels[labels.length - 1];
+  return labels.filter((l) => l === last || x(last.i) - x(l.i) >= 64);
 });
 
 function onMove(event) {

@@ -95,7 +95,8 @@
 
 .rg-root *, .rg-root *::before, .rg-root *::after { box-sizing: border-box; }
 .rg-root :focus-visible { outline: 2px solid var(--rg-focus); outline-offset: 1px; }
-.rg-root button { font: inherit; color: inherit; }
+/* :where keeps this reset below every .rg-btn* rule (primary buttons set their own text color). */
+.rg-root :where(button) { font: inherit; color: inherit; }
 .rg-mono { font-family: var(--rg-font-mono); font-size: 0.92em; }
 .rg-num { font-variant-numeric: tabular-nums; }
 .rg-muted { color: var(--rg-muted); }
@@ -845,8 +846,8 @@
 .rg-pie__slice.is-dim { opacity: 0.35; }
 .rg-pie__total { font-size: 18px; font-weight: 650; fill: var(--rg-text); }
 .rg-pie__legend { flex: 1; min-width: 180px; margin: 0; }
-.rg-widget__locked { display: flex; align-items: center; gap: 10px; padding: 10px 0; font-size: 12.5px; color: var(--rg-muted); }
-.rg-widget__locked .rg-empty__icon { width: 34px; height: 34px; border-radius: 10px; }
+.rg-widget__locked { display: flex; align-items: center; gap: 8px; padding: 4px 0 0; font-size: 12px; line-height: 1.35; color: var(--rg-muted); }
+.rg-widget__locked .rg-empty__icon { width: 28px; height: 28px; border-radius: 8px; flex: none; }
 @media (prefers-reduced-motion: reduce) { .rg-column__fill, .rg-pie__svg { animation: none; } }
 .rg-widget__type { height: 24px; width: auto; padding: 0 6px; font-size: 11.5px; margin-inline-end: 2px; }
 .rg-widget-types { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); }
@@ -855,3 +856,12 @@
 .rg-pin__done { display: flex; align-items: center; gap: 12px; }
 .rg-pin__done p { margin: 0; }
 .rg-pin__done .rg-empty__icon { background: var(--rg-success-soft); color: var(--rg-success); }
+
+.rg-dashboard .rg-topbar .rg-segmented { --c: var(--rg-text); --s: var(--rg-surface); }
+.rg-dashboard .rg-topbar .rg-segmented button[aria-pressed="true"] { box-shadow: 0 1px 2px rgba(23, 32, 43, 0.12); }
+.rg-dashboard--editing .rg-widget__head { flex-wrap: wrap; }
+.rg-dashboard--editing .rg-widget__tools { margin-inline-start: auto; align-items: center; }
+.rg-dashboard--editing .rg-widget__tools .rg-btn--sm { min-width: 24px; font-size: 11px; font-weight: 600; }
+/* Small cards: the tools get their own row so the title keeps its width. */
+.rg-dashboard--editing .rg-widget--sm .rg-widget__tools { order: -1; width: 100%; justify-content: flex-end; }
+.rg-dashboard .rg-topbar .rg-segmented button[aria-pressed="true"] { background: var(--rg-surface); color: var(--rg-text); font-weight: 650; }

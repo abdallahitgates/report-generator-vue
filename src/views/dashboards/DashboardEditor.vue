@@ -229,7 +229,7 @@ async function save() {
                 <option v-for="t in TYPES" :key="t.value" :value="t.value" :disabled="!t.fits(widget)">{{ t.label }}</option>
               </select>
               <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Edit ${widget.title}`" @click="openWidget(widget)"><RgIcon name="fx" small /></button>
-              <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Resize ${widget.title}`" :title="`Size: ${SIZES.find(([s]) => s === (widget.size ?? 'md'))?.[1]}`" @click="resize(widget)">⤢</button>
+              <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Resize ${widget.title}`" :title="`Size: ${SIZES.find(([s]) => s === (widget.size ?? 'md'))?.[1]}`" @click="resize(widget)">{{ { sm: 'S', md: 'M', lg: 'L', full: 'Full' }[widget.size ?? 'md'] }}</button>
               <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Move ${widget.title} earlier`" :disabled="i === 0" @click="move(widget.id, -1)">‹</button>
               <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Move ${widget.title} later`" :disabled="i === state.widgets.length - 1" @click="move(widget.id, 1)">›</button>
               <button type="button" class="rg-btn rg-btn--icon rg-btn--ghost rg-btn--sm" :aria-label="`Remove ${widget.title}`" @click="remove(widget.id)"><RgIcon name="trash" small /></button>

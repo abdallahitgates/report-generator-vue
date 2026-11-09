@@ -51,7 +51,17 @@ async function fetch() {
 watch(() => [props.version, JSON.stringify(props.widget)], fetch, { immediate: true });
 
 const byAlias = computed(() => Object.fromEntries((data.value?.columns ?? []).map((c) => [c.alias, c])));
-const category = computed(() => byAlias.value[props.widget.category] ?? null);
+/**
+ * The chart's column. Dates that are all the 1st of a month are months
+ * ("Mar 2026"), whatever the server said about their grain.
+ */
+const category = computed(() => {
+  const column = byAlias.value[props.widget.category];
+  if (!column || column.grain || !['date', 'datetime'].includes(column.type)) return column ?? null;
+  const values = (data.value?.rows ?? []).map((r) => r[column.alias]).filter((v) => v !== null && v !== undefined);
+  const monthly = values.length > 1 && values.every((v) => /^\d{4}-\d{2}-01/.test(String(v)));
+  return monthly ? { ...column, grain: 'month' } : column;
+});
 const values = computed(() => (props.widget.values ?? []).map((a) => byAlias.value[a]).filter(Boolean));
 const empty = computed(() => data.value && data.value.rows.length === 0);
 const tableColumns = computed(() => data.value?.columns ?? []);
