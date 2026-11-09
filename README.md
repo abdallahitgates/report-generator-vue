@@ -11,10 +11,10 @@ already do.
 
 ## Install
 
-From a Git tag (npm builds the package while installing it):
+From a Git tag (the built files are in the repository, so installing needs no build and works on any Node version):
 
 ```bash
-npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.8.0"
+npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.8.1"
 ```
 
 
@@ -137,7 +137,7 @@ npm run build
 
 ## Releasing
 
-Bump `version` in `package.json`, commit, then:
+Bump `version` in `package.json`, run `npm test` and `npm run build`, commit (including `dist/`: projects install the built files straight from Git), then:
 
 ```bash
 git tag v0.3.0

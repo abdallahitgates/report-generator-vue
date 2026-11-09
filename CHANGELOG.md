@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.1
+- `dist/` is committed and nothing is built on install: `npm i` from Git is faster and no longer needs Node 18+ or the dev dependencies.
+
 ## 0.8.0
 - Dashboards load their widgets three at a time.
 - Primary buttons show their text again (a reset outranked them since 0.1).
