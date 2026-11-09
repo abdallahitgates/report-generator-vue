@@ -5,7 +5,7 @@ topics browser, report builder, viewer and runs. The host app supplies Vue and
 its own axios instance, so authentication and interceptors work as they
 already do.
 
-> Version **0.6.0** (v2 phase P4). The topics browser (the topics your app
+> Version **0.7.0** (v2 phase P5). The topics browser (the topics your app
 > declares in code, by tab), the report library and the report builder. Model
 > Studio is gone with the database scan.
 
@@ -14,7 +14,7 @@ already do.
 From a Git tag (npm builds the package while installing it):
 
 ```bash
-npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.6.0"
+npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.7.0"
 ```
 
 
@@ -57,6 +57,17 @@ decides the URLs.
 <!-- /reports/new and /reports/:uuid -->
 <ReportBuilder :report-id="route.params.uuid ?? null" @saved="report => router.replace(`/reports/${report.uuid}`)" />
 ```
+
+**Dashboards**: `DashboardView` (`dashboard-id`) shows a dashboard's
+widgets (KPI, bar, column, line, area, pie, donut, share bar, table) with
+period / line / division / employee filters; widgets on reports the viewer
+cannot open stay locked. `DashboardEditor` (`dashboard-id`, or
+`from-report` to start from a report's suggested layout) adds, edits,
+switches the type of, sizes and orders widgets with live data, then saves
+and publishes. `PinToDashboard` (also behind "Pin" in the viewer and the
+builders) adds a chart or number of a report to one of your dashboards.
+`ReportLibrary` has a Dashboards tab and emits `dashboard(reportUuid)` and
+`open-dashboard(uuid)`; the viewer and builders emit `open-dashboard`.
 
 **Combined reports**: the builder's first screen offers "Combine existing
 reports" when the server has combinable reports. Pick one row per employee

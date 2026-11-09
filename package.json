@@ -1,6 +1,6 @@
 {
   "name": "@abdalla/report-generator-vue",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Vue 3 UI for abdalla/laravel-report-generator: topics browser, report builder and viewer.",
   "type": "module",
   "license": "UNLICENSED",
