@@ -5,16 +5,19 @@ topics browser, report builder, viewer and runs. The host app supplies Vue and
 its own axios instance, so authentication and interceptors work as they
 already do.
 
-> Version **0.8.0** (v2 phase P6). The topics browser (the topics your app
-> declares in code, by tab), the report library and the report builder. Model
-> Studio is gone with the database scan.
+Screens: report builder (relation tree, rows / values / filters, formulas,
+live results), report library, viewer (for people a report is published to),
+dashboards and their editor, pin-to-dashboard, publishing and the topics
+browser. See it all in the
+[example app](https://github.com/abdallahitgates/report-generator-demo) and its
+walkthrough video.
 
 ## Install
 
 From a Git tag (the built files are in the repository, so installing needs no build and works on any Node version):
 
 ```bash
-npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.8.1"
+npm install "git+https://github.com/abdallahitgates/report-generator-vue.git#v0.10.0"
 ```
 
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.0
+- The builder's field list is the topic's relation tree (Visits ▸ Employee ▸ Line): every field is added with its own join, so it never asks "which way?", "many" shows only where rows multiply, hidden join keys stay out, and fields deeper in the tree are named by their path ("Employee › Line"). Servers that send only the flat list still work as before.
+- The report library tells people who cannot build reports where their reports are, instead of showing a permission error.
+- README points at the example app and its video.
+
 ## 0.10.0 — Flexible and friendlier
 Needs laravel-report-generator 0.10.
 - **Export** button (Excel or CSV) in the builder, combined builder and viewer top bars.
