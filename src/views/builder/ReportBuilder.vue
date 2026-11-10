@@ -99,7 +99,7 @@ function onFiltersDrop(event) {
   filtersDrop.value = false;
   try {
     const data = JSON.parse(event.dataTransfer.getData('application/x-rg'));
-    if (data.kind === 'field') builder.addField(data.dataset, data.field, 'filters');
+    if (data.kind === 'field') builder.addField(data.dataset, data.field, 'filters', null, data.path, null, data.label);
     if (data.kind === 'item') builder.filterOnTotal(data.uid);
   } catch {
     // not ours

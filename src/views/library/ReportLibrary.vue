@@ -23,6 +23,8 @@ const folder = ref(null);
 const reports = ref([]);
 const folders = ref([]);
 const loading = ref(true);
+/** The user cannot build reports: the library is not for them. */
+const forbidden = ref(false);
 const confirmDelete = ref(null);
 
 const SCOPES = [['all', 'All'], ['mine', 'Mine'], ['shared', 'Shared with me'], ['dashboards', 'Dashboards']];
@@ -51,7 +53,8 @@ async function load() {
     reports.value = result.data;
     if (!folder.value) folders.value = result.folders;
   } catch (error) {
-    toasts.error(error);
+    if (error?.status === 403) forbidden.value = true;
+    else toasts.error(error);
   } finally {
     loading.value = false;
   }
@@ -105,12 +108,12 @@ const empty = computed(() => !loading.value && (isDashboards.value ? !shownDashb
         <h1>Reports</h1>
         <div class="rg-topbar__meta"><span>Build a report from any connected data, save it, and share it.</span></div>
       </div>
-      <div class="rg-topbar__actions">
+      <div v-if="!forbidden" class="rg-topbar__actions">
         <button type="button" class="rg-btn rg-btn--primary" @click="emit('create')"><RgIcon name="plus" small /> New report</button>
       </div>
     </header>
 
-    <div class="rg-library__filters">
+    <div v-if="!forbidden" class="rg-library__filters">
       <div class="rg-tabs" role="tablist">
         <button
           v-for="[value, label] in SCOPES"
@@ -136,7 +139,12 @@ const empty = computed(() => !loading.value && (isDashboards.value ? !shownDashb
     </div>
 
     <div class="rg-library__list">
-      <div v-if="loading" class="rg-skeleton-list"><div v-for="n in 5" :key="n" class="rg-skeleton" style="height: 44px" /></div>
+      <div v-if="forbidden" class="rg-empty">
+        <div class="rg-empty__icon"><RgIcon name="lock" /></div>
+        <h2>Reports are shared with you through the menu</h2>
+        <p>You can open the reports and dashboards published to your role from the menu. Building new reports needs the permission to create them.</p>
+      </div>
+      <div v-else-if="loading" class="rg-skeleton-list"><div v-for="n in 5" :key="n" class="rg-skeleton" style="height: 44px" /></div>
 
       <div v-else-if="empty && isDashboards" class="rg-empty">
         <div class="rg-empty__icon"><RgIcon name="view" /></div>

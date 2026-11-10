@@ -86,8 +86,12 @@ export function uniqueAlias(draft, base, except = null) {
 /** Label for a field taken from a dataset that is not the report's root. */
 export function fieldLabel(dataset, field, rootKey) {
   if (field.key === ROW_COUNT) return field.label;
-  if (dataset.key === rootKey) return field.label;
-  return field.label.toLowerCase().includes(dataset.label.toLowerCase()) ? field.label : `${dataset.label} ${field.label}`;
+  if (dataset.key === rootKey && !dataset.label.includes(' › ')) return field.label;
+  // "Employee › Line" + "Line" -> "Employee › Line"; "Doctor" + "Class" -> "Doctor Class".
+  const parts = dataset.label.split(' › ');
+  const last = parts[parts.length - 1];
+  const tail = field.label.toLowerCase().includes(last.toLowerCase()) ? field.label : `${last} ${field.label}`;
+  return [...parts.slice(0, -1), tail].join(' › ');
 }
 
 export function measureLabel(item) {

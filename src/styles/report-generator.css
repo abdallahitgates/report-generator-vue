@@ -1153,3 +1153,9 @@
 .rg-grid th .rg-colmenu button { flex-direction: row !important; justify-content: flex-start; }
 .rg-grid th .rg-colmenu .rg-colmenu__actions button { justify-content: center; }
 .rg-grid th .rg-colmenu .rg-colmenu__actions .rg-btn--primary { color: #fff !important; }
+
+/* field tree */
+.rg-ds--nested { margin-inline-start: calc(10px + var(--rg-depth, 1) * 4px); border-inline-start: 1px solid var(--rg-border); }
+.rg-ds--nested .rg-ds__head { font-weight: 550; font-size: 12.5px; padding-block: 6px; }
+.rg-ds__name { display: flex; flex-direction: column; min-width: 0; text-align: start; line-height: 1.25; }
+.rg-ds__name small { font-size: 10.5px; font-weight: 400; }

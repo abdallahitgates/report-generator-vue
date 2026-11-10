@@ -48,7 +48,7 @@ function onDrop(event) {
   over.value = false;
   marker.value = null;
   if (!data) return;
-  if (data.kind === 'field') builder.addField(data.dataset, data.field, props.shelf, index);
+  if (data.kind === 'field') builder.addField(data.dataset, data.field, props.shelf, index, data.path, null, data.label);
   if (data.kind === 'item') builder.moveItem(data.uid, props.shelf, index);
 }
 </script>

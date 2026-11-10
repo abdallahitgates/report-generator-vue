@@ -35,3 +35,18 @@ describe('Widget columns', () => {
     expect(widgetProblem({ type: 'kpi' })).toBe('Pick a report.');
   });
 });
+
+describe('Library for people who cannot build reports', () => {
+  it('explains where their reports are instead of showing an error', async () => {
+    const { createReportGenerator, ReportLibrary, ReportGeneratorApiError } = await import('../src/index.js');
+    const plugin = createReportGenerator({ http: { get: vi.fn(), post: vi.fn() } });
+    plugin.api.reports.list = vi.fn(async () => { throw new ReportGeneratorApiError('You do not have permission', { status: 403 }); });
+    plugin.api.dashboards.list = vi.fn(async () => []);
+    const wrapper = mount(ReportLibrary, { global: { plugins: [plugin] }, attachTo: document.body });
+    await flushPromises();
+    expect(wrapper.text()).toContain('Reports are shared with you through the menu');
+    expect(wrapper.text()).not.toContain('New report');
+    expect(document.body.textContent).not.toContain('You do not have permission');
+    wrapper.unmount();
+  });
+});

@@ -343,3 +343,47 @@ describe('Report library', () => {
     expect(wrapper.findAll('.rg-report-row')).toHaveLength(1);
   });
 });
+
+describe('Field tree', () => {
+  const visitFields = catalog.datasets[0].fields;
+  const tree = {
+    name: 'visits', label: 'Visits', topic: 'visits', topic_label: 'Visits', path: [], multiplies_rows: false,
+    fields: [...visitFields, { ...field('user_id', 'Employee ID', 'integer', 'key'), hidden: true }],
+    relations: [{
+      name: 'employee', label: 'Employee', topic: 'users', topic_label: 'Users', path: [3], multiplies_rows: false,
+      fields: [field('name', 'Employee', 'string', 'dimension')],
+      relations: [{ name: 'line', label: 'Line', topic: 'lines', topic_label: 'Lines', path: [3, 7], multiplies_rows: false, fields: [field('name', 'Line', 'string', 'dimension')], relations: [] }],
+    }, {
+      name: 'products', label: 'Products discussed', topic: 'visit_products', topic_label: 'Visit products', path: [-9], multiplies_rows: true,
+      fields: [field('samples', 'Samples', 'integer', 'measure', ['sum'])], relations: [],
+    }],
+  };
+
+  it('adds a field with its own join path, never asking which way, and names it by the path', async () => {
+    // The server names fields the same in the tree and the flat list.
+    const flat = structuredClone(catalog);
+    flat.datasets[1].fields[0].label = 'Employee';
+    flat.datasets[2].fields[0].label = 'Line';
+    const api = fakeApi({ query: { catalog: vi.fn(async (root) => (root ? { ...flat, tree } : { model_version: 1, datasets: [{ key: 'visits', label: 'Visits', fields_count: 4 }] })) } });
+    const wrapper = await startReport(api);
+
+    // Hidden join keys stay out; branches open on click; "many" only where rows multiply.
+    expect(wrapper.text()).not.toContain('Employee ID');
+    const heads = () => wrapper.findAll('.rg-ds__head');
+    expect(heads().find((h) => h.text().includes('Products discussed')).text()).toContain('many');
+    expect(heads().find((h) => h.text().includes('Employee')).text()).not.toContain('many');
+
+    await heads().find((h) => h.text().includes('Employee')).trigger('click');
+    await heads().find((h) => h.text().startsWith('Line')).trigger('click');
+    await addButton(wrapper, 'Line').trigger('click');
+    await settle();
+
+    expect(wrapper.find('.rg-dialog').exists()).toBe(false);
+    expect(wrapper.findAll('.rg-shelf')[0].text()).toContain('Employee › Line');
+    expect(lastDefinition(api).fields[0]).toMatchObject({ ref: 'lines.name', path: [3, 7], label: 'Employee › Line' });
+
+    // Search opens every branch that matches.
+    await wrapper.find('#rg-field-search').setValue('samp');
+    expect(wrapper.findAll('.rg-fld__label').map((f) => f.text())).toEqual(['Samples']);
+  });
+});

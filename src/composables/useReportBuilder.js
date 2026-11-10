@@ -174,16 +174,18 @@ export function createReportBuilder(api, toasts) {
    *
    * @param {'rows'|'values'|'filters'} target
    */
-  function addField(datasetKey, fieldKey, target = null, index = null, path = undefined, parentUid = null) {
-    const dataset = datasetsByKey.value[datasetKey];
+  function addField(datasetKey, fieldKey, target = null, index = null, path = undefined, parentUid = null, nodeLabel = null) {
+    const found = datasetsByKey.value[datasetKey];
+    // From the relation tree: the node's own name ("Employee › Line") and path.
+    const dataset = found && nodeLabel ? { ...found, label: nodeLabel } : found;
     const field = dataset?.fields.find((f) => f.key === fieldKey);
     if (!dataset || !field) return;
 
-    if (path === undefined && dataset.paths?.length > 1) {
+    if (path === undefined && dataset.paths?.length > 1 && datasetKey !== state.draft.root) {
       state.pathChoice = { dataset, field, target, index, parentUid, options: dataset.paths };
       return;
     }
-    const chosen = path ?? null;
+    const chosen = path?.length ? path : null; // the report's own topic: no join
 
     const shelf = target ?? (field.role === 'measure' ? 'values' : 'rows');
     if (shelf === 'filters') {

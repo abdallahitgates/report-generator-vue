@@ -23,7 +23,7 @@ function onDrop(event) {
   } catch {
     return;
   }
-  if (data?.kind === 'field') builder.addField(data.dataset, data.field, 'filters', null, undefined, props.group.uid);
+  if (data?.kind === 'field') builder.addField(data.dataset, data.field, 'filters', null, data.path, props.group.uid, data.label);
 }
 </script>
 
